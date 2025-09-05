@@ -1,3 +1,4 @@
+using Backend;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,8 +18,9 @@ var dbName = builder.Configuration["DB:Name"];
 
 var connectionString = $"postgresql://{username}:{password}@{host}:{port}/{dbName}";
 
-// builder.Services.AddDbContext<>(options => options.UseNpgsql(connectionString));
-// builder.Services.AddSingleton<UserRepository, IUserRepository>
+builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
+
+builder.Services.AddExtensions();
 
 var app = builder.Build();
 
