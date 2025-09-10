@@ -13,5 +13,6 @@ public class User
     [Required]
     public required string Password { get; set; }
 
-    public required int? ShoppingInterval { get; set; }
+    [Required]
+    public required int MealPrepInterval { get; set; }
 }

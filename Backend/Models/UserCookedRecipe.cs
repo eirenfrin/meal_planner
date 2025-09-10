@@ -12,7 +12,9 @@ public class UserCookedRecipe
     public required DateTime PlannedStartDate { get; set; }
 
     [Required]
-    public required float AmountToCook { get; set; }
+    public required DateTime PlannedEndDate { get; set; }
+
+    public required float? AmountToCook { get; set; }
 
     [Required]
     public required Guid UserId { get; set; }

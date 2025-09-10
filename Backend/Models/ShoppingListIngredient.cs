@@ -9,8 +9,7 @@ public class ShoppingListIngredient
     [Key]
     public required Guid Id { get; set; }
 
-    [Required]
-    public required float IngredientAmount { get; set; }
+    public required float? IngredientAmount { get; set; }
 
     [Required]
     public required Guid ShoppingListId { get; set; }

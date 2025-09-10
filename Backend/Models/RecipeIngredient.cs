@@ -8,8 +8,7 @@ public class RecipeIngredient
     [Key]
     public required Guid Id { get; set; }
 
-    [Required]
-    public required float Amount { get; set; }
+    public required float? Amount { get; set; }
 
     [Required]
     public required Guid RecipeId { get; set; }
@@ -17,8 +16,7 @@ public class RecipeIngredient
     [Required]
     public required Guid IngredientId { get; set; }
 
-    [Required]
-    public required Guid UnitId { get; set; }
+    public required Guid? UnitId { get; set; }
 
     [ForeignKey("RecipeId")]
     public Recipe? Recipe { get; set; }

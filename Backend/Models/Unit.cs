@@ -11,8 +11,7 @@ public class Unit
     [Required]
     public required string Title { get; set; }
 
-    [Required]
-    public required Guid CreatorId { get; set; }
+    public required Guid? CreatorId { get; set; }
 
     [ForeignKey("CreatorId")]
     public User? Creator { get; set; }

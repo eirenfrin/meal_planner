@@ -13,11 +13,9 @@ public class Ingredient
 
     public required int? SoldPackageSize { get; set; }
 
-    [Required]
-    public required Guid UnitId { get; set; }
+    public required Guid? UnitId { get; set; }
 
-    [Required]
-    public required Guid CreatorId { get; set; }
+    public required Guid? CreatorId { get; set; }
 
     [ForeignKey("UnitId")]
     public Unit? Unit { get; set; }
