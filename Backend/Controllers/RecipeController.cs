@@ -18,16 +18,26 @@ public class RecipeController : ControllerBase
     }
 
     [HttpGet("{id:guid}")]
-    public ActionResult<Recipe> GetSingleRecipe(Guid id)
+    public async Task<ActionResult<Recipe>> GetSingleRecipe(Guid id)
     {
-        var recipe = _service.LoadRecipe(id);
-        return Ok(recipe);
+        try
+        {
+            var recipe = await _service.GetSingleRecipe(id);
+            return Ok(recipe);
+        }
+        catch (InvalidOperationException)
+        {
+            return NotFound();
+        }
     }
 
     [HttpGet("all")]
-    public ActionResult<IEnumerable<Recipe>> GetAllRecipes()
+    public async Task<ActionResult<IEnumerable<Recipe>>> GetAllRecipes()
     {
-        return Ok();
+        try
+        {
+            // var allRecipes = await _service
+        }
     }
 
     // api/recipes?planned=2000-01-01
@@ -43,8 +53,8 @@ public class RecipeController : ControllerBase
         return Ok();
     }
 
-    [HttpPost]
-    public ActionResult<Recipe> PlanRecipe() //takes dto
+    [HttpPost("{id:guid}")]
+    public ActionResult<Recipe> PlanRecipe(Guid id) //also takes dto
     {
         return Ok();
     }

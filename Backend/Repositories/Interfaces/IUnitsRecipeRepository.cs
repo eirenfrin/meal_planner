@@ -1,6 +1,5 @@
-
 namespace Backend.Repositories.Interfaces;
-public interface IIngredientRepository
+public interface IUnitsRecipeRepository
 {
     
 }

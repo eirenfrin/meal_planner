@@ -4,15 +4,20 @@ using Backend.Services.Interfaces;
 
 namespace Backend.Services;
 
-public class RecipeService(IRecipeRepository recipeRepository) : IRecipeService
+public class RecipeService(IRecipeRepository recipeRepository, IRecipeIngredientRepository recipeIngredientRepository) : IRecipeService
 {
     private readonly IRecipeRepository _recipeRepository = recipeRepository;
 
-    public Recipe LoadRecipe(Guid id)
+    private readonly IRecipeIngredientRepository _recipeIngredientRepository = recipeIngredientRepository;
+    public async Task<Recipe> GetSingleRecipe(Guid recipeId)
     {
-        // execute any necessary logic here
-        AdditionalPrint();
-        return _recipeRepository.GetRecipe(id);
+        var recipe = await _recipeRepository.GetSingleRecipe(recipeId);
+        var ingredients = await _recipeIngredientRepository.GetIngredientsForRecipe(recipeId);
+    }
+
+    public async Task<IEnumerable<Recipe>> getAllRecipes()
+    { 
+
     }
 
     private static void AdditionalPrint()

@@ -4,5 +4,5 @@ namespace Backend.Services.Interfaces;
 
 public interface IRecipeService
 {
-    public Recipe LoadRecipe(Guid id);
+    public Task<Recipe> GetSingleRecipe(Guid id);
 }

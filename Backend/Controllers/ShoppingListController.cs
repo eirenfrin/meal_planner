@@ -10,12 +10,12 @@ namespace Backend.Controllers;
 public class ShoppingListController : ControllerBase
 {
     private readonly ILogger<ShoppingListController> _logger;
-    private readonly IShoppingListService _service;
+    // private readonly IShoppingListService _service;
 
-    public ShoppingListController(ILogger<ShoppingListController> logger, IShoppingListService service)
+    public ShoppingListController(ILogger<ShoppingListController> logger/*, IShoppingListService service*/)
     {
         _logger = logger;
-        _service = service;
+        //_service = service;
     }
 
     [HttpGet("{id:guid}")]
@@ -36,7 +36,7 @@ public class ShoppingListController : ControllerBase
         return Ok();
     }
 
-    [HttpPost]
+    [HttpPost("generated")]
     public ActionResult<ShoppingList> GenerateShoppingListFromPlannedRecipes() //takes dto
     {
         return Ok();

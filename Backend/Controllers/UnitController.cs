@@ -8,12 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 public class UnitController : ControllerBase
 {
     private readonly ILogger<UnitController> _logger;
-    private readonly IUnitService _service;
+    //private readonly IUnitService _service;
 
-    public UnitController(ILogger<UnitController> logger, IUnitService service)
+    public UnitController(ILogger<UnitController> logger/*, IUnitService service*/)
     {
         _logger = logger;
-        _service = service;
+        //_service = service;
     }
 
     [HttpGet("{id:guid}")]

@@ -10,12 +10,12 @@ namespace Backend.Controllers;
 public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
-    private readonly IUserService _service;
+    //private readonly IUserService _service;
 
-    public UserController(ILogger<UserController> logger, IUserService service)
+    public UserController(ILogger<UserController> logger/*, IUserService service*/)
     {
         _logger = logger;
-        _service = service;
+        //_service = service;
     }
 
     [HttpGet("{id:guid}")]

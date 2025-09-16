@@ -16,7 +16,11 @@ var port = builder.Configuration["DB:Port"];
 var host = builder.Configuration["DB:Host"];
 var dbName = builder.Configuration["DB:Name"];
 
-var connectionString = $"postgresql://{username}:{password}@{host}:{port}/{dbName}";
+// var connectionString = $"postgresql://{username}:{password}@{host}:{port}/{dbName}";
+
+var connectionString = $"Host={host};Port={port};Database={dbName};Username={username};Password={password};SSL Mode=Require;Trust Server Certificate=true";
+
+Console.WriteLine(connectionString);
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 

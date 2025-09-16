@@ -1,6 +1,6 @@
 
 namespace Backend.Repositories.Interfaces;
-public interface IIngredientRepository
+public interface IUserCookedRecipeRepository
 {
-    
+
 }
