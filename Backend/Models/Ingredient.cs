@@ -23,4 +23,7 @@ public class Ingredient
     [ForeignKey("CreatorId")]
     public User? Creator { get; set; }
 
+    public ICollection<RecipeIngredient> RecipeIngredients { get; set; } = new List<RecipeIngredient>();
+
+    public ICollection<ShoppingListIngredient> shoppingListIngredients { get; set; } = new List<ShoppingListIngredient>();
 }

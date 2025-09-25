@@ -15,4 +15,10 @@ public class Unit
 
     [ForeignKey("CreatorId")]
     public User? Creator { get; set; }
+
+    public ICollection<RecipeIngredient> RecipeIngredients { get; set; } = new List<RecipeIngredient>();
+
+    public ICollection<UnitsRecipe> UnitsRecipes { get; set; } = new List<UnitsRecipe>();
+
+    public ICollection<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
 }

@@ -4,7 +4,7 @@ namespace Backend.Repositories.Interfaces;
 
 public interface IRecipeRepository
 {
-    public Task<Recipe> GetSingleRecipe(Guid recipeId);
+    public Task<Recipe> GetSingleRecipeWithAllInfo(Guid recipeId)
 
     public Task<IEnumerable<Recipe>> GetAllRecipes(Guid creatorId);
 

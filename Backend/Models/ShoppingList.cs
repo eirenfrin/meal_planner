@@ -21,4 +21,6 @@ public class ShoppingList
 
     [ForeignKey("CreatorId")]
     public User? Creator { get; set; }
+
+    public ICollection<ShoppingListIngredient> shoppingListIngredients { get; set; } = new List<ShoppingListIngredient>();
 }

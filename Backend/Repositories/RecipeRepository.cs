@@ -8,10 +8,17 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
 {
     private readonly AppDbContext _context = context;
 
-    public async Task<Recipe> GetSingleRecipe(Guid recipeId)
+    public async Task<Recipe?> GetSingleRecipeWithAllInfo(Guid recipeId)
     {
         var recipe = await _context.Recipes
-            .FirstOrDefaultAsync(r => r.Id == recipeId) ?? throw new InvalidOperationException("Recipe not found.");
+        .Include(r => r.RecipeIngredients)
+            .ThenInclude(ri => ri.Ingredient)
+        .Include(r => r.RecipeIngredients)
+            .ThenInclude(ri => ri.Unit)
+        .Include(r => r.UnitsRecipes)
+            .ThenInclude(ur => ur.Unit)
+        .FirstOrDefaultAsync(r => r.Id == recipeId);
+
         return recipe;
     }
 
@@ -19,7 +26,7 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
     {
         var allRecipes = await _context.Recipes
         .Where(r => r.CreatorId == creatorId).ToListAsync();
-        
+
         return allRecipes;
     }
 
@@ -39,11 +46,21 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
 
     }
 
-    public async Task<Recipe> DeleteRecipe(Guid recipeId)
+    public async Task DeleteRecipe(Guid recipeId)
     {
         var recipe = await GetSingleRecipe(recipeId);
         _context.Recipes.Remove(recipe);
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<Recipe> GetSingleRecipe(Guid recipeId)
+    {
+        var recipe = await _context.Recipes.FindAsync(recipeId);
+
+        if (recipe == null)
+        {
+            throw new KeyNotFoundException($"Recipe {recipeId} not found.");
+        }
 
         return recipe;
     }

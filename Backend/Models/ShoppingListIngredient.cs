@@ -10,6 +10,7 @@ public class ShoppingListIngredient
     public required Guid Id { get; set; }
 
     public required float? IngredientAmount { get; set; }
+    // maybe also unitId
 
     [Required]
     public required Guid ShoppingListId { get; set; }

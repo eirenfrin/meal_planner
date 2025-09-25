@@ -1,5 +1,8 @@
 
+using System.Threading.Tasks;
+using Backend.Dtos;
 using Backend.Models;
+using Backend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
@@ -8,42 +11,75 @@ using Microsoft.AspNetCore.Mvc;
 public class UnitController : ControllerBase
 {
     private readonly ILogger<UnitController> _logger;
-    //private readonly IUnitService _service;
+    private readonly IUnitService _service;
 
-    public UnitController(ILogger<UnitController> logger/*, IUnitService service*/)
+
+    // units will be stored in frontend id-title
+
+    public UnitController(ILogger<UnitController> logger, IUnitService service)
     {
         _logger = logger;
-        //_service = service;
-    }
-
-    [HttpGet("{id:guid}")]
-    public ActionResult<Unit> GetSingleUnit(Guid id)
-    {
-        return Ok();
+        _service = service;
     }
 
     [HttpGet("all")]
-    public ActionResult<IEnumerable<Unit>> GetAllUnits()
+    public async Task<ActionResult<IEnumerable<Unit>>> GetAllUnits([FromBody] Guid userId)
     {
-        return Ok();
+        // fetches from Unit
+        try
+        {
+            var units = await _service.GetAllUnits(userId);
+            return Ok(units);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, "Internal server error");
+        }
     }
 
     [HttpPost]
-    public ActionResult<Unit> CreateNewUnit() // takes dto
+    public async Task<ActionResult<Unit>> CreateNewUnit(NewUnitDto newUnit) // takes dto
     {
-        return Ok();
+        // modifies Unit
+        try
+        {
+            var unit = await _service.AddNewUnit(newUnit);
+            return Ok(unit);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, "Internal server error");
+        }
     }
 
     [HttpPut]
-    public ActionResult<Unit> EditUnit() // takes dto
+    public async Task<ActionResult> EditUnit(Guid unitId, NewUnitDto unitEdited) // takes dto
     {
-        return Ok();
+        // modifies Unit
+        try
+        {
+            await _service.EditUnit(unitId, unitEdited);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, "Internal server error");
+        }
     }
 
     [HttpDelete("{id:guid}")]
-    public ActionResult DeleteUnit(Guid id)
+    public async Task<ActionResult> DeleteUnit(Guid id)
     {
-        return Ok();
+        // modifies Unit
+        try
+        {
+            await _service.DeleteUserDefinedUnit(id);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, "Internal server error");
+        }
     } 
 
 }

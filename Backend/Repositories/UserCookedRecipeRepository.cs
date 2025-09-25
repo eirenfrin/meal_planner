@@ -13,7 +13,12 @@ public class UserCookedRecipeRepository(AppDbContext context) : IUserCookedRecip
         var plannedRecipes = await _context.UserCookedRecipes
             .Where(ucr => ucr.UserId == userId && ucr.PlannedStartDate == plannedForDate)
             .ToListAsync();
-            
+
         return plannedRecipes;
+    }
+
+    public async Task<UserCookedRecipe> PlanRecipe(Guid recipeId)
+    {
+        
     }
 }
