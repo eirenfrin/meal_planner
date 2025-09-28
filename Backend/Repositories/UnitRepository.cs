@@ -26,12 +26,10 @@ public class UnitRepository(AppDbContext context) : IUnitRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<Unit> AddNewUnit(Unit newUnit)
+    public async Task AddNewUnit(Unit newUnit)
     {
         _context.Units.Add(newUnit);
         await _context.SaveChangesAsync();
-
-        return newUnit;
     }
 
     public async Task EditUnit(Unit unitExisting, NewUnitDto unitEdited)

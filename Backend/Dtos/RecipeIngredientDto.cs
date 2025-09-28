@@ -1,4 +1,6 @@
 
+using Backend.Enums;
+
 namespace Backend.Dtos;
 
 public class RecipeIngredientDto

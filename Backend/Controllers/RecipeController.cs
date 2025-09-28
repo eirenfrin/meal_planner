@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Backend.Dtos;
 using Backend.Models;
 using Backend.Services.Interfaces;
@@ -76,7 +77,15 @@ public class RecipeController : ControllerBase
     {
         // add new recipe
         // modifies recipe, unitRecipe, recipeIngredients
-        return Ok();
+        try
+        {
+            var recipe = _service.AddNewRecipe(userId, newRecipe);
+            return Ok(recipe);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, "Internal server error");
+        }
     }
 
     [HttpPost("{id:guid}")]
@@ -88,16 +97,32 @@ public class RecipeController : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
-    public ActionResult<Recipe> EditRecipe(Guid id) // also takes dto
+    public async Task<ActionResult> EditRecipe(Guid id, [FromBody] NewRecipeDto recipeNew) // also takes dto
     {
         // modifies recipe, unitRecipe
-        return Ok();
+        try
+        {
+            await _service.EditRecipe(id, recipeNew);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, "Internal server error");
+        }
     }
 
     [HttpDelete("{id:guid}")]
-    public ActionResult DeleteRecipe(Guid id)
+    public async Task<ActionResult> DeleteRecipe(Guid id)
     {
         // modifies recipe, unitRecipe
-        return Ok();
+        try
+        {
+            await _service.DeleteRecipe(id);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, "Internal server error");
+        }
     }
 }

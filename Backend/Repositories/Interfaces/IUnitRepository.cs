@@ -9,7 +9,7 @@ public interface IUnitRepository
 
     public Task DeleteUnit(Unit unit);
 
-    public Task<Unit> AddNewUnit(Unit newUnit);
+    public Task AddNewUnit(Unit newUnit);
 
     public Task EditUnit(Unit unitExisting, NewUnitDto unitEdited);
 

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using Backend.Models;
 using Backend.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Backend.Enums;
 
 namespace Backend.Repositories;
 
@@ -12,19 +13,65 @@ public class RecipeIngredientRepository(AppDbContext context) : IRecipeIngredien
 {
     private readonly AppDbContext _context = context;
 
-    public async Task<IEnumerable<RecipeIngredientDto>> GetIngredientsForRecipe(Guid recipeId)
+    public async Task EditAllRecipeIngredients(Guid recipeId, IEnumerable<NewRecipeIngredientDto> editedIngredients)
     {
-        var ingredients = await _context.RecipeIngredients
-            .Where(ri => ri.RecipeId == recipeId)
-            .Select(ri => new RecipeIngredientDto
+        foreach (var ingredient in editedIngredients)
+        {
+            switch (ingredient.EditAction)
             {
-                IngredientId = ri.Ingredient!.Id,
-                Name = ri.Ingredient!.Title,
-                Amount = ri.Amount,
-                UnitId = ri.UnitId
-            })
-            .ToListAsync();
+                case EditActions.Add:
+                    await AddRecipeIngredient(recipeId, ingredient);
+                    break;
+                case EditActions.Delete:
+                    await DeleteRecipeIngredient(recipeId, ingredient.IngredientId);
+                    break;
+                case EditActions.Update:
+                    await EditRecipeIngredient(recipeId, ingredient);
+                    break;
+            }
+        }
+    }
 
-        return ingredients;
+    public async Task DeleteRecipeIngredient(Guid recipeId, Guid ingredientId)
+    {
+        var recipeIngredient = await _context.RecipeIngredients
+        .FirstOrDefaultAsync(r => r.IngredientId == ingredientId && r.RecipeId == recipeId);
+
+        if (recipeIngredient == null)
+        {
+            throw new KeyNotFoundException($"Recipe ingredient not found.");
+        }
+
+        _context.RecipeIngredients.Remove(recipeIngredient);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task EditRecipeIngredient(Guid recipeId, NewRecipeIngredientDto recipeIngredientEdited)
+    {
+        var recipeIngredientExisting = await _context.RecipeIngredients
+        .FirstOrDefaultAsync(r => r.IngredientId == recipeIngredientEdited.IngredientId && r.RecipeId == recipeId);
+
+        if (recipeIngredientExisting == null)
+        {
+            throw new KeyNotFoundException($"Ingredient {recipeIngredientEdited.IngredientId} for recipe {recipeId} not found.");
+        }
+
+        _context.Entry(recipeIngredientExisting).CurrentValues.SetValues(recipeIngredientEdited);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task AddRecipeIngredient(Guid recipeId, NewRecipeIngredientDto recipeIngredientNew)
+    {
+        var recipeIngredient = new RecipeIngredient
+        {
+            Id = Guid.NewGuid(),
+            Amount = recipeIngredientNew.IngredientAmount,
+            RecipeId = recipeId,
+            IngredientId = recipeIngredientNew.IngredientId,
+            UnitId = recipeIngredientNew.UnitId
+        };
+
+        _context.RecipeIngredients.Add(recipeIngredient);
+        await _context.SaveChangesAsync();
     }
 }

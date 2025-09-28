@@ -3,8 +3,10 @@ using Backend.Models;
 
 namespace Backend.Dtos;
 
-public class RecipeInfoDto
+public class GetRecipeInfoDto
 {
+    public required Guid Id { get; set; }
+    
     public required string Title { get; set; }
 
     public required DateTime? LastCooked { get; set; }

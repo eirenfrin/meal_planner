@@ -4,15 +4,20 @@ namespace Backend.Repositories.Interfaces;
 
 public interface IRecipeRepository
 {
-    public Task<Recipe> GetSingleRecipeWithAllInfo(Guid recipeId)
+    public Task<Recipe?> GetSingleRecipeWithAllInfo(Guid recipeId);
 
     public Task<IEnumerable<Recipe>> GetAllRecipes(Guid creatorId);
 
-    public Task<Recipe> AddRecipe(Recipe recipe);
+    public Task AddRecipe(Recipe recipe);
 
     public Task<Recipe> EditRecipe(Recipe recipeUpdated);
 
-    public Task<Recipe> DeleteRecipe(Guid recipeId);
+    public Task DeleteRecipe(Recipe recipe);
 
+    public Task<Recipe?> GetSingleRecipe(Guid recipeId);
+
+    public Task<bool> CheckRecipeAlreadyExistsByTitle(string title);
+
+    public Task<Recipe?> GetSingleRecipeForEditing(Guid recipeId);
 
 }

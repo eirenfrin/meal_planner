@@ -9,17 +9,22 @@ public class RecipeService(IRecipeRepository recipeRepository, IRecipeIngredient
 {
     private readonly IRecipeRepository _recipeRepository = recipeRepository;
 
-    public async Task<RecipeInfoDto> GetSingleRecipe(Guid recipeId)
+    private readonly IRecipeIngredientRepository _recipeIngredientRepository = recipeIngredientRepository;
+
+    private readonly IUnitsRecipeRepository _unitsRecipeRepository = unitsRecipeRepository;
+
+    public async Task<GetRecipeInfoDto> GetSingleRecipe(Guid recipeId)
     {
         var recipe = await _recipeRepository.GetSingleRecipeWithAllInfo(recipeId);
 
         if (recipe == null)
         {
-            throw new KeyNotFoundException("recipe not found.");
+            throw new KeyNotFoundException($"Recipe {recipeId} not found.");
         }
 
-        var recipeDto = new RecipeInfoDto
+        var recipeDto = new GetRecipeInfoDto
         {
+            Id = recipe.Id,
             Title = recipe.Title,
             LastCooked = recipe.LastCooked,
             Ingredients = recipe.RecipeIngredients.Select(ri => new RecipeIngredientDto
@@ -45,8 +50,14 @@ public class RecipeService(IRecipeRepository recipeRepository, IRecipeIngredient
         return recipes;
     }
 
-    public async Task<NewRecipeDto> AddNewRecipe(Guid userId, NewRecipeDto newRecipe)
+    public async Task<GetRecipeInfoDto> AddNewRecipe(Guid userId, NewRecipeDto newRecipe)
     {
+        var alreadyExists = await _recipeRepository.CheckRecipeAlreadyExistsByTitle(newRecipe.Title);
+
+        if (alreadyExists)
+        {
+            throw new InvalidOperationException($"Recipe {newRecipe.Title} already exists");
+        }
 
         var recipeId = Guid.NewGuid();
 
@@ -73,14 +84,45 @@ public class RecipeService(IRecipeRepository recipeRepository, IRecipeIngredient
             }).ToList()
         };
 
-        var recipeAdded = await _recipeRepository.AddRecipe(recipe);
+        await _recipeRepository.AddRecipe(recipe);
 
-        //return a dto with all infos about recipe
-        
+        var recipeDto = await GetSingleRecipe(recipeId);
+
+        return recipeDto;
+
     }
 
     public async Task DeleteRecipe(Guid recipeId)
     {
-        await _recipeRepository.DeleteRecipe(recipeId);
+        var recipe = await _recipeRepository.GetSingleRecipe(recipeId);
+
+        if (recipe == null)
+        {
+            throw new KeyNotFoundException($"Recipe {recipeId} not found.");
+        }
+
+        await _recipeRepository.DeleteRecipe(recipe);
     }
+
+    public async Task EditRecipe(Guid recipeId, NewRecipeDto recipeEdited)
+    {
+        var exists = await _recipeRepository.CheckRecipeAlreadyExistsByTitle(recipeEdited.Title);
+
+        if (exists)
+        {
+            throw new InvalidOperationException($"Recipe {recipeEdited.Title} already exists");
+        }
+
+        var recipeExisting = await _recipeRepository.GetSingleRecipeForEditing(recipeId);
+
+        if (recipeExisting == null)
+        {
+            throw new KeyNotFoundException($"Recipe {recipeId} not found.");
+        }
+
+        await _recipeIngredientRepository.EditAllRecipeIngredients(recipeId, recipeEdited.RecipeIngredients);
+
+        await _unitsRecipeRepository.EditAllUnitsRecipe(recipeId, recipeEdited.UnitsRecipe);
+    }
+
 }
