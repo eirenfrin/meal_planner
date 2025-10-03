@@ -21,4 +21,6 @@ public class Unit
     public ICollection<UnitsRecipe> UnitsRecipes { get; set; } = new List<UnitsRecipe>();
 
     public ICollection<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
+
+    public ICollection<ShoppingListIngredient> ShoppingListIngredients { get; set; } = new List<ShoppingListIngredient>();
 }

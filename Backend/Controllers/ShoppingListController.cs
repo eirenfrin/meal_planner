@@ -1,6 +1,8 @@
 
 
+using Backend.Dtos;
 using Backend.Models;
+using Backend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers;
@@ -10,20 +12,20 @@ namespace Backend.Controllers;
 public class ShoppingListController : ControllerBase
 {
     private readonly ILogger<ShoppingListController> _logger;
-    // private readonly IShoppingListService _service;
+    private readonly IShoppingListService _service;
 
 
     // pages: browse all existing shopping lists (actions show contents of shopping list)
 
 
-    public ShoppingListController(ILogger<ShoppingListController> logger/*, IShoppingListService service*/)
+    public ShoppingListController(ILogger<ShoppingListController> logger, IShoppingListService service)
     {
         _logger = logger;
-        //_service = service;
+        _service = service;
     }
 
     [HttpGet("{id:guid}")]
-    public ActionResult<ShoppingList> GetSingleShoppingList(Guid id)
+    public ActionResult<GetShoppingListInfoDto> GetSingleShoppingList(Guid id)
     {
         // displays title, startdate, is defaul and all ingredients and their amount to buy (required by recipe, package size, or not specified)
         // fetches from shoppingList, shoppingListIngredient, ingredient, *unit
@@ -31,7 +33,7 @@ public class ShoppingListController : ControllerBase
     }
 
     [HttpGet("all")]
-    public ActionResult<IEnumerable<ShoppingList>> GetAllShoppingLists()
+    public ActionResult<IEnumerable<ShoppingList>> GetAllShoppingLists([FromBody] Guid userId)
     {
         // displays title, startdate, isDefault
         // fetches from shoppingList
@@ -45,8 +47,8 @@ public class ShoppingListController : ControllerBase
         return Ok();
     }
 
-    [HttpPost("generated")]
-    public ActionResult<ShoppingList> GenerateShoppingListFromPlannedRecipes() //takes dto
+    [HttpPost("merge")]
+    public async Task<ActionResult<ShoppingList>> Merge(IEnumerable<Guid> mealplansIds, IEnumerable<Guid> shoppingListsIds)
     {
         // fetches from userCookedRecipe, recipe, unitsRecipe, recipeIngredient, ingredient
         // modifies shoppingList, shoppingListIngredient

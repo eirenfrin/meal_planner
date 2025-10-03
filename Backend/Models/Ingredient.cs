@@ -25,5 +25,5 @@ public class Ingredient
 
     public ICollection<RecipeIngredient> RecipeIngredients { get; set; } = new List<RecipeIngredient>();
 
-    public ICollection<ShoppingListIngredient> shoppingListIngredients { get; set; } = new List<ShoppingListIngredient>();
+    public ICollection<ShoppingListIngredient> ShoppingListIngredients { get; set; } = new List<ShoppingListIngredient>();
 }

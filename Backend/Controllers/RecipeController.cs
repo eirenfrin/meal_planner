@@ -65,11 +65,19 @@ public class RecipeController : ControllerBase
 
     // api/recipes?planned=2000-01-01
     [HttpGet]
-    public ActionResult<IEnumerable<Recipe>> GetRecipesPlannedForDate([FromBody] Guid userId, [FromQuery] DateTime? planned)
+    public async Task<ActionResult<IEnumerable<GetPlannedRecipesDto>>> GetRecipesPlannedForDate([FromBody] Guid userId, [FromQuery] DateTime planned)
     {
         // browse all planned recipes by dates
         // fetches from userCookedRecipe, Recipe, UnitRecipe, *Unit
-        return Ok();
+        try
+        {
+            var plannedRecipes = await _service.GetRecipesPlannedForDate(userId, planned);
+            return Ok(plannedRecipes);
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, "Internal server error");
+        }
     }
 
     [HttpPost]

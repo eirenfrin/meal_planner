@@ -1,3 +1,4 @@
+using Backend.Dtos;
 using Backend.Models;
 using Backend.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -8,17 +9,21 @@ public class UserCookedRecipeRepository(AppDbContext context) : IUserCookedRecip
 {
     private readonly AppDbContext _context = context;
 
+    public async Task PlanRecipe(UserCookedRecipe plannedRecipe)
+    {
+        _context.UserCookedRecipes.Add(plannedRecipe);
+        await _context.SaveChangesAsync();
+    }
+
     public async Task<IEnumerable<UserCookedRecipe>> GetRecipesPlannedForDate(Guid userId, DateTime plannedForDate)
     {
         var plannedRecipes = await _context.UserCookedRecipes
-            .Where(ucr => ucr.UserId == userId && ucr.PlannedStartDate == plannedForDate)
-            .ToListAsync();
+        .Include(ucr => ucr.Recipe)
+            .ThenInclude(r => r!.UnitsRecipes)
+                .ThenInclude(ur => ur.Unit)
+        .Where(ucr => ucr.UserId == userId && ucr.PlannedStartDate == plannedForDate)
+        .ToListAsync();
 
         return plannedRecipes;
-    }
-
-    public async Task<UserCookedRecipe> PlanRecipe(Guid recipeId)
-    {
-        
     }
 }

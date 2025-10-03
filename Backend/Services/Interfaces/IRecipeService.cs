@@ -14,4 +14,8 @@ public interface IRecipeService
     public Task DeleteRecipe(Guid recipeId);
 
     public Task EditRecipe(Guid recipeId, NewRecipeDto recipeEdited);
+
+    public Task<IEnumerable<GetPlannedRecipesDto>> GetRecipesPlannedForDate(Guid userId, DateTime plannedForDate);
+
+    public Task PlanToCookRecipe(Guid userId, PlanRecipeDto plannedRecipe);
 }

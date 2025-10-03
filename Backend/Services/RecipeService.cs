@@ -5,13 +5,15 @@ using Backend.Services.Interfaces;
 
 namespace Backend.Services;
 
-public class RecipeService(IRecipeRepository recipeRepository, IRecipeIngredientRepository recipeIngredientRepository, IUnitsRecipeRepository unitsRecipeRepository) : IRecipeService
+public class RecipeService(IRecipeRepository recipeRepository, IRecipeIngredientRepository recipeIngredientRepository, IUnitsRecipeRepository unitsRecipeRepository, IUserCookedRecipeRepository userCookedRecipeRepository) : IRecipeService
 {
     private readonly IRecipeRepository _recipeRepository = recipeRepository;
 
     private readonly IRecipeIngredientRepository _recipeIngredientRepository = recipeIngredientRepository;
 
     private readonly IUnitsRecipeRepository _unitsRecipeRepository = unitsRecipeRepository;
+
+    private readonly IUserCookedRecipeRepository _userCookedRecipeRepository = userCookedRecipeRepository;
 
     public async Task<GetRecipeInfoDto> GetSingleRecipe(Guid recipeId)
     {
@@ -123,6 +125,42 @@ public class RecipeService(IRecipeRepository recipeRepository, IRecipeIngredient
         await _recipeIngredientRepository.EditAllRecipeIngredients(recipeId, recipeEdited.RecipeIngredients);
 
         await _unitsRecipeRepository.EditAllUnitsRecipe(recipeId, recipeEdited.UnitsRecipe);
+    }
+
+    public async Task PlanToCookRecipe(Guid userId, PlanRecipeDto plannedRecipe)
+    {
+        var plan = new UserCookedRecipe
+        {
+            Id = Guid.NewGuid(),
+            PlannedStartDate = plannedRecipe.PlannedStartDate,
+            PlannedEndDate = plannedRecipe.PlannedEndDate,
+            AmountToCook = plannedRecipe.AmountToCook,
+            UserId = userId,
+            RecipeId = plannedRecipe.RecipeId
+        };
+
+        await _userCookedRecipeRepository.PlanRecipe(plan);
+    }
+
+    public async Task<IEnumerable<GetPlannedRecipesDto>> GetRecipesPlannedForDate(Guid userId, DateTime plannedForDate)
+    {
+        var recipes = await _userCookedRecipeRepository.GetRecipesPlannedForDate(userId, plannedForDate);
+
+        var plannedRecipesDtos = recipes.Select(ucr => new GetPlannedRecipesDto
+        {
+            AmountToCook = ucr.AmountToCook,
+            Title = ucr.Recipe!.Title,
+            PlannedStartDate = ucr.PlannedStartDate,
+            PlannedEndDate = ucr.PlannedEndDate,
+            LastCooked = ucr.Recipe.LastCooked,
+            RecipeAmount = ucr.Recipe.UnitsRecipes.Select(ur => new UnitsRecipeDto
+            {
+                UnitRecipeTitle = ur.Unit!.Title,
+                RecipeAmount = ur.RecipeAmount
+            })
+        });
+
+        return plannedRecipesDtos;
     }
 
 }

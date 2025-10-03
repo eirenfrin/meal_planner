@@ -10,17 +10,21 @@ public class ShoppingListIngredient
     public required Guid Id { get; set; }
 
     public required float? IngredientAmount { get; set; }
-    // maybe also unitId
+
+    public required Guid? UnitId { get; set; }
 
     [Required]
     public required Guid ShoppingListId { get; set; }
 
     [Required]
     public required Guid IngredientId { get; set; }
-    
+
     [ForeignKey("ShoppingListId")]
     public ShoppingList? ShoppingList { get; set; }
 
     [ForeignKey("IngredientId")]
     public Ingredient? Ingredient { get; set; }
+
+    [ForeignKey("UnitId")]
+    public Unit? Unit { get; set; }
 }
