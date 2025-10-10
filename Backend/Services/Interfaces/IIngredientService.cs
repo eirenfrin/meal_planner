@@ -5,7 +5,7 @@ namespace Backend.Services.Interfaces;
 
 public interface IIngredientService
 {
-    public Task<IEnumerable<Ingredient>> GetAllIngredients(Guid userId);
+    public Task<IEnumerable<GetIngredientDto>> GetAllIngredients(Guid userId);
 
     public Task<GetIngredientDto> AddNewIngredient(NewIngredientDto ingredientNew);
 

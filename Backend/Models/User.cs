@@ -24,6 +24,8 @@ public class User
     public ICollection<Unit> Units { get; set; } = new List<Unit>();
 
     public ICollection<ShoppingList> ShoppingLists { get; set; } = new List<ShoppingList>();
-    
+
     public ICollection<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
+
+    public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
 }

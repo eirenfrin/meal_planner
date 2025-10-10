@@ -1,6 +1,6 @@
-
-
+using Backend.Dtos;
 using Backend.Models;
+using Backend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers;
@@ -10,43 +10,126 @@ namespace Backend.Controllers;
 public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
-    //private readonly IUserService _service;
+    private readonly IUserService _service;
 
-    public UserController(ILogger<UserController> logger/*, IUserService service*/)
+    private readonly string REFRESH_TOKEN = "refreshToken";
+
+    public UserController(ILogger<UserController> logger, IUserService service)
     {
         _logger = logger;
-        //_service = service;
+        _service = service;
     }
 
-    [HttpGet("{id:guid}")]
-    public ActionResult<User> GetSpecificUser(Guid id)
+    [HttpPost("auth/register")]
+    public async Task<ActionResult> RegisterUser([FromBody] AuthenticationDto register)
     {
-        return Ok();
+        try
+        {
+            await _service.RegisterUser(register);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, "Internal server error");
+        }
     }
 
-    [HttpPost]
-    public ActionResult<User> CreateUserAccount() // takes dto
+    [HttpPost("auth/login")]
+    public async Task<ActionResult<AccessTokenDto>> LoginUser([FromBody] AuthenticationDto login)
     {
-        return Ok();
+        try
+        {
+            var (refreshToken, accessToken) = await _service.LoginUser(login);
+
+            SetRefreshTokenCookie(refreshToken);
+
+            return Ok(accessToken);
+        }
+        catch (Exception e)
+        {
+            return Unauthorized("Incorrect credentials");
+        }
     }
 
-    [HttpPut("{id:guid}")]
-    public ActionResult<User> EditUserSettings(Guid id) //also takes dto
+    [HttpPost("logout")]
+    public async Task<ActionResult> LogoutUser()
     {
-        return Ok();
+        try
+        {
+            var refreshTokenCookie = GetRefreshTokenCookie();
+            await _service.LogoutUser(refreshTokenCookie);
+
+            DeleteRefreshTokenCookie();
+
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, "Internal server error");
+        }
     }
 
-    [HttpPut("reset/{id:guid}")]
-    public ActionResult<User> ResetUserPassword(Guid id) // also takes dto
+    [HttpPost("auth/refresh")]
+    public async Task<ActionResult<AccessTokenDto>> RefreshTokens()
     {
-        return Ok();
+        try
+        {
+            var oldRefreshTokenCookie = GetRefreshTokenCookie();
+            var (refreshToken, accessToken) = await _service.RefreshTokens(oldRefreshTokenCookie);
+
+            SetRefreshTokenCookie(refreshToken);
+
+            return Ok(accessToken);
+        }
+        catch (Exception e)
+        {
+            return Unauthorized("Missing refresh token");
+        }
     }
 
-    [HttpDelete("{id:guid}")]
-    public ActionResult DeleteUserAccount(Guid id)
+    // [HttpPut("{id:guid}")]
+    // public ActionResult<User> EditUserSettings(Guid id) //also takes dto
+    // {
+    //     return Ok();
+    // }
+
+    // [HttpPut("reset/{id:guid}")]
+    // public ActionResult<User> ResetUserPassword(Guid id) // also takes dto
+    // {
+    //     return Ok();
+    // }
+
+    // [HttpDelete("{id:guid}")]
+    // public ActionResult DeleteUserAccount(Guid id)
+    // {
+    //     return Ok();
+    // }
+
+    private void SetRefreshTokenCookie(RefreshToken refreshToken)
     {
-        return Ok();
+        Response.Cookies.Append(REFRESH_TOKEN, refreshToken.Token, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.None,
+            Expires = refreshToken.ExpiresAt
+        });
     }
 
+    private string GetRefreshTokenCookie()
+    {
+        var cookie = Request.Cookies[REFRESH_TOKEN];
 
+        if (cookie == null)
+        {
+            throw new KeyNotFoundException("Required cookie not found");
+        }
+
+        return cookie;
+    }
+
+    private void DeleteRefreshTokenCookie()
+    {
+        Response.Cookies.Delete(REFRESH_TOKEN);
+    }
 }

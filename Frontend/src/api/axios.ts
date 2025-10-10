@@ -1,32 +1,57 @@
-import axios from "axios";
+import axios, {
+  AxiosError,
+  type AxiosInstance,
+  type AxiosResponse,
+  type InternalAxiosRequestConfig,
+} from "axios";
+import useAuthStore from "../stores/authenticationStore";
 
-const api = axios.create({
-  baseURL: "https://api.example.com",
+const api: AxiosInstance = axios.create({
+  baseURL: "http://localhost:5133",
   timeout: 10000,
-  headers: {
-    "Content-Type": "application/json",
-  },
+  withCredentials: true,
 });
 
-// interceptors - will be used later
+// Interceptor to always attach the access token to outgoing requests
+// api.interceptors.request.use((config) => {
+//   const authStore = useAuthStore();
 
-// api.interceptors.request.use(
-//   (config) => {
-//     const token = localStorage.getItem("token");
-//     if (token) {
-//       config.headers.Authorization = `Bearer ${token}`;
-//     }
-//     return config;
-//   },
-//   (error) => Promise.reject(error)
-// );
+//   if (authStore.authState.accessToken) {
+//     config.headers.Authorization = `Bearer ${authStore.authState.accessToken}`;
+//   }
+//   return config;
+// });
 
+// Interceptor to handle access token refresh
 // api.interceptors.response.use(
-//   (response) => response,
-//   (error) => {
-//     if (error.response?.status === 401) {
-//       // Example: redirect to login
-//       console.warn("Unauthorized, redirecting...");
+//   (response: AxiosResponse) => response,
+//   async (error: AxiosError) => {
+//     const authStore = useAuthStore();
+//     const originalRequest = error.config as InternalAxiosRequestConfig & {
+//       _retry?: boolean;
+//     };
+
+//     if (
+//       originalRequest &&
+//       error.response?.status === 401 &&
+//       !originalRequest._retry &&
+//       !originalRequest.url?.includes("/auth/")
+//     ) {
+//       originalRequest._retry = true;
+
+//       try {
+//         const response = await api.post<{ accessToken: string }>(
+//           "auth/refresh"
+//         );
+
+//         authStore.setAccessToken(response.data.accessToken);
+
+//         originalRequest.headers.Authorization = `Bearer ${authStore.authState.accessToken}`;
+//         return api(originalRequest);
+//       } catch (e) {
+//         authStore.logout();
+//         return Promise.reject(e);
+//       }
 //     }
 //     return Promise.reject(error);
 //   }

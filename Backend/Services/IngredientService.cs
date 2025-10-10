@@ -9,11 +9,20 @@ public class IngredientService(IIngredientRepository ingredientRepository) : IIn
 {
     private readonly IIngredientRepository _ingredientRepository = ingredientRepository;
 
-    public async Task<IEnumerable<Ingredient>> GetAllIngredients(Guid userId)
+    public async Task<IEnumerable<GetIngredientDto>> GetAllIngredients(Guid userId)
     {
         var allExistingIngredients = await _ingredientRepository.GetAllExistingIngredients(userId);
 
-        return allExistingIngredients;
+        var ingredientDtos = allExistingIngredients.Select(i => new GetIngredientDto
+        {
+            Id = i.Id,
+            Title = i.Title,
+            UnitId = i.UnitId,
+            SoldPackageSize = i.SoldPackageSize,
+            CreatorId = i.CreatorId
+        });
+
+        return ingredientDtos;
     }
 
     public async Task<GetIngredientDto> AddNewIngredient(NewIngredientDto ingredientNew)

@@ -27,7 +27,7 @@ public class IngredientController : ControllerBase
     // Page: browse all ingredients
 
     [HttpGet("all")]
-    public async Task<ActionResult<IEnumerable<Ingredient>>> GetAllIngredients(Guid userId)
+    public async Task<ActionResult<IEnumerable<GetIngredientDto>>> GetAllIngredients(Guid userId)
     {
         // list all possible ingredients
         // fetch info from ingredient and unit in which its sold
@@ -43,7 +43,7 @@ public class IngredientController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Ingredient>> AddNewIngredient([FromBody] NewIngredientDto newIngredient) //takes dto
+    public async Task<ActionResult<GetIngredientDto>> AddNewIngredient([FromBody] NewIngredientDto newIngredient) //takes dto
     {
         // modifies ingredient
         try

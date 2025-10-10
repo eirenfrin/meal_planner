@@ -10,11 +10,18 @@ public class UnitService(IUnitRepository unitRepository) : IUnitService
 {
     private readonly IUnitRepository _unitRepository = unitRepository;
 
-    public async Task<IEnumerable<Unit>> GetAllUnits(Guid userId)
+    public async Task<IEnumerable<GetUnitDto>> GetAllUnits(Guid userId)
     {
         var units = await _unitRepository.GetAllUnits(userId);
 
-        return units;
+        var unitDtos = units.Select(u => new GetUnitDto
+        {
+            Id = u.Id,
+            Title = u.Title,
+            CreatorId = u.CreatorId
+        });
+
+        return unitDtos;
     }
 
     public async Task EditUnit(Guid unitId, NewUnitDto unitEdited)

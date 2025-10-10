@@ -10,7 +10,7 @@ public interface IRecipeRepository
 
     public Task AddRecipe(Recipe recipe);
 
-    public Task<Recipe> EditRecipe(Recipe recipeUpdated);
+    public Task EditRecipe(Recipe recipeUpdated, Recipe recipeExisting);
 
     public Task DeleteRecipe(Recipe recipe);
 

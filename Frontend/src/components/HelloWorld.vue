@@ -5,6 +5,8 @@
     <button type="button" @click="appStore.increment()">
       Message: {{ appStore.getFormattedCount }}
     </button>
+    <button type="button" @click="register">register</button>
+    <button type="button" @click="login">login</button>
     <p v-if="width > 1000">
       Edit
       <code>components/HelloWorld.vue</code> to test HMR
@@ -36,6 +38,9 @@
 </template>
 
 <script setup lang="ts">
+import api from "../api/axios";
+import userService from "../api/services/userService";
+import type { AuthRequest } from "../domain/models/authRequest";
 import useAppStore from "../stores/applicationStore";
 import { useWindowSize, useBattery, useMouse } from "@vueuse/core";
 
@@ -45,6 +50,24 @@ const appStore = useAppStore();
 let { width, height } = useWindowSize();
 let { charging, level } = useBattery();
 let mouseEvents = useMouse();
+
+let auth: AuthRequest = {
+  username: "Name",
+  password: "password123",
+};
+
+async function register() {
+  await userService.registerUser(auth);
+}
+
+async function login() {
+  let response = await api.post<{ accessToken: string }>(
+    "api/user/auth/login",
+    auth
+  );
+
+  console.log(JSON.stringify(response.data));
+}
 </script>
 
 <style scoped>

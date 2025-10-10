@@ -31,13 +31,13 @@ public class RecipeService(IRecipeRepository recipeRepository, IRecipeIngredient
             LastCooked = recipe.LastCooked,
             Ingredients = recipe.RecipeIngredients.Select(ri => new RecipeIngredientDto
             {
-                IngredientTitle = ri.Ingredient.Title,
+                IngredientTitle = ri.Ingredient!.Title,
                 Amount = ri.Amount,
-                UnitTitle = ri.Unit.Title
+                UnitTitle = ri.Unit!.Title
             }),
             RecipeAmount = recipe.UnitsRecipes.Select(ur => new UnitsRecipeDto
             {
-                UnitRecipeTitle = ur.Unit.Title,
+                UnitRecipeTitle = ur.Unit!.Title,
                 RecipeAmount = ur.RecipeAmount
             })
         };
@@ -45,11 +45,18 @@ public class RecipeService(IRecipeRepository recipeRepository, IRecipeIngredient
         return recipeDto;
     }
 
-    public async Task<IEnumerable<Recipe>> GetAllRecipes(Guid userId)
+    public async Task<IEnumerable<GetRecipeBasicInfoDto>> GetAllRecipes(Guid userId)
     {
         var recipes = await _recipeRepository.GetAllRecipes(userId);
 
-        return recipes;
+        var recipesDtos = recipes.Select(r => new GetRecipeBasicInfoDto
+        {
+            Id = r.Id,
+            Title = r.Title,
+            LastCooked = r.LastCooked
+        });
+
+        return recipesDtos;
     }
 
     public async Task<GetRecipeInfoDto> AddNewRecipe(Guid userId, NewRecipeDto newRecipe)
@@ -121,6 +128,16 @@ public class RecipeService(IRecipeRepository recipeRepository, IRecipeIngredient
         {
             throw new KeyNotFoundException($"Recipe {recipeId} not found.");
         }
+
+        var recipeUpdated = new Recipe
+        {
+            Id = recipeId,
+            Title = recipeEdited.Title,
+            LastCooked = recipeExisting.LastCooked,
+            CreatorId = recipeEdited.CreatorId,
+        };
+
+        await _recipeRepository.EditRecipe(recipeUpdated, recipeExisting);
 
         await _recipeIngredientRepository.EditAllRecipeIngredients(recipeId, recipeEdited.RecipeIngredients);
 

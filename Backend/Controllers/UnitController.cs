@@ -23,7 +23,7 @@ public class UnitController : ControllerBase
     }
 
     [HttpGet("all")]
-    public async Task<ActionResult<IEnumerable<Unit>>> GetAllUnits([FromBody] Guid userId)
+    public async Task<ActionResult<IEnumerable<GetUnitDto>>> GetAllUnits([FromBody] Guid userId)
     {
         // fetches from Unit
         try
@@ -38,7 +38,7 @@ public class UnitController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Unit>> CreateNewUnit(NewUnitDto newUnit) // takes dto
+    public async Task<ActionResult<GetUnitDto>> CreateNewUnit(NewUnitDto newUnit) // takes dto
     {
         // modifies Unit
         try

@@ -32,7 +32,7 @@ public class RecipeController : ControllerBase
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<Recipe>> GetSingleRecipe(Guid id)
+    public async Task<ActionResult<GetRecipeInfoDto>> GetSingleRecipe(Guid id)
     {
         // all info about recipe
         // fetches from recipe, recipeIngredient, unitsRecipe, *units
@@ -48,7 +48,7 @@ public class RecipeController : ControllerBase
     }
 
     [HttpGet("all")]
-    public async Task<ActionResult<IEnumerable<Recipe>>> GetAllRecipes([FromBody] Guid userId)
+    public async Task<ActionResult<IEnumerable<GetRecipeBasicInfoDto>>> GetAllRecipes([FromBody] Guid userId)
     {
         // all recipe titles to browse/select to planned
         // fetches from recipe
@@ -81,7 +81,7 @@ public class RecipeController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult<Recipe> AddRecipe(Guid userId, NewRecipeDto newRecipe) //takes dto
+    public ActionResult<GetRecipeInfoDto> AddRecipe(Guid userId, NewRecipeDto newRecipe) //takes dto
     {
         // add new recipe
         // modifies recipe, unitRecipe, recipeIngredients

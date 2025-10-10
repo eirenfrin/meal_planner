@@ -46,13 +46,10 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<Recipe> EditRecipe(Recipe recipeUpdated)
+    public async Task EditRecipe(Recipe recipeUpdated, Recipe recipeExisting)
     {
-        var recipeExisting = await GetSingleRecipe(recipeUpdated.Id);
         _context.Entry(recipeExisting).CurrentValues.SetValues(recipeUpdated);
         await _context.SaveChangesAsync();
-        return recipeExisting;
-
     }
 
     public async Task DeleteRecipe(Recipe recipe)

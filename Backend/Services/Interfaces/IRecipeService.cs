@@ -7,7 +7,7 @@ public interface IRecipeService
 {
     public Task<GetRecipeInfoDto> GetSingleRecipe(Guid recipeId);
 
-    public Task<IEnumerable<Recipe>> GetAllRecipes(Guid userId);
+    public Task<IEnumerable<GetRecipeBasicInfoDto>> GetAllRecipes(Guid userId);
 
     public Task<GetRecipeInfoDto> AddNewRecipe(Guid userId, NewRecipeDto newRecipe);
 

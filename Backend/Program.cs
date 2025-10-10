@@ -1,4 +1,5 @@
 using Backend;
+using Backend.Seeders;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,15 +17,19 @@ var port = builder.Configuration["DB:Port"];
 var host = builder.Configuration["DB:Host"];
 var dbName = builder.Configuration["DB:Name"];
 
-// var connectionString = $"postgresql://{username}:{password}@{host}:{port}/{dbName}";
+var issuer = builder.Configuration["Jwt:Issuer"]!;
+var audience = builder.Configuration["Jwt:Audience"]!;
+var signingKey = builder.Configuration["Jwt:SigningKey"]!;
 
 var connectionString = $"Host={host};Port={port};Database={dbName};Username={username};Password={password};SSL Mode=Require;Trust Server Certificate=true";
-
-Console.WriteLine(connectionString);
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 
 builder.Services.AddExtensions();
+
+builder.Services.AddJwtAuthentication(issuer, audience, signingKey);
+
+builder.Services.AddCorsForFrontend();
 
 var app = builder.Build();
 
@@ -33,9 +38,20 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    // retrieve the services instance from the built app
+    using var scope = app.Services.CreateScope();
+    // get the db context instance from the services
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    // execute seeders
+    context.SeedDBWithTestData();
 }
 
+app.UseCors("CorsPolicy");
+
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
