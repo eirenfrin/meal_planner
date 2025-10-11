@@ -15,5 +15,5 @@ public interface IIngredientRepository
 
     public Task<Ingredient?> GetSingleIngredient(Guid ingredientId);
 
-    public Task<bool> CheckIngredientExistsByName(string ingredientTitle);
+    public Task<bool> CheckIngredientExistsByName(Guid creatorId, string ingredientTitle);
 }

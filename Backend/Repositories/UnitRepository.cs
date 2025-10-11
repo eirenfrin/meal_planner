@@ -45,10 +45,10 @@ public class UnitRepository(AppDbContext context) : IUnitRepository
         return unit;
     }
 
-    public async Task<bool> CheckUnitExistsByName(string unitTitle)
+    public async Task<bool> CheckUnitExistsByName(Guid creatorId, string unitTitle)
     {
         var exists = await _context.Units
-        .AnyAsync(u => u.Title == unitTitle);
+        .AnyAsync(u => u.Title == unitTitle && (u.CreatorId == creatorId || u.CreatorId == null));
 
         return exists;
     }

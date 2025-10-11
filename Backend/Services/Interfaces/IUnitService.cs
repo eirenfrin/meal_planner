@@ -9,7 +9,7 @@ public interface IUnitService
 
     public Task EditUnit(Guid unitId, NewUnitDto unitEdited);
 
-    public Task<GetUnitDto> AddNewUnit(NewUnitDto unitNew);
+    public Task<GetUnitDto> AddNewUnit(Guid creatorId, NewUnitDto unitNew);
 
     public Task DeleteUserDefinedUnit(Guid unitId);
 }

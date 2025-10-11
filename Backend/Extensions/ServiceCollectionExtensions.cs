@@ -6,7 +6,7 @@ using Backend.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Backend;
+namespace Backend.Extensions;
 
 public static class ServiceCollectionExtensions
 {
@@ -74,6 +74,7 @@ public static class ServiceCollectionExtensions
                 ValidateIssuerSigningKey = true,
                 ValidIssuer = issuer,
                 ValidAudience = audience,
+                ClockSkew = TimeSpan.Zero,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey))
             };
         });

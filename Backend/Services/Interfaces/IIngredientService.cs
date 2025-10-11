@@ -7,7 +7,7 @@ public interface IIngredientService
 {
     public Task<IEnumerable<GetIngredientDto>> GetAllIngredients(Guid userId);
 
-    public Task<GetIngredientDto> AddNewIngredient(NewIngredientDto ingredientNew);
+    public Task<GetIngredientDto> AddNewIngredient(Guid creatorId, NewIngredientDto ingredientNew);
 
     public Task EditIngredient(Guid ingredientId, EditIngredientDto ingredientUpdated);
 

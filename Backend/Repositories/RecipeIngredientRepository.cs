@@ -20,7 +20,7 @@ public class RecipeIngredientRepository(AppDbContext context) : IRecipeIngredien
             switch (ingredient.EditAction)
             {
                 case EditActions.Add:
-                    await AddRecipeIngredient(recipeId, ingredient);
+                    AddRecipeIngredient(recipeId, ingredient);
                     break;
                 case EditActions.Delete:
                     await DeleteRecipeIngredient(recipeId, ingredient.IngredientId);
@@ -30,9 +30,11 @@ public class RecipeIngredientRepository(AppDbContext context) : IRecipeIngredien
                     break;
             }
         }
+
+        await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteRecipeIngredient(Guid recipeId, Guid ingredientId)
+    private async Task DeleteRecipeIngredient(Guid recipeId, Guid ingredientId)
     {
         var recipeIngredient = await _context.RecipeIngredients
         .FirstOrDefaultAsync(r => r.IngredientId == ingredientId && r.RecipeId == recipeId);
@@ -43,10 +45,9 @@ public class RecipeIngredientRepository(AppDbContext context) : IRecipeIngredien
         }
 
         _context.RecipeIngredients.Remove(recipeIngredient);
-        await _context.SaveChangesAsync();
     }
 
-    public async Task EditRecipeIngredient(Guid recipeId, NewRecipeIngredientDto recipeIngredientEdited)
+    private async Task EditRecipeIngredient(Guid recipeId, NewRecipeIngredientDto recipeIngredientEdited)
     {
         var recipeIngredientExisting = await _context.RecipeIngredients
         .FirstOrDefaultAsync(r => r.IngredientId == recipeIngredientEdited.IngredientId && r.RecipeId == recipeId);
@@ -57,10 +58,9 @@ public class RecipeIngredientRepository(AppDbContext context) : IRecipeIngredien
         }
 
         _context.Entry(recipeIngredientExisting).CurrentValues.SetValues(recipeIngredientEdited);
-        await _context.SaveChangesAsync();
     }
 
-    public async Task AddRecipeIngredient(Guid recipeId, NewRecipeIngredientDto recipeIngredientNew)
+    private void AddRecipeIngredient(Guid recipeId, NewRecipeIngredientDto recipeIngredientNew)
     {
         var recipeIngredient = new RecipeIngredient
         {
@@ -72,6 +72,5 @@ public class RecipeIngredientRepository(AppDbContext context) : IRecipeIngredien
         };
 
         _context.RecipeIngredients.Add(recipeIngredient);
-        await _context.SaveChangesAsync();
     }
 }

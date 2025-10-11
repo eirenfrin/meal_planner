@@ -25,9 +25,9 @@ public class IngredientService(IIngredientRepository ingredientRepository) : IIn
         return ingredientDtos;
     }
 
-    public async Task<GetIngredientDto> AddNewIngredient(NewIngredientDto ingredientNew)
+    public async Task<GetIngredientDto> AddNewIngredient(Guid creatorId, NewIngredientDto ingredientNew)
     {
-        var alreadyExists = await _ingredientRepository.CheckIngredientExistsByName(ingredientNew.Title);
+        var alreadyExists = await _ingredientRepository.CheckIngredientExistsByName(creatorId, ingredientNew.Title);
 
         if (alreadyExists)
         {
@@ -40,9 +40,9 @@ public class IngredientService(IIngredientRepository ingredientRepository) : IIn
             Title = ingredientNew.Title,
             SoldPackageSize = ingredientNew.SoldPackageSize,
             UnitId = ingredientNew.UnitId,
-            CreatorId = ingredientNew.CreatorId
+            CreatorId = creatorId
         };
-    
+
         await _ingredientRepository.AddNewIngredient(ingredient);
 
         var ingredientDto = new GetIngredientDto

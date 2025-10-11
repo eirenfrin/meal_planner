@@ -9,11 +9,11 @@ public interface IRecipeService
 
     public Task<IEnumerable<GetRecipeBasicInfoDto>> GetAllRecipes(Guid userId);
 
-    public Task<GetRecipeInfoDto> AddNewRecipe(Guid userId, NewRecipeDto newRecipe);
+    public Task<GetRecipeInfoDto> AddNewRecipe(Guid creatorId, NewRecipeDto newRecipe);
 
     public Task DeleteRecipe(Guid recipeId);
 
-    public Task EditRecipe(Guid recipeId, NewRecipeDto recipeEdited);
+    public Task EditRecipe(Guid creatorId, Guid recipeId, NewRecipeDto recipeEdited);
 
     public Task<IEnumerable<GetPlannedRecipesDto>> GetRecipesPlannedForDate(Guid userId, DateTime plannedForDate);
 

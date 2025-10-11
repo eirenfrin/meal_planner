@@ -49,10 +49,10 @@ public class IngredientRepository(AppDbContext context) : IIngredientRepository
         return ingredient;
     }
 
-    public async Task<bool> CheckIngredientExistsByName(string ingredientTitle)
+    public async Task<bool> CheckIngredientExistsByName(Guid creatorId, string ingredientTitle)
     {
         var exists = await _context.Ingredients
-        .AnyAsync(i => i.Title == ingredientTitle);
+        .AnyAsync(i => i.Title == ingredientTitle && i.CreatorId == creatorId);
 
         return exists;
     }

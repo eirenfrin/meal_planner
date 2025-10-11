@@ -1,13 +1,10 @@
 
-
-using System.ComponentModel;
-using System.Threading.Tasks;
 using Backend.Dtos;
-using Backend.Models;
-using Backend.Services;
+using Backend.Extensions;
 using Backend.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
+using Microsoft.Extensions.Configuration.UserSecrets;
 
 namespace Backend.Controllers;
 
@@ -26,64 +23,43 @@ public class IngredientController : ControllerBase
 
     // Page: browse all ingredients
 
+    [Authorize]
     [HttpGet("all")]
-    public async Task<ActionResult<IEnumerable<GetIngredientDto>>> GetAllIngredients(Guid userId)
+    public async Task<ActionResult<IEnumerable<GetIngredientDto>>> GetAllIngredients()
     {
         // list all possible ingredients
         // fetch info from ingredient and unit in which its sold
-        try
-        {
-            var allIngredients = await _service.GetAllIngredients(userId);
-            return Ok(allIngredients);
-        }
-        catch (Exception e)
-        {
-            return StatusCode(500, "Internal server error");
-        }
+        var userId = User.GetUserId();
+        var allIngredients = await _service.GetAllIngredients(userId);
+
+        return Ok(allIngredients);
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<GetIngredientDto>> AddNewIngredient([FromBody] NewIngredientDto newIngredient) //takes dto
     {
         // modifies ingredient
-        try
-        {
-            var ingredient = await _service.AddNewIngredient(newIngredient);
-            return Ok(ingredient);
-        }
-        catch (Exception e)
-        {
-            return StatusCode(500, "Internal server error");
-        }
+        var userId = User.GetUserId();
+        var ingredient = await _service.AddNewIngredient(userId, newIngredient);
+        return Ok(ingredient);
     }
 
+    [Authorize]
     [HttpPut("{id:guid}")]
     public async Task<ActionResult> EditSpecificIngredient(Guid id, [FromBody] EditIngredientDto ingredientModified)
     {
         // modifies ingredient
-        try
-        {
-            await _service.EditIngredient(id, ingredientModified);
-            return Ok();
-        }
-        catch (Exception e)
-        {
-            return StatusCode(500, "Internal server error");
-        }
+        await _service.EditIngredient(id, ingredientModified);
+        return Ok();
     }
 
+    [Authorize]
     [HttpDelete("{id:guid}")]
     public async Task<ActionResult> DeleteSpecificIngredient(Guid id)
     {
         // modifies ingredient
-        try
-        {
-            await _service.DeleteIngredient(id);
-            return Ok();
-        }
-        catch (Exception e)
-        {
-            return StatusCode(500, "Internal server error");
-        }
+        await _service.DeleteIngredient(id);
+        return Ok();
     }
- }
+}

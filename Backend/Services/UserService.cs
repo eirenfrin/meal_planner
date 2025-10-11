@@ -16,7 +16,7 @@ public class UserService(IUserRepository userRepository, ITokenService tokenServ
 
         if (usernameAlreadyExists)
         {
-            throw new InvalidOperationException($"User {register.Username} already exists");
+            throw new InvalidOperationException($"User with name {register.Username} already exists");
         }
 
         var user = new User
@@ -36,7 +36,7 @@ public class UserService(IUserRepository userRepository, ITokenService tokenServ
 
         if (user == null || login.Password != user.Password) // TODO hash incoming password and compare with hash in db
         {
-            throw new InvalidOperationException($"Invalid email or password");
+            throw new UnauthorizedAccessException($"Invalid email or password");
         }
 
         var tokens = await _tokenService.GenerateNewTokens(user);

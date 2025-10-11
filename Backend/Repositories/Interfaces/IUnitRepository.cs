@@ -15,6 +15,6 @@ public interface IUnitRepository
 
     public Task<Unit?> GetSingleUnit(Guid unitId);
 
-    public Task<bool> CheckUnitExistsByName(string unitTitle);
+    public Task<bool> CheckUnitExistsByName(Guid creatorId, string unitTitle);
 
 }

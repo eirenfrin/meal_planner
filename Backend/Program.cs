@@ -1,6 +1,8 @@
 using Backend;
 using Backend.Seeders;
+using Backend.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Backend.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,14 +49,11 @@ if (app.Environment.IsDevelopment())
     context.SeedDBWithTestData();
 }
 
-app.UseCors("CorsPolicy");
-
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
-
+app.UseCors("CorsPolicy");
 app.UseAuthentication();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 await app.RunAsync();

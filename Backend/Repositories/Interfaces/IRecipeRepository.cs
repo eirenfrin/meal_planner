@@ -16,7 +16,7 @@ public interface IRecipeRepository
 
     public Task<Recipe?> GetSingleRecipe(Guid recipeId);
 
-    public Task<bool> CheckRecipeAlreadyExistsByTitle(string title);
+    public Task<bool> CheckRecipeAlreadyExistsByTitle(Guid creatorId, string title);
 
     public Task<Recipe?> GetSingleRecipeForEditing(Guid recipeId);
 

@@ -5,8 +5,10 @@
     <button type="button" @click="appStore.increment()">
       Message: {{ appStore.getFormattedCount }}
     </button>
-    <button type="button" @click="register">register</button>
+    <button type="button" @click="loadUnits">register</button>
     <button type="button" @click="login">login</button>
+    <p>Access token: {{ authStore.state.accessToken }}</p>
+    <p>User: {{ JSON.stringify(authStore.state.currentUser) }}</p>
     <p v-if="width > 1000">
       Edit
       <code>components/HelloWorld.vue</code> to test HMR
@@ -38,15 +40,17 @@
 </template>
 
 <script setup lang="ts">
-import api from "../api/axios";
-import userService from "../api/services/userService";
 import type { AuthRequest } from "../domain/models/authRequest";
 import useAppStore from "../stores/applicationStore";
 import { useWindowSize, useBattery, useMouse } from "@vueuse/core";
+import useAuthStore from "../stores/authenticationStore";
+import api from "../api/axios";
 
 defineProps<{ msg: string }>();
 
 const appStore = useAppStore();
+const authStore = useAuthStore();
+
 let { width, height } = useWindowSize();
 let { charging, level } = useBattery();
 let mouseEvents = useMouse();
@@ -57,14 +61,15 @@ let auth: AuthRequest = {
 };
 
 async function register() {
-  await userService.registerUser(auth);
+  await authStore.register(auth);
 }
 
 async function login() {
-  let response = await api.post<{ accessToken: string }>(
-    "api/user/auth/login",
-    auth
-  );
+  await authStore.login(auth);
+}
+
+async function loadUnits() {
+  let response = await api.get("api/unit/all");
 
   console.log(JSON.stringify(response.data));
 }

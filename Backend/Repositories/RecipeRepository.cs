@@ -65,9 +65,9 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
         return recipe;
     }
 
-    public async Task<bool> CheckRecipeAlreadyExistsByTitle(string title)
+    public async Task<bool> CheckRecipeAlreadyExistsByTitle(Guid creatorId, string title)
     {
-        var exists = await _context.Recipes.AnyAsync(r => r.Title == title);
+        var exists = await _context.Recipes.AnyAsync(r => r.Title == title && r.CreatorId == creatorId);
 
         return exists;
     }

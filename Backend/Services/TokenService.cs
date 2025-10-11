@@ -32,7 +32,7 @@ public class TokenService(IConfiguration configuration, IRefreshTokenRepository 
 
         if (oldStoredToken == null || oldStoredToken.User == null || !oldStoredToken.IsActive)
         {
-            throw new InvalidOperationException($"Invalid or expired refresh token");
+            throw new UnauthorizedAccessException($"Invalid or expired refresh token");
         }
 
         var accessToken = GenerateAccessToken(oldStoredToken.User);
@@ -59,7 +59,8 @@ public class TokenService(IConfiguration configuration, IRefreshTokenRepository 
         {
             new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new(JwtRegisteredClaimNames.Name, user.Username),
-            new("mpi", user.MealPrepInterval.ToString()),
+            new(JwtRegisteredClaimNames.Iat, new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
+            new("mpi", user.MealPrepInterval.ToString(), ClaimValueTypes.Integer32),
         };
 
         var jwtKey = _configuration["Jwt:SigningKey"]!;
@@ -79,11 +80,11 @@ public class TokenService(IConfiguration configuration, IRefreshTokenRepository 
 
         return new AccessTokenDto
         {
-            AccessToken = new JwtSecurityTokenHandler().WriteToken(jwtToken)
+            Token = new JwtSecurityTokenHandler().WriteToken(jwtToken)
         };
     }
 
-    private RefreshToken GenerateRefreshToken(User user)
+    private static RefreshToken GenerateRefreshToken(User user)
     {
         var refreshToken = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
 

@@ -1,4 +1,5 @@
 
+using System.Data;
 using Backend.Dtos;
 using Backend.Models;
 using Backend.Repositories.Interfaces;
@@ -35,27 +36,27 @@ public class UnitService(IUnitRepository unitRepository) : IUnitService
 
         if (unit.CreatorId == null)
         {
-            throw new UnauthorizedAccessException($"Cannot modify pre-defined units.");
+            throw new ConstraintException($"Cannot modify pre-defined units.");
         }
 
         await _unitRepository.EditUnit(unit, unitEdited);
 
     }
 
-    public async Task<GetUnitDto> AddNewUnit(NewUnitDto unitNew)
+    public async Task<GetUnitDto> AddNewUnit(Guid creatorId, NewUnitDto unitNew)
     {
-        var alreadyExists = await _unitRepository.CheckUnitExistsByName(unitNew.Title);
+        var alreadyExists = await _unitRepository.CheckUnitExistsByName(creatorId, unitNew.Title);
 
         if (alreadyExists)
         {
-            throw new InvalidOperationException($"Unit {unitNew.Title} already exists");
+            throw new InvalidOperationException($"Unit {unitNew.Title} already exists.");
         }
 
         var unit = new Unit
         {
             Id = Guid.NewGuid(),
             Title = unitNew.Title,
-            CreatorId = unitNew.CreatorId
+            CreatorId = creatorId
         };
 
         await _unitRepository.AddNewUnit(unit);
@@ -81,7 +82,7 @@ public class UnitService(IUnitRepository unitRepository) : IUnitService
 
         if (unit.CreatorId == null)
         {
-            throw new UnauthorizedAccessException($"Cannot delete pre-defined units.");
+            throw new ConstraintException("Cannot delete pre-defined units.");
         }
 
         await _unitRepository.DeleteUnit(unit);

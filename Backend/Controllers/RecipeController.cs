@@ -1,7 +1,8 @@
-using System.Threading.Tasks;
 using Backend.Dtos;
+using Backend.Extensions;
 using Backend.Models;
 using Backend.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers;
@@ -31,69 +32,50 @@ public class RecipeController : ControllerBase
         _service = service;
     }
 
+    [Authorize]
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<GetRecipeInfoDto>> GetSingleRecipe(Guid id)
     {
         // all info about recipe
         // fetches from recipe, recipeIngredient, unitsRecipe, *units
-        try
-        {
-            var recipe = await _service.GetSingleRecipe(id);
-            return Ok(recipe);
-        }
-        catch (InvalidOperationException)
-        {
-            return NotFound();
-        }
+        var recipe = await _service.GetSingleRecipe(id);
+        return Ok(recipe);
     }
 
+    [Authorize]
     [HttpGet("all")]
-    public async Task<ActionResult<IEnumerable<GetRecipeBasicInfoDto>>> GetAllRecipes([FromBody] Guid userId)
+    public async Task<ActionResult<IEnumerable<GetRecipeBasicInfoDto>>> GetAllRecipes()
     {
         // all recipe titles to browse/select to planned
         // fetches from recipe
-        try
-        {
-            var allRecipes = await _service.GetAllRecipes(userId);
-            return Ok(allRecipes);
-        }
-        catch (Exception e)
-        {
-            return StatusCode(500, "Internal server error");
-        }
+        var userId = User.GetUserId();
+        var allRecipes = await _service.GetAllRecipes(userId);
+
+        return Ok(allRecipes);
     }
 
     // api/recipes?planned=2000-01-01
+    [Authorize]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<GetPlannedRecipesDto>>> GetRecipesPlannedForDate([FromBody] Guid userId, [FromQuery] DateTime planned)
+    public async Task<ActionResult<IEnumerable<GetPlannedRecipesDto>>> GetRecipesPlannedForDate([FromQuery] DateTime planned)
     {
         // browse all planned recipes by dates
         // fetches from userCookedRecipe, Recipe, UnitRecipe, *Unit
-        try
-        {
-            var plannedRecipes = await _service.GetRecipesPlannedForDate(userId, planned);
-            return Ok(plannedRecipes);
-        }
-        catch (Exception e)
-        {
-            return StatusCode(500, "Internal server error");
-        }
+        var userId = User.GetUserId();
+        var plannedRecipes = await _service.GetRecipesPlannedForDate(userId, planned);
+
+        return Ok(plannedRecipes);
     }
 
+    [Authorize]
     [HttpPost]
-    public ActionResult<GetRecipeInfoDto> AddRecipe(Guid userId, NewRecipeDto newRecipe) //takes dto
+    public ActionResult<GetRecipeInfoDto> AddRecipe([FromBody] NewRecipeDto newRecipe) //takes dto
     {
         // add new recipe
         // modifies recipe, unitRecipe, recipeIngredients
-        try
-        {
-            var recipe = _service.AddNewRecipe(userId, newRecipe);
-            return Ok(recipe);
-        }
-        catch (Exception e)
-        {
-            return StatusCode(500, "Internal server error");
-        }
+        var userId = User.GetUserId();
+        var recipe = _service.AddNewRecipe(userId, newRecipe);
+        return Ok(recipe);
     }
 
     [HttpPost("{id:guid}")]
@@ -104,33 +86,22 @@ public class RecipeController : ControllerBase
         return Ok();
     }
 
+    [Authorize]
     [HttpPut("{id:guid}")]
     public async Task<ActionResult> EditRecipe(Guid id, [FromBody] NewRecipeDto recipeNew) // also takes dto
     {
         // modifies recipe, unitRecipe
-        try
-        {
-            await _service.EditRecipe(id, recipeNew);
-            return Ok();
-        }
-        catch (Exception e)
-        {
-            return StatusCode(500, "Internal server error");
-        }
+        var userId = User.GetUserId();
+        await _service.EditRecipe(userId, id, recipeNew);
+        return Ok();
     }
 
+    [Authorize]
     [HttpDelete("{id:guid}")]
     public async Task<ActionResult> DeleteRecipe(Guid id)
     {
         // modifies recipe, unitRecipe
-        try
-        {
-            await _service.DeleteRecipe(id);
-            return Ok();
-        }
-        catch (Exception e)
-        {
-            return StatusCode(500, "Internal server error");
-        }
+        await _service.DeleteRecipe(id);
+        return Ok();
     }
 }

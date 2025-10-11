@@ -1,6 +1,7 @@
 using Backend.Dtos;
 using Backend.Models;
 using Backend.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers;
@@ -23,68 +24,42 @@ public class UserController : ControllerBase
     [HttpPost("auth/register")]
     public async Task<ActionResult> RegisterUser([FromBody] AuthenticationDto register)
     {
-        try
-        {
-            await _service.RegisterUser(register);
-            return Ok();
-        }
-        catch (Exception e)
-        {
-            return StatusCode(500, "Internal server error");
-        }
+        await _service.RegisterUser(register);
+        return Ok();
     }
 
     [HttpPost("auth/login")]
     public async Task<ActionResult<AccessTokenDto>> LoginUser([FromBody] AuthenticationDto login)
     {
-        try
-        {
-            var (refreshToken, accessToken) = await _service.LoginUser(login);
+        var (refreshToken, accessToken) = await _service.LoginUser(login);
 
-            SetRefreshTokenCookie(refreshToken);
+        SetRefreshTokenCookie(refreshToken);
 
-            return Ok(accessToken);
-        }
-        catch (Exception e)
-        {
-            return Unauthorized("Incorrect credentials");
-        }
+        return Ok(accessToken);
     }
 
+    [Authorize]
     [HttpPost("logout")]
     public async Task<ActionResult> LogoutUser()
     {
-        try
-        {
-            var refreshTokenCookie = GetRefreshTokenCookie();
-            await _service.LogoutUser(refreshTokenCookie);
+        var refreshTokenCookie = GetRefreshTokenCookie();
+        await _service.LogoutUser(refreshTokenCookie);
 
-            DeleteRefreshTokenCookie();
+        DeleteRefreshTokenCookie();
 
-            return Ok();
-        }
-        catch (Exception e)
-        {
-            return StatusCode(500, "Internal server error");
-        }
+        return Ok();
     }
 
     [HttpPost("auth/refresh")]
     public async Task<ActionResult<AccessTokenDto>> RefreshTokens()
     {
-        try
-        {
-            var oldRefreshTokenCookie = GetRefreshTokenCookie();
-            var (refreshToken, accessToken) = await _service.RefreshTokens(oldRefreshTokenCookie);
 
-            SetRefreshTokenCookie(refreshToken);
+        var oldRefreshTokenCookie = GetRefreshTokenCookie();
+        var (refreshToken, accessToken) = await _service.RefreshTokens(oldRefreshTokenCookie);
 
-            return Ok(accessToken);
-        }
-        catch (Exception e)
-        {
-            return Unauthorized("Missing refresh token");
-        }
+        SetRefreshTokenCookie(refreshToken);
+
+        return Ok(accessToken);
     }
 
     // [HttpPut("{id:guid}")]
@@ -122,7 +97,7 @@ public class UserController : ControllerBase
 
         if (cookie == null)
         {
-            throw new KeyNotFoundException("Required cookie not found");
+            throw new UnauthorizedAccessException("Required cookie not found");
         }
 
         return cookie;
