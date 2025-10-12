@@ -5,16 +5,17 @@ using System.Security.Cryptography;
 using System.Text;
 using Backend.Dtos;
 using Backend.Models;
+using Backend.Models.Settings;
 using Backend.Repositories.Interfaces;
 using Backend.Services.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Backend.Services;
 
-public class TokenService(IConfiguration configuration, IRefreshTokenRepository refreshTokenRepository) : ITokenService
+public class TokenService(IRefreshTokenRepository refreshTokenRepository, JwtSettings jwtSettings) : ITokenService
 {
-    private readonly IConfiguration _configuration = configuration;
     private readonly IRefreshTokenRepository _refreshTokenRepository = refreshTokenRepository;
+    private readonly JwtSettings _jwtSettings = jwtSettings;
 
     public async Task<(RefreshToken, AccessTokenDto)> GenerateNewTokens(User user)
     {
@@ -63,18 +64,14 @@ public class TokenService(IConfiguration configuration, IRefreshTokenRepository 
             new("mpi", user.MealPrepInterval.ToString(), ClaimValueTypes.Integer32),
         };
 
-        var jwtKey = _configuration["Jwt:SigningKey"]!;
-        var issuer = _configuration["Jwt:Issuer"]!;
-        var audience = _configuration["Jwt:Audience"]!;
-
-        var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
+        var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SigningKey));
         var credentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 
         var jwtToken = new JwtSecurityToken(
             expires: DateTime.UtcNow.AddMinutes(20),
             signingCredentials: credentials,
-            issuer: issuer,
-            audience: audience,
+            issuer: _jwtSettings.Issuer,
+            audience: _jwtSettings.Audience,
             claims: claims
         );
 

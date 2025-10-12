@@ -26,7 +26,7 @@ public static class TestingSeeder
                 {
                     Id = userId,
                     Username = "Boo",
-                    Password = "111",
+                    Password = BCrypt.Net.BCrypt.HashPassword("Password42"),
                     MealPrepInterval = 7
                 }
             );

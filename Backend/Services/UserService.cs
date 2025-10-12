@@ -34,7 +34,7 @@ public class UserService(IUserRepository userRepository, ITokenService tokenServ
     {
         var user = await _userRepository.GetUser(login.Username);
 
-        if (user == null || login.Password != user.Password) // TODO hash incoming password and compare with hash in db
+        if (user == null || !BCrypt.Net.BCrypt.Verify(login.Password, user.Password))
         {
             throw new UnauthorizedAccessException($"Invalid email or password");
         }
@@ -56,8 +56,8 @@ public class UserService(IUserRepository userRepository, ITokenService tokenServ
         return tokens;
     }
 
-    private string HashUserPassword(string password)
+    private static string HashUserPassword(string password)
     {
-        return password;  // TODO choose hasher
+        return BCrypt.Net.BCrypt.HashPassword(password);
     }
 }

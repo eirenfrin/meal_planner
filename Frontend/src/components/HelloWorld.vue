@@ -1,12 +1,19 @@
 <template>
   <h1>{{ msg }}</h1>
 
+  <!-- <template v-for="value in authStore.state.errors">
+    <div :error="value"></div>
+  </template> -->
+
+  <slot name="aaaa"></slot>
+
   <div class="card">
     <button type="button" @click="appStore.increment()">
       Message: {{ appStore.getFormattedCount }}
     </button>
-    <button type="button" @click="loadUnits">register</button>
+    <button type="button" @click="register">register</button>
     <button type="button" @click="login">login</button>
+    <button type="button" @click="loadUnits">loadunits</button>
     <p>Access token: {{ authStore.state.accessToken }}</p>
     <p>User: {{ JSON.stringify(authStore.state.currentUser) }}</p>
     <p v-if="width > 1000">
@@ -57,7 +64,7 @@ let mouseEvents = useMouse();
 
 let auth: AuthRequest = {
   username: "Name",
-  password: "password123",
+  password: "Password123",
 };
 
 async function register() {

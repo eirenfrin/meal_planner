@@ -1,9 +1,11 @@
 using System.Text;
+using Backend.Models.Settings;
 using Backend.Repositories;
 using Backend.Repositories.Interfaces;
 using Backend.Services;
 using Backend.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Backend.Extensions;
@@ -53,12 +55,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
     }
 
-    public static void AddJwtAuthentication(
-        this IServiceCollection services,
-        string issuer,
-        string audience,
-        string signingKey
-    )
+    public static void AddJwtAuthentication(this IServiceCollection services, JwtSettings settings)
     {
         services.AddAuthentication(options =>
         {
@@ -72,26 +69,47 @@ public static class ServiceCollectionExtensions
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
-                ValidIssuer = issuer,
-                ValidAudience = audience,
+                ValidIssuer = settings.Issuer,
+                ValidAudience = settings.Audience,
                 ClockSkew = TimeSpan.Zero,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey))
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(settings.SigningKey))
             };
         });
     }
 
-    public static void AddCorsForFrontend(this IServiceCollection services)
+    public static void AddCorsForFrontend(this IServiceCollection services, CorsSettings settings)
     {
         services.AddCors(options =>
         {
-            options.AddPolicy("CorsPolicy", builder =>
+            options.AddPolicy(settings.PolicyName, builder =>
             {
                 builder
-                    .WithOrigins("http://localhost:5173")
+                    .WithOrigins(settings.Origin)
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials();
             });
+        });
+    }
+
+    public static void AddValidatorFormatter(this IServiceCollection services)
+    {
+        services.Configure<ApiBehaviorOptions>(options =>
+        {
+            options.InvalidModelStateResponseFactory = context =>
+            {
+                var errors = context.ModelState
+                    .Where(e => e.Value?.Errors.Count > 0)
+                    .SelectMany(e => e.Value!.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToArray();
+
+                var message = errors.Length == 1
+                    ? errors[0]
+                    : string.Join(" ", errors);
+
+                return new BadRequestObjectResult(new { message });
+            };
         });
     }
 }

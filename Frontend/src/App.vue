@@ -8,11 +8,17 @@
     </a>
   </div>
   <RouterView> </RouterView>
-  <HelloWorld msg="Vite + Vue" />
+  <HelloWorld :msg="x">
+    <template v-slot="aaaa">
+      <div>This is slot content</div>
+    </template>
+  </HelloWorld>
 </template>
 
 <script setup lang="ts">
 import HelloWorld from "./components/HelloWorld.vue";
+
+let x = "aaa";
 </script>
 
 <style scoped>
