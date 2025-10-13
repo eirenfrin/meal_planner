@@ -2,7 +2,7 @@ using Backend.Enums;
 
 namespace Backend.Dtos;
 
-public class NewUnitsRecipeDto
+public class NewEditUnitsRecipeDto
 {
     public required float RecipeAmount { get; set; }
 

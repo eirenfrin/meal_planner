@@ -11,10 +11,10 @@ public interface IUnitRepository
 
     public Task AddNewUnit(Unit newUnit);
 
-    public Task EditUnit(Unit unitExisting, NewUnitDto unitEdited);
+    public Task EditUnit(Unit unitExisting, NewEditUnitDto unitEdited);
 
     public Task<Unit?> GetSingleUnit(Guid unitId);
 
-    public Task<bool> CheckUnitExistsByName(Guid creatorId, string unitTitle);
+    public Task<bool> CheckUnitExistsByName(Guid? creatorId, string unitTitle, Guid? unitId = null);
 
 }

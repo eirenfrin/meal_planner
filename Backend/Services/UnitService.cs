@@ -25,7 +25,7 @@ public class UnitService(IUnitRepository unitRepository) : IUnitService
         return unitDtos;
     }
 
-    public async Task EditUnit(Guid unitId, NewUnitDto unitEdited)
+    public async Task EditUnit(Guid unitId, NewEditUnitDto unitEdited)
     {
         var unit = await _unitRepository.GetSingleUnit(unitId);
 
@@ -39,11 +39,18 @@ public class UnitService(IUnitRepository unitRepository) : IUnitService
             throw new ConstraintException($"Cannot modify pre-defined units.");
         }
 
+        var nameAlreadyTaken = await _unitRepository.CheckUnitExistsByName(unit.CreatorId, unitEdited.Title, unitId);
+
+        if (nameAlreadyTaken)
+        {
+            throw new InvalidOperationException($"Unit {unitEdited.Title} already exists.");
+        }
+
         await _unitRepository.EditUnit(unit, unitEdited);
 
     }
 
-    public async Task<GetUnitDto> AddNewUnit(Guid creatorId, NewUnitDto unitNew)
+    public async Task<GetUnitDto> AddNewUnit(Guid creatorId, NewEditUnitDto unitNew)
     {
         var alreadyExists = await _unitRepository.CheckUnitExistsByName(creatorId, unitNew.Title);
 

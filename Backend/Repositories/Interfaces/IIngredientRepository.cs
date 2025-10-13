@@ -9,11 +9,11 @@ public interface IIngredientRepository
 
     public Task AddNewIngredient(Ingredient ingredient);
 
-    public Task EditIngredient(Ingredient ingredientExisting, EditIngredientDto ingredientUpdated);
+    public Task EditIngredient(Ingredient ingredientExisting, NewEditIngredientDto ingredientUpdated);
 
     public Task<Ingredient> DeleteIngredient(Guid ingredientId);
 
     public Task<Ingredient?> GetSingleIngredient(Guid ingredientId);
 
-    public Task<bool> CheckIngredientExistsByName(Guid creatorId, string ingredientTitle);
+    public Task<bool> CheckIngredientExistsByName(Guid? creatorId, string ingredientTitle, Guid? ingredientId = null);
 }

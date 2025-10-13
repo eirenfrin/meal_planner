@@ -10,7 +10,7 @@ public class UnitsRecipeRepository(AppDbContext context) : IUnitsRecipeRepositor
 {
     private readonly AppDbContext _context = context;
 
-    public async Task EditAllUnitsRecipe(Guid recipeId, IEnumerable<NewUnitsRecipeDto> unitsRecipeEdited)
+    public async Task EditAllUnitsRecipe(Guid recipeId, IEnumerable<NewEditUnitsRecipeDto> unitsRecipeEdited)
     {
         foreach (var unitRecipe in unitsRecipeEdited)
         {
@@ -31,7 +31,7 @@ public class UnitsRecipeRepository(AppDbContext context) : IUnitsRecipeRepositor
         await _context.SaveChangesAsync();
     }
 
-    private async Task EditUnitRecipe(Guid recipeId, NewUnitsRecipeDto unitRecipeEdited)
+    private async Task EditUnitRecipe(Guid recipeId, NewEditUnitsRecipeDto unitRecipeEdited)
     {
         var unitRecipeExisting = await _context.UnitsRecipes
         .FirstOrDefaultAsync(ur => ur.RecipeId == recipeId && ur.UnitId == unitRecipeEdited.UnitId);
@@ -57,7 +57,7 @@ public class UnitsRecipeRepository(AppDbContext context) : IUnitsRecipeRepositor
         _context.UnitsRecipes.Remove(unitRecipe);
     }
 
-    private void AddUnitRecipe(Guid recipeId, NewUnitsRecipeDto unitRecipeNew)
+    private void AddUnitRecipe(Guid recipeId, NewEditUnitsRecipeDto unitRecipeNew)
     {
         var unitRecipe = new UnitsRecipe
         {

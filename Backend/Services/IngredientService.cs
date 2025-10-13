@@ -1,3 +1,4 @@
+using System.Data;
 using Backend.Dtos;
 using Backend.Models;
 using Backend.Repositories.Interfaces;
@@ -25,7 +26,7 @@ public class IngredientService(IIngredientRepository ingredientRepository) : IIn
         return ingredientDtos;
     }
 
-    public async Task<GetIngredientDto> AddNewIngredient(Guid creatorId, NewIngredientDto ingredientNew)
+    public async Task<GetIngredientDto> AddNewIngredient(Guid creatorId, NewEditIngredientDto ingredientNew)
     {
         var alreadyExists = await _ingredientRepository.CheckIngredientExistsByName(creatorId, ingredientNew.Title);
 
@@ -57,13 +58,20 @@ public class IngredientService(IIngredientRepository ingredientRepository) : IIn
         return ingredientDto;
     }
 
-    public async Task EditIngredient(Guid ingredientId, EditIngredientDto ingredientUpdated)
+    public async Task EditIngredient(Guid ingredientId, NewEditIngredientDto ingredientUpdated)
     {
         var ingredient = await _ingredientRepository.GetSingleIngredient(ingredientId);
 
         if (ingredient == null)
         {
-            throw new KeyNotFoundException($"Unit with id {ingredientId} does not exist.");
+            throw new KeyNotFoundException($"Ingredient with id {ingredientId} does not exist.");
+        }
+
+        var nameAlreadyTaken = await _ingredientRepository.CheckIngredientExistsByName(ingredient.CreatorId, ingredientUpdated.Title, ingredientId);
+
+        if (nameAlreadyTaken)
+        {
+            throw new InvalidOperationException($"Ingredient {ingredientUpdated.Title} already exists.");
         }
 
         await _ingredientRepository.EditIngredient(ingredient, ingredientUpdated);
@@ -76,6 +84,11 @@ public class IngredientService(IIngredientRepository ingredientRepository) : IIn
         if (ingredient == null)
         {
             throw new KeyNotFoundException($"Ingredient with id {ingredientId} does not exist.");
+        }
+
+        if (ingredient.CreatorId == null)
+        {
+            throw new ConstraintException("Cannot delete pre-defined ingredients.");
         }
 
         await _ingredientRepository.DeleteIngredient(ingredientId);

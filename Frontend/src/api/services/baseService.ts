@@ -17,7 +17,7 @@ class BaseService {
 
   public async post<ReqPayload, ResPayload>(
     endpointUrl: string,
-    payload: ReqPayload | void
+    payload?: ReqPayload
   ): Promise<ResPayload> {
     let response = await api.post<ResPayload>(
       `${this.serviceUrl}/${endpointUrl}`,

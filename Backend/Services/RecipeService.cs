@@ -20,7 +20,7 @@ public class RecipeService(
 
     private readonly IUserCookedRecipeRepository _userCookedRecipeRepository = userCookedRecipeRepository;
 
-    public async Task<GetRecipeInfoDto> GetSingleRecipe(Guid recipeId)
+    public async Task<GetRecipeAllInfoDto> GetSingleRecipe(Guid recipeId)
     {
         var recipe = await _recipeRepository.GetSingleRecipeWithAllInfo(recipeId);
 
@@ -29,18 +29,18 @@ public class RecipeService(
             throw new KeyNotFoundException($"Recipe {recipeId} not found.");
         }
 
-        var recipeDto = new GetRecipeInfoDto
+        var recipeDto = new GetRecipeAllInfoDto
         {
             Id = recipe.Id,
             Title = recipe.Title,
             LastCooked = recipe.LastCooked,
-            Ingredients = recipe.RecipeIngredients.Select(ri => new RecipeIngredientDto
+            Ingredients = recipe.RecipeIngredients.Select(ri => new GetRecipeIngredientDto
             {
                 IngredientTitle = ri.Ingredient!.Title,
                 Amount = ri.Amount,
                 UnitTitle = ri.Unit!.Title
             }),
-            RecipeAmount = recipe.UnitsRecipes.Select(ur => new UnitsRecipeDto
+            RecipeAmount = recipe.UnitsRecipes.Select(ur => new GetUnitsRecipeDto
             {
                 UnitRecipeTitle = ur.Unit!.Title,
                 RecipeAmount = ur.RecipeAmount
@@ -64,7 +64,7 @@ public class RecipeService(
         return recipesDtos;
     }
 
-    public async Task<GetRecipeInfoDto> AddNewRecipe(Guid creatorId, NewRecipeDto newRecipe)
+    public async Task<GetRecipeAllInfoDto> AddNewRecipe(Guid creatorId, NewEditRecipeDto newRecipe)
     {
         var alreadyExists = await _recipeRepository.CheckRecipeAlreadyExistsByTitle(creatorId, newRecipe.Title);
 
@@ -118,9 +118,9 @@ public class RecipeService(
         await _recipeRepository.DeleteRecipe(recipe);
     }
 
-    public async Task EditRecipe(Guid creatorId, Guid recipeId, NewRecipeDto recipeEdited)
+    public async Task EditRecipe(Guid creatorId, Guid recipeId, NewEditRecipeDto recipeEdited)
     {
-        var exists = await _recipeRepository.CheckRecipeAlreadyExistsByTitle(creatorId, recipeEdited.Title);
+        var exists = await _recipeRepository.CheckRecipeAlreadyExistsByTitle(creatorId, recipeEdited.Title, recipeId);
 
         if (exists)
         {
@@ -175,7 +175,7 @@ public class RecipeService(
             PlannedStartDate = ucr.PlannedStartDate,
             PlannedEndDate = ucr.PlannedEndDate,
             LastCooked = ucr.Recipe.LastCooked,
-            RecipeAmount = ucr.Recipe.UnitsRecipes.Select(ur => new UnitsRecipeDto
+            RecipeAmount = ucr.Recipe.UnitsRecipes.Select(ur => new GetUnitsRecipeDto
             {
                 UnitRecipeTitle = ur.Unit!.Title,
                 RecipeAmount = ur.RecipeAmount

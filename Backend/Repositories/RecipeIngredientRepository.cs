@@ -13,7 +13,7 @@ public class RecipeIngredientRepository(AppDbContext context) : IRecipeIngredien
 {
     private readonly AppDbContext _context = context;
 
-    public async Task EditAllRecipeIngredients(Guid recipeId, IEnumerable<NewRecipeIngredientDto> editedIngredients)
+    public async Task EditAllRecipeIngredients(Guid recipeId, IEnumerable<NewEditRecipeIngredientDto> editedIngredients)
     {
         foreach (var ingredient in editedIngredients)
         {
@@ -47,7 +47,7 @@ public class RecipeIngredientRepository(AppDbContext context) : IRecipeIngredien
         _context.RecipeIngredients.Remove(recipeIngredient);
     }
 
-    private async Task EditRecipeIngredient(Guid recipeId, NewRecipeIngredientDto recipeIngredientEdited)
+    private async Task EditRecipeIngredient(Guid recipeId, NewEditRecipeIngredientDto recipeIngredientEdited)
     {
         var recipeIngredientExisting = await _context.RecipeIngredients
         .FirstOrDefaultAsync(r => r.IngredientId == recipeIngredientEdited.IngredientId && r.RecipeId == recipeId);
@@ -60,7 +60,7 @@ public class RecipeIngredientRepository(AppDbContext context) : IRecipeIngredien
         _context.Entry(recipeIngredientExisting).CurrentValues.SetValues(recipeIngredientEdited);
     }
 
-    private void AddRecipeIngredient(Guid recipeId, NewRecipeIngredientDto recipeIngredientNew)
+    private void AddRecipeIngredient(Guid recipeId, NewEditRecipeIngredientDto recipeIngredientNew)
     {
         var recipeIngredient = new RecipeIngredient
         {

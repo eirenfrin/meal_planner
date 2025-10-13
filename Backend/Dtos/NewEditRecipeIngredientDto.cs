@@ -2,7 +2,7 @@ using Backend.Enums;
 
 namespace Backend.Dtos;
 
-public class NewRecipeIngredientDto
+public class NewEditRecipeIngredientDto
 {
     public required Guid IngredientId { get; set; }
 

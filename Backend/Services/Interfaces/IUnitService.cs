@@ -7,9 +7,9 @@ public interface IUnitService
 {
     public Task<IEnumerable<GetUnitDto>> GetAllUnits(Guid userId);
 
-    public Task EditUnit(Guid unitId, NewUnitDto unitEdited);
+    public Task EditUnit(Guid unitId, NewEditUnitDto unitEdited);
 
-    public Task<GetUnitDto> AddNewUnit(Guid creatorId, NewUnitDto unitNew);
+    public Task<GetUnitDto> AddNewUnit(Guid creatorId, NewEditUnitDto unitNew);
 
     public Task DeleteUserDefinedUnit(Guid unitId);
 }

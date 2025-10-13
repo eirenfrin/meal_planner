@@ -12,5 +12,5 @@ public class GetPlannedRecipesDto
 
     public required float? AmountToCook { get; set; }
 
-    public required IEnumerable<UnitsRecipeDto> RecipeAmount { get; set; }
+    public required IEnumerable<GetUnitsRecipeDto> RecipeAmount { get; set; }
 }

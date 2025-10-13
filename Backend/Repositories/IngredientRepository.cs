@@ -27,7 +27,7 @@ public class IngredientRepository(AppDbContext context) : IIngredientRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task EditIngredient(Ingredient ingredientExisting, EditIngredientDto ingredientUpdated)
+    public async Task EditIngredient(Ingredient ingredientExisting, NewEditIngredientDto ingredientUpdated)
     {
         _context.Entry(ingredientExisting).CurrentValues.SetValues(ingredientUpdated);
         await _context.SaveChangesAsync();
@@ -49,10 +49,20 @@ public class IngredientRepository(AppDbContext context) : IIngredientRepository
         return ingredient;
     }
 
-    public async Task<bool> CheckIngredientExistsByName(Guid creatorId, string ingredientTitle)
+    public async Task<bool> CheckIngredientExistsByName(Guid? creatorId, string ingredientTitle, Guid? ingredientId = null)
     {
-        var exists = await _context.Ingredients
-        .AnyAsync(i => i.Title == ingredientTitle && i.CreatorId == creatorId);
+        // var exists = await _context.Ingredients
+        // .AnyAsync(i => i.Title == ingredientTitle && (i.CreatorId == creatorId || i.CreatorId == null));
+        var query = _context.Units.AsQueryable();
+
+        query = query.Where(i => i.Title == ingredientTitle && (i.CreatorId == creatorId || i.CreatorId == null));
+
+        if (ingredientId != null)
+        {
+            query = query.Where(i => i.Id != ingredientId);
+        }
+
+        var exists = await query.AnyAsync();
 
         return exists;
     }

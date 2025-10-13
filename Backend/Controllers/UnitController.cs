@@ -34,7 +34,7 @@ public class UnitController : ControllerBase
 
     [Authorize]
     [HttpPost]
-    public async Task<ActionResult<GetUnitDto>> CreateNewUnit([FromBody] NewUnitDto newUnit) // takes dto
+    public async Task<ActionResult<GetUnitDto>> CreateNewUnit([FromBody] NewEditUnitDto newUnit) // takes dto
     {
         // modifies Unit
         var userId = User.GetUserId();
@@ -43,11 +43,11 @@ public class UnitController : ControllerBase
     }
 
     [Authorize]
-    [HttpPut]
-    public async Task<ActionResult> EditUnit(Guid unitId, [FromBody] NewUnitDto unitEdited) // takes dto
+    [HttpPut("{id:guid}")]
+    public async Task<ActionResult> EditUnit(Guid id, [FromBody] NewEditUnitDto unitEdited) // takes dto
     {
         // modifies Unit
-        await _service.EditUnit(unitId, unitEdited);
+        await _service.EditUnit(id, unitEdited);
         return Ok();
     }
 

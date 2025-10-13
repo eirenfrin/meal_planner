@@ -37,7 +37,7 @@ public class IngredientController : ControllerBase
 
     [Authorize]
     [HttpPost]
-    public async Task<ActionResult<GetIngredientDto>> AddNewIngredient([FromBody] NewIngredientDto newIngredient) //takes dto
+    public async Task<ActionResult<GetIngredientDto>> AddNewIngredient([FromBody] NewEditIngredientDto newIngredient) //takes dto
     {
         // modifies ingredient
         var userId = User.GetUserId();
@@ -47,7 +47,7 @@ public class IngredientController : ControllerBase
 
     [Authorize]
     [HttpPut("{id:guid}")]
-    public async Task<ActionResult> EditSpecificIngredient(Guid id, [FromBody] EditIngredientDto ingredientModified)
+    public async Task<ActionResult> EditSpecificIngredient(Guid id, [FromBody] NewEditIngredientDto ingredientModified)
     {
         // modifies ingredient
         await _service.EditIngredient(id, ingredientModified);

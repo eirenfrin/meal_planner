@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Backend.Dtos;
 
-public class EditIngredientDto
+public class NewEditIngredientDto
 {
     [StringLength(30, MinimumLength = 2)]
     public required string Title { get; set; }

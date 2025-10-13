@@ -32,7 +32,7 @@ public class UnitRepository(AppDbContext context) : IUnitRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task EditUnit(Unit unitExisting, NewUnitDto unitEdited)
+    public async Task EditUnit(Unit unitExisting, NewEditUnitDto unitEdited)
     {
         _context.Entry(unitExisting).CurrentValues.SetValues(unitEdited);
         await _context.SaveChangesAsync();
@@ -45,10 +45,21 @@ public class UnitRepository(AppDbContext context) : IUnitRepository
         return unit;
     }
 
-    public async Task<bool> CheckUnitExistsByName(Guid creatorId, string unitTitle)
+    public async Task<bool> CheckUnitExistsByName(Guid? creatorId, string unitTitle, Guid? unitId = null)
     {
-        var exists = await _context.Units
-        .AnyAsync(u => u.Title == unitTitle && (u.CreatorId == creatorId || u.CreatorId == null));
+        // var exists = await _context.Units
+        // .AnyAsync(u => u.Title == unitTitle && (u.CreatorId == creatorId || u.CreatorId == null) && u.Id != unitId);
+
+        var query = _context.Units.AsQueryable();
+
+        query = query.Where(u => u.Title == unitTitle && (u.CreatorId == creatorId || u.CreatorId == null));
+
+        if (unitId != null)
+        {
+            query = query.Where(u => u.Id != unitId);
+        }
+
+        var exists = await query.AnyAsync();
 
         return exists;
     }

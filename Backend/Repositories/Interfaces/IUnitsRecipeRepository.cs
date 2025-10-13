@@ -4,5 +4,5 @@ namespace Backend.Repositories.Interfaces;
 
 public interface IUnitsRecipeRepository
 {
-    public Task EditAllUnitsRecipe(Guid recipeId, IEnumerable<NewUnitsRecipeDto> unitsRecipeEdited);
+    public Task EditAllUnitsRecipe(Guid recipeId, IEnumerable<NewEditUnitsRecipeDto> unitsRecipeEdited);
 }

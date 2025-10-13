@@ -9,7 +9,7 @@
   </div>
   <RouterView> </RouterView>
   <HelloWorld :msg="x">
-    <template v-slot="aaaa">
+    <template #aaaa>
       <div>This is slot content</div>
     </template>
   </HelloWorld>

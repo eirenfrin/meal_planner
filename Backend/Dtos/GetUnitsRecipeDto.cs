@@ -1,6 +1,6 @@
 namespace Backend.Dtos;
 
-public class UnitsRecipeDto
+public class GetUnitsRecipeDto
 {
     public required string UnitRecipeTitle { get; set; }
 

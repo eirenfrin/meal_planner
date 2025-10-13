@@ -12,11 +12,18 @@ class UserService extends BaseService {
   }
 
   public async loginUser(authRequest: AuthRequest): Promise<AccessToken> {
-    return await this.post<AuthRequest, AccessToken>("auth/login", authRequest);
+    let accessToken = await this.post<AuthRequest, AccessToken>(
+      "auth/login",
+      authRequest
+    );
+
+    return accessToken;
   }
 
   public async refreshTokens(): Promise<AccessToken> {
-    return await this.post<void, AccessToken>("auth/refresh");
+    let accessToken = await this.post<void, AccessToken>("auth/refresh");
+
+    return accessToken;
   }
 
   public async logoutUser(): Promise<void> {
