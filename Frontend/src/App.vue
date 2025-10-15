@@ -8,6 +8,7 @@
     </a>
   </div> -->
   <RecipesOverviewList />
+  <LowNavBar :current-page="currentPage" />
   <!-- <HelloWorld :msg="x">
     <template #aaaa>
       <div>This is slot content</div>
@@ -16,11 +17,12 @@
 </template>
 
 <script setup lang="ts">
-import HelloWorld from "./components/HelloWorld.vue";
-import RecipeBasicListEntry from "./components/recipes/RecipeOverviewListEntry.vue";
+import { reactive, ref } from "vue";
+import LowNavBar from "./components/generic/LowNavBar.vue";
 import RecipesOverviewList from "./components/recipes/RecipesOverviewList.vue";
+import { CurrentPage } from "./domain/enums/currentPage";
+let currentPage = ref<CurrentPage>(CurrentPage.BASICS);
 </script>
-
 <style scoped>
 .logo {
   height: 6em;

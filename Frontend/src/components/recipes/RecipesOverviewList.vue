@@ -22,7 +22,7 @@ import type { GetRecipeBasicInfoDto } from "../../domain/models/getRecipeBasicIn
 import RecipeOverviewListEntry from "./RecipeOverviewListEntry.vue";
 import RecipesOverviewHeader from "./RecipesOverviewHeader.vue";
 
-let editingMode = ref(true);
+let editingMode = ref(false);
 let listOfIdsToDelete = ref([] as Array<string>);
 let recipes: Array<GetRecipeBasicInfoDto> = [
   {
@@ -60,7 +60,6 @@ function editModeCallback(mode: boolean): void {
 <style scoped>
 .overview-list-container {
   width: 80%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;

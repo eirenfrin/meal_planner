@@ -35,7 +35,12 @@ article {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  border: 2px solid #00ff51;
+  /* border: 2px solid #00ff51; */
+  border-left: 3px solid #3e1c00;
+  border-right: 3px solid #3e1c00;
+  border-radius: 6px;
+  background: #fdf6e3;
+  font-family: "Georgia", serif;
 }
 
 .list-entry-checkbox-title {

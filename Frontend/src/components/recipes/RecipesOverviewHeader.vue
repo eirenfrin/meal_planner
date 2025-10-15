@@ -32,4 +32,42 @@ header {
   justify-content: space-between;
   align-items: center;
 }
+button {
+  /*position: relative;
+  padding: 0.75rem 2rem;
+  font-family: "Georgia", serif;
+  font-size: 1rem;
+  color: #fff;
+  background: linear-gradient(145deg, #8b5e3c, #c99a6b);
+  border: 2px solid #5a3f2b;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;  */
+}
+
+/* button::before,
+button::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #5a3f2b;
+}
+
+button::before {
+  top: -6px;
+  left: -6px;
+  border-right: none;
+  border-bottom: none;
+  border-radius: 4px 0 0 0;
+}
+
+button::after {
+  bottom: -6px;
+  right: -6px;
+  border-left: none;
+  border-top: none;
+  border-radius: 0 0 4px 0;
+} */
 </style>
