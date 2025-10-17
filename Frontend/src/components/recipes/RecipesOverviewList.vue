@@ -1,29 +1,37 @@
 <template>
-  <section class="overview-list-container">
-    <RecipesOverviewHeader
-      :editing-mode="editingMode"
-      @change-edit-mode="editModeCallback"
-    />
-    <ul class="list-recipes">
-      <li class="list-recipes-entry" v-for="recipe in recipes" :key="recipe.id">
-        <RecipeOverviewListEntry
-          :editing-mode="editingMode"
-          :recipe="recipe"
-          @toggle-recipe="toggleCallback"
-        />
-      </li>
-    </ul>
-  </section>
+  <OverviewList
+    :editing-mode="editingMode"
+    :add-callback="addCallback"
+    :delete-callback="deleteCallback"
+    header-title="My cookbook"
+    @change-edit-mode="editModeCallback"
+  >
+    <template #content>
+      <ul class="list-recipes">
+        <li
+          class="list-recipes-entry"
+          v-for="recipe in recipes"
+          :key="recipe.id"
+        >
+          <RecipeOverviewListEntry
+            :editing-mode="editingMode"
+            :recipe="recipe"
+            @toggle-recipe="toggleCallback"
+          />
+        </li>
+      </ul>
+    </template>
+  </OverviewList>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
 import type { GetRecipeBasicInfoDto } from "../../domain/models/getRecipeBasicInfoDto";
 import RecipeOverviewListEntry from "./RecipeOverviewListEntry.vue";
-import RecipesOverviewHeader from "./RecipesOverviewHeader.vue";
+import OverviewList from "../generic/OverviewList.vue";
 
 let editingMode = ref(false);
-let listOfIdsToDelete = ref([] as Array<string>);
+let listOfIdsToDelete = ref<Array<string>>([]);
 let recipes: Array<GetRecipeBasicInfoDto> = [
   {
     id: "123456",
@@ -55,17 +63,17 @@ function toggleCallback(id: string): void {
 function editModeCallback(mode: boolean): void {
   editingMode.value = mode;
 }
+
+async function deleteCallback(): Promise<void> {
+  console.log("delete");
+}
+
+async function addCallback(): Promise<void> {
+  console.log("add");
+}
 </script>
 
 <style scoped>
-.overview-list-container {
-  width: 80%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
 .list-recipes-entry {
   list-style: none;
   margin: 20px 0px;

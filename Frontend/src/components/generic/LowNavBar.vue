@@ -26,6 +26,7 @@ nav {
   background-color: #fdf6e3;
   position: fixed;
   bottom: 0;
+  padding: 20px;
 }
 ul {
   width: 60%;
@@ -33,7 +34,8 @@ ul {
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
-  margin: 20px auto;
+  margin: 0 auto;
+  padding: 0;
 }
 li {
   list-style: none;
@@ -48,5 +50,6 @@ li:hover {
 }
 .active {
   font-weight: 900;
+  font-size: xx-large;
 }
 </style>

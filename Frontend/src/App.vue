@@ -7,6 +7,7 @@
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
   </div> -->
+  <UpperNavBar :current-sub-page="currentSubPage" />
   <RecipesOverviewList />
   <LowNavBar :current-page="currentPage" />
   <!-- <HelloWorld :msg="x">
@@ -21,7 +22,10 @@ import { reactive, ref } from "vue";
 import LowNavBar from "./components/generic/LowNavBar.vue";
 import RecipesOverviewList from "./components/recipes/RecipesOverviewList.vue";
 import { CurrentPage } from "./domain/enums/currentPage";
+import UpperNavBar from "./components/generic/UpperNavBar.vue";
+import { CurrentSubPage } from "./domain/enums/currentSubPage";
 let currentPage = ref<CurrentPage>(CurrentPage.BASICS);
+let currentSubPage = ref<CurrentSubPage>(CurrentSubPage.RECIPES);
 </script>
 <style scoped>
 .logo {

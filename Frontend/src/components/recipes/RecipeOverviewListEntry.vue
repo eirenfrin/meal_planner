@@ -58,9 +58,9 @@ article {
 .checkbox-restyle {
   appearance: none;
   -webkit-appearance: none;
-  width: 20px;
-  height: 20px;
-  border: 2px solid #00ff51;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid blueviolet;
   border-radius: 4px;
   display: inline-block;
   vertical-align: middle;
