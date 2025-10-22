@@ -3,16 +3,16 @@
     :editing-mode="editingMode"
     :add-callback="addCallback"
     :delete-callback="deleteCallback"
-    header-title="My cookbook"
+    header-title="All Units"
     @change-edit-mode="editModeCallback"
   >
     <template #content>
       <ul class="list">
-        <li class="list-entry" v-for="recipe in recipes" :key="recipe.id">
-          <RecipeOverviewListEntry
+        <li class="list-entry" v-for="unit in units" :key="unit.id">
+          <UnitOverviewListEntry
             :editing-mode="editingMode"
-            :recipe="recipe"
-            @toggle-recipe="toggleCallback"
+            :unit="unit"
+            @toggle-unit="toggleCallback"
           />
         </li>
       </ul>
@@ -22,27 +22,22 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import type { GetRecipeBasicInfoDto } from "../../domain/models/getRecipeBasicInfoDto";
-import RecipeOverviewListEntry from "./RecipeOverviewListEntry.vue";
+import type { GetUnitDto } from "../../domain/models/getUnitDto";
+import UnitOverviewListEntry from "./UnitOverviewListEntry.vue";
 import OverviewList from "../generic/OverviewList.vue";
 
 let editingMode = ref(false);
 let listOfIdsToDelete = ref<Array<string>>([]);
-let recipes: Array<GetRecipeBasicInfoDto> = [
+let units: Array<GetUnitDto> = [
   {
     id: "123456",
-    title: "Cokinkovy kolacik",
-    lastCooked: new Date(),
+    title: "Gram",
+    creatorId: "null",
   },
   {
     id: "123455",
-    title: "Rybacia polievocka",
-    lastCooked: new Date(),
-  },
-  {
-    id: "123454",
-    title: "Buterbrodik",
-    lastCooked: new Date(),
+    title: "Polievkova lyzica",
+    creatorId: "1111",
   },
 ];
 

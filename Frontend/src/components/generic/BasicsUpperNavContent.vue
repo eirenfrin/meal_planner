@@ -1,33 +1,27 @@
 <template>
-  <nav>
-    <ul>
-      <li v-for="page in pageValues" :key="page.label">
-        <RouterLink
-          class="nav-link"
-          :to="`/app/${page.path}`"
-          :class="{ active: page.label == appStore.state.currentPage.label }"
-          >{{ page.label }}</RouterLink
-        >
-      </li>
-    </ul>
-  </nav>
+  <ul>
+    <li v-for="subpage in subPageValues" :key="subpage.label">
+      <RouterLink
+        class="nav-link"
+        :to="`${subpage.path}`"
+        :class="{
+          active: subpage.label == appStore.state.currentSubpage?.label,
+        }"
+      >
+        {{ subpage.label }}
+      </RouterLink>
+    </li>
+  </ul>
 </template>
 
 <script setup lang="ts">
-import { pageValues } from "../../domain/enums/currentPage";
+import { subPageValues } from "../../domain/enums/currentSubPage";
 import useAppStore from "../../stores/applicationStore";
 
 const appStore = useAppStore();
 </script>
 
 <style scoped>
-nav {
-  width: 100%;
-  background-color: #fdf6e3;
-  position: fixed;
-  bottom: 0;
-  padding: 20px;
-}
 ul {
   width: 60%;
   display: flex;
@@ -48,15 +42,14 @@ li {
 li:hover {
   transform: scale(1.5);
 }
-.active {
-  font-weight: 900;
-  font-size: xx-large;
-}
 .nav-link {
   color: black;
   text-decoration: none;
 }
 .nav-link:hover {
   color: black;
+}
+.active {
+  font-weight: 900;
 }
 </style>

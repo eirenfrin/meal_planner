@@ -7,24 +7,32 @@
         type="checkbox"
         @change="onToggle"
       />
-      <h1 class="list-entry-title">{{ recipe.title }}</h1>
+      <h1 class="list-entry-title">{{ unit.title }}</h1>
     </div>
-    <p class="list-entry-date">{{ recipe.lastCooked }}</p>
+    <p class="list-entry-creator">{{ generateUnitCreator(unit.creatorId) }}</p>
   </article>
 </template>
 
 <script setup lang="ts">
-import type { GetRecipeBasicInfoDto } from "../../domain/models/getRecipeBasicInfoDto";
+import type { GetUnitDto } from "../../domain/models/getUnitDto";
 
 const props = defineProps<{
-  recipe: GetRecipeBasicInfoDto;
+  unit: GetUnitDto;
   editingMode: boolean;
 }>();
 
-let emit = defineEmits(["toggleRecipe"]);
+let emit = defineEmits(["toggleUnit"]);
 
 function onToggle(): void {
-  emit("toggleRecipe", props.recipe.id);
+  emit("toggleUnit", props.unit.id);
+}
+
+function generateUnitCreator(creatorId: string | null): string {
+  if (creatorId == "null") {
+    return "predefined";
+  } else {
+    return "custom";
+  }
 }
 </script>
 
@@ -53,5 +61,9 @@ article {
   padding-left: 20px;
   font-size: medium;
   font-weight: 400;
+}
+
+.list-entry-creator {
+  font-style: italic;
 }
 </style>

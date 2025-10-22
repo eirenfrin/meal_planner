@@ -1,14 +1,6 @@
 <template>
   <nav>
-    <ul>
-      <li
-        v-for="entry in subPageValues"
-        :key="entry"
-        :class="{ active: entry == currentSubPage }"
-      >
-        {{ entry }}
-      </li>
-    </ul>
+    <slot name="upperNavContent"></slot>
     <div class="settings">
       <span class="material-icons">settings</span>
       <span class="icon-settings-label">rodinkina-kuchyna</span>
@@ -16,16 +8,7 @@
   </nav>
 </template>
 
-<script setup lang="ts">
-import {
-  subPageValues,
-  type CurrentSubPage,
-} from "../../domain/enums/currentSubPage";
-
-const props = defineProps<{
-  currentSubPage: CurrentSubPage;
-}>();
-</script>
+<script setup lang="ts"></script>
 
 <style scoped>
 nav {
@@ -37,29 +20,6 @@ nav {
   display: flex;
   align-items: center;
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.1);
-}
-ul {
-  width: 60%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-  margin: 0 auto;
-  padding: 0;
-}
-li {
-  list-style: none;
-  text-align: center;
-  font-size: large;
-  transition: transform 0.2s ease;
-  font-weight: 500;
-  cursor: pointer;
-}
-li:hover {
-  transform: scale(1.5);
-}
-.active {
-  font-weight: 900;
 }
 .settings {
   display: inline-flex;

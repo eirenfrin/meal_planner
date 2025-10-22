@@ -2,32 +2,60 @@ import { createRouter, createWebHistory } from "vue-router";
 import type { RouteRecordRaw } from "vue-router";
 
 const routes: RouteRecordRaw[] = [
-  //   {
-  //     path: "/app",
-  //     name: "App",
-  //     meta: { requiresAuth: true },
-  //     component: () => import("layouts/ApplicationLayout.vue"),
-  //     children: [
-  //       {
-  //         path: "",
-  //         name: "Index",
-  //         meta: { requiresAuth: true },
-  //         component: () => import("pages/IndexPage.vue"),
-  //       },
-  //       {
-  //         path: "profile",
-  //         name: "Profile",
-  //         meta: { requiresAuth: true },
-  //         component: () => import("pages/ProfilePage.vue"),
-  //       },
-  //       {
-  //         path: "settings",
-  //         name: "Settings",
-  //         meta: { requiresAuth: true },
-  //         component: () => import("pages/SettingsPage.vue"),
-  //       },
-  //     ],
-  //   },
+  {
+    path: "/app",
+    name: "App",
+    meta: { requiresAuth: true },
+    component: () => import("../layouts/ApplicationLayout.vue"),
+    children: [
+      {
+        path: "",
+        redirect: { name: "Recipes" },
+      },
+      {
+        path: "basics",
+        name: "Basics",
+        meta: { requiresAuth: true },
+        component: () => import("../pages/BasicsPage.vue"),
+        children: [
+          {
+            path: "",
+            redirect: { name: "Recipes" },
+          },
+          {
+            path: "recipes",
+            name: "Recipes",
+            meta: { requiresAuth: true },
+            component: () => import("../pages/basics/RecipeSubpage.vue"),
+          },
+          {
+            path: "units",
+            name: "Units",
+            meta: { requiresAuth: true },
+            component: () => import("../pages/basics/UnitSubpage.vue"),
+          },
+          {
+            path: "ingredients",
+            name: "Ingredients",
+            meta: { requiresAuth: true },
+            component: () => import("../pages/basics/IngredientSubpage.vue"),
+          },
+        ],
+      },
+      {
+        path: "mealplans",
+        name: "Mealplans",
+        meta: { requiresAuth: true },
+        component: () => import("../pages/MealplansPage.vue"),
+      },
+      {
+        path: "shopping-lists",
+        name: "ShoppingLists",
+        meta: { requiresAuth: true },
+        component: () => import("../pages/ShoppingListsPage.vue"),
+      },
+    ],
+  },
 ];
 
 const router = createRouter({

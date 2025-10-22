@@ -3,16 +3,20 @@
     :editing-mode="editingMode"
     :add-callback="addCallback"
     :delete-callback="deleteCallback"
-    header-title="My cookbook"
+    header-title="All Ingredients"
     @change-edit-mode="editModeCallback"
   >
     <template #content>
       <ul class="list">
-        <li class="list-entry" v-for="recipe in recipes" :key="recipe.id">
-          <RecipeOverviewListEntry
+        <li
+          class="list-entry"
+          v-for="ingredient in ingredients"
+          :key="ingredient.id"
+        >
+          <IngredientOverviewListEntry
             :editing-mode="editingMode"
-            :recipe="recipe"
-            @toggle-recipe="toggleCallback"
+            :ingredient="ingredient"
+            @toggle-unit="toggleCallback"
           />
         </li>
       </ul>
@@ -22,27 +26,26 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import type { GetRecipeBasicInfoDto } from "../../domain/models/getRecipeBasicInfoDto";
-import RecipeOverviewListEntry from "./RecipeOverviewListEntry.vue";
+import type { GetIngredientDto } from "../../domain/models/getIngredientDto";
+import IngredientOverviewListEntry from "./IngredientOverviewListEntry.vue";
 import OverviewList from "../generic/OverviewList.vue";
 
 let editingMode = ref(false);
 let listOfIdsToDelete = ref<Array<string>>([]);
-let recipes: Array<GetRecipeBasicInfoDto> = [
+let ingredients: Array<GetIngredientDto> = [
   {
     id: "123456",
-    title: "Cokinkovy kolacik",
-    lastCooked: new Date(),
+    title: "Vanilka",
+    soldPackageSize: 3,
+    unitId: "pack",
+    creatorId: "null",
   },
   {
     id: "123455",
-    title: "Rybacia polievocka",
-    lastCooked: new Date(),
-  },
-  {
-    id: "123454",
-    title: "Buterbrodik",
-    lastCooked: new Date(),
+    title: "Bravcove pliecko",
+    soldPackageSize: 1,
+    unitId: "kg",
+    creatorId: "1111",
   },
 ];
 

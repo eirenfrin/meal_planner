@@ -1,19 +1,21 @@
 import { defineStore } from "pinia";
-import { ref, computed } from "vue";
+import { reactive } from "vue";
+import type { AppStoreState } from "../domain/store-states/appStoreState";
+import { CurrentPage } from "../domain/enums/currentPage";
+import { CurrentSubPage } from "../domain/enums/currentSubPage";
 
 const useAppStore = defineStore("applicationStore", () => {
-  // reactive data (if value of count changes, it will get updated wherever it is referred)
-  const count = ref(0);
+  const state: AppStoreState = reactive({
+    currentPage: CurrentPage.BASICS,
+    currentSubpage: CurrentSubPage.RECIPES,
+  });
 
-  // getter (automatically recomputes when its underlying data change, otherwise is cached)
-  const getFormattedCount = computed(() => `Count is ${count.value}`);
-
-  // action (function call (can be sync and async), calls are not cached)
-  function increment() {
-    count.value++;
+  function changePages(page: CurrentPage, subpage?: CurrentSubPage): void {
+    state.currentPage = page;
+    state.currentSubpage = subpage;
   }
 
-  return { count, getFormattedCount, increment };
+  return { state, changePages };
 });
 
 export default useAppStore;
