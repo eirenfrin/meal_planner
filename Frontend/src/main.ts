@@ -6,6 +6,7 @@ import router from "./router";
 import { mapPage } from "./domain/enums/currentPage";
 import { mapSubPage } from "./domain/enums/currentSubPage";
 import useAppStore from "./stores/applicationStore";
+import useAuthStore from "./stores/authenticationStore";
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -35,5 +36,17 @@ router.afterEach((to) => {
 
   appStore.changePages(page, subPage);
 });
+
+// router.beforeEach((to, _, next) => {
+//   const authStore = useAuthStore(pinia);
+
+//   if (to.meta.requiresAuth && !authStore.isAuthSuccess) {
+//     next({ name: "Login" });
+//   } else if (to.meta.guestOnly && authStore.isAuthSuccess) {
+//     next({ name: "Recipes" });
+//   } else {
+//     next();
+//   }
+// });
 
 app.mount("#app");

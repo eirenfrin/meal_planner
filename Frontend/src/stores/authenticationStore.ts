@@ -1,11 +1,12 @@
 import { defineStore } from "pinia";
-import { reactive } from "vue";
+import { computed, reactive } from "vue";
 import type { AuthStoreState } from "../domain/store-states/authStoreState";
 import { AuthStatus } from "../domain/enums/authStatus";
 import { decodeUserFromJWT, type User } from "../domain/models/user";
 import type { AppError } from "../domain/models/appError";
 import userService from "../api/services/userService";
 import type { AuthRequest } from "../domain/models/authRequest";
+import { useRouter } from "vue-router";
 
 const useAuthStore = defineStore("authenticationStore", () => {
   const state: AuthStoreState = reactive({
@@ -14,6 +15,16 @@ const useAuthStore = defineStore("authenticationStore", () => {
     status: AuthStatus.INIT,
     errors: [],
   });
+
+  const router = useRouter();
+
+  const isAuthPending = computed(() => state.status == AuthStatus.PENDING);
+  const isAuthSuccess = computed(
+    () =>
+      state.status == AuthStatus.SUCCESS &&
+      state.currentUser != null &&
+      state.accessToken != null
+  );
 
   function authPending(): void {
     state.status = AuthStatus.PENDING;
@@ -48,6 +59,7 @@ const useAuthStore = defineStore("authenticationStore", () => {
       await userService.registerUser(authRequest);
 
       authInit();
+      router.push({ name: "Login" });
     } catch (e: any) {
       authFailure(e as AppError[]);
     }
@@ -61,6 +73,7 @@ const useAuthStore = defineStore("authenticationStore", () => {
       let user = decodeUserFromJWT(accessToken);
 
       authSuccess(accessToken.token, user);
+      router.push({ name: "Recipes" });
     } catch (e: any) {
       authFailure(e as AppError[]);
     }
@@ -78,7 +91,7 @@ const useAuthStore = defineStore("authenticationStore", () => {
     }
   }
 
-  return { state, register, login, logout };
+  return { state, isAuthPending, isAuthSuccess, register, login, logout };
 });
 
 export default useAuthStore;

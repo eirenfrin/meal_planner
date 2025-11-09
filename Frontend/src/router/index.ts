@@ -56,6 +56,26 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
+  {
+    path: "/noapp",
+    name: "NoApp",
+    meta: { guestOnly: true },
+    component: () => import("../layouts/LoginRegisterLayout.vue"),
+    children: [
+      {
+        path: "registration",
+        name: "Registration",
+        meta: { guestOnly: true },
+        component: () => import("../pages/RegistrationPage.vue"),
+      },
+      {
+        path: "login",
+        name: "Login",
+        meta: { guestOnly: true },
+        component: () => import("../pages/LoginPage.vue"),
+      },
+    ],
+  },
 ];
 
 const router = createRouter({
