@@ -2,22 +2,24 @@
   <section class="overview-list-container">
     <header>
       <h1>{{ headerTitle }}</h1>
-      <div v-if="!editingMode" class="recipes-actions">
-        <button class="add-button">
-          <span @click="addCallback" class="material-symbols-outlined">
-            add_box
-          </span>
+      <div v-if="!editingMode" class="two-button-group">
+        <button class="btn-1">
+          Add new
+          <!-- <span @click="addCallback" class="material-symbols-outlined">add_box</span> -->
         </button>
-        <button @click="onChangeMode" class="edit-button">
-          <span class="material-symbols-outlined"> edit_square </span>
+        <button @click="onChangeMode" class="btn-2">
+          Edit
+          <!-- <span class="material-symbols-outlined"> edit_square </span> -->
         </button>
       </div>
-      <div v-else class="delete-actions">
-        <button @click="onChangeMode" class="cancel-button">
-          <span class="material-symbols-outlined"> undo </span>
+      <div v-else class="two-button-group">
+        <button @click="onChangeMode" class="btn-1">
+          Undo
+          <!-- <span class="material-symbols-outlined"> undo </span> -->
         </button>
-        <button @click="deleteCallback" class="delete-button">
-          <span class="material-symbols-outlined"> delete </span>
+        <button @click="deleteCallback" class="btn-2">
+          Delete selected
+          <!-- <span class="material-symbols-outlined"> delete </span> -->
         </button>
       </div>
     </header>
@@ -50,6 +52,7 @@ function onChangeMode(): void {
   padding: 1rem 2rem;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
 }
+
 header {
   width: 100%;
   display: flex;
@@ -58,22 +61,20 @@ header {
   align-items: center;
   padding: 1rem 0;
 }
-button {
-  font-size: medium;
-  border: none;
-  border-radius: 0;
-  background-color: white;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  padding: 0px;
-  outline: none;
+
+.btn-1,
+.btn-2 {
+  border-color: white;
 }
+
 h1 {
   margin: 0;
 }
+
 .material-symbols-outlined {
   font-size: xx-large;
 }
+
 .material-symbols-outlined:hover {
   color: blueviolet;
 }

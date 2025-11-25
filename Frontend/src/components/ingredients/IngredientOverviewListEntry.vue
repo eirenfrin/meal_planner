@@ -1,13 +1,13 @@
 <template>
-  <article>
-    <div class="list-entry-checkbox-title">
+  <article class="fancy-list-item">
+    <div class="fancy-list-entry-checkbox-title">
       <input
         class="checkbox-restyle"
         v-show="editingMode"
         type="checkbox"
         @change="onToggle"
       />
-      <h1 class="list-entry-title">
+      <h1 class="fancy-list-entry-title">
         {{ ingredient.title }}
         <span class="amount-info"
           >{{ ingredient.soldPackageSize }} {{ ingredient.unitId }}</span
@@ -44,35 +44,9 @@ function generateIngredientCreator(creatorId: string | null): string {
 </script>
 
 <style scoped>
-article {
-  padding: 10px 20px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  /* border: 2px solid #00ff51; */
-  border-left: 3px solid #3e1c00;
-  border-right: 3px solid #3e1c00;
-  border-radius: 6px;
-  background: #fdf6e3;
-  font-family: "Georgia", serif;
-}
-
-.list-entry-checkbox-title {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.list-entry-title {
-  padding-left: 1rem;
-  font-size: medium;
-  font-weight: 400;
-}
-
 .amount-info {
   margin-left: 1.5rem;
-  font-size: small;
+  font-size: medium;
   vertical-align: baseline;
 }
 

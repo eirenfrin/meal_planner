@@ -4,4 +4,5 @@ import type { CurrentSubPage } from "../enums/currentSubPage";
 export interface AppStoreState {
   currentPage: CurrentPage;
   currentSubpage?: CurrentSubPage;
+  chooseUnitAmountModalVisibility: boolean;
 }

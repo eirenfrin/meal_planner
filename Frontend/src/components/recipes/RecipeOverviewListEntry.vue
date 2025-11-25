@@ -1,13 +1,13 @@
 <template>
-  <article>
-    <div class="list-entry-checkbox-title">
+  <article class="fancy-list-item">
+    <div class="fancy-list-entry-checkbox-title">
       <input
         class="checkbox-restyle"
         v-show="editingMode"
         type="checkbox"
         @change="onToggle"
       />
-      <h1 class="list-entry-title">{{ recipe.title }}</h1>
+      <h1 class="fancy-list-entry-title">{{ recipe.title }}</h1>
     </div>
     <p class="list-entry-date">{{ recipe.lastCooked }}</p>
   </article>
@@ -28,30 +28,4 @@ function onToggle(): void {
 }
 </script>
 
-<style scoped>
-article {
-  padding: 10px 20px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  /* border: 2px solid #00ff51; */
-  border-left: 3px solid #3e1c00;
-  border-right: 3px solid #3e1c00;
-  border-radius: 6px;
-  background: #fdf6e3;
-  font-family: "Georgia", serif;
-}
-
-.list-entry-checkbox-title {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.list-entry-title {
-  padding-left: 20px;
-  font-size: medium;
-  font-weight: 400;
-}
-</style>
+<style scoped></style>
