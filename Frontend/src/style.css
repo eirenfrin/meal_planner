@@ -60,7 +60,7 @@ button {
   border: 1px solid transparent;
   white-space: nowrap;
   padding: 0.5rem 2rem;
-  font-size: 1em;
+  font-size: 1rem;
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
@@ -169,14 +169,12 @@ button:focus-visible {
   border-radius: 0 9999px 9999px 0;
 }
 
-.three-button-group {
+.btn-icon {
+  border-radius: 9999px;
   display: flex;
   flex-direction: row;
-  gap: 5px;
-}
-
-.three-button-group .btn-1 {
-  border-radius: 9999px;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /* Modals */
@@ -232,6 +230,14 @@ button:focus-visible {
   flex-direction: row;
   align-items: center;
   gap: 1rem;
+}
+
+.units-recipe-item {
+  font-size: small;
+  padding: 0.5rem 1rem;
+  background-color: rgb(241, 241, 241);
+  border-radius: 8px;
+  margin: 1rem 0.5rem 1rem 0;
 }
 
 @media (prefers-color-scheme: light) {

@@ -10,22 +10,57 @@
           <button class="btn-2" @click.prevent="close">Cancel</button>
         </div>
       </header>
-      <article>
-        <input type="text" placeholder="Enter unit title"></input>
-      </article>
+      <div class="input-button-group">
+        <input class="input" 
+        type="text"
+        id="ingredient-title"
+        placeholder="Enter ingredient title">
+        </input>
+        <button
+          class="btn"
+          @click.prevent="openUnitAmountModal('Ingredient package size')"
+        >
+          Add package size
+        </button>
+    </div>
     </form>
+    <teleport to="#modal-container">
+    <ChooseUnitAmountModal
+      class="modal"
+      v-show="modalUnitAmountOpen"
+      @close="closeUnitAmountModal"
+    >
+      <template #text-amount-for>
+        <h3 class="modal-title">{{ modalTitle }}</h3>
+      </template>
+    </ChooseUnitAmountModal>
+  </teleport>
   </div>
 </template>
 
 
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import useAppStore from '../stores/applicationStore';
+import ChooseUnitAmountModal from "./ChooseUnitAmountModal.vue";
 
 const appStore = useAppStore();
 
+const modalUnitAmountOpen = ref<boolean>(false);
+const modalTitle = ref<string>();
+
 function close(): void {
     appStore.toggleChooseAddEditIngredientModal();
+}
+
+function openUnitAmountModal(title: string) {
+  modalTitle.value = title;
+  modalUnitAmountOpen.value = true;
+}
+
+function closeUnitAmountModal() {
+  modalUnitAmountOpen.value = false;
 }
 </script>
 

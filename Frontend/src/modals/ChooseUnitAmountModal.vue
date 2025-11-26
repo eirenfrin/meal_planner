@@ -81,7 +81,7 @@ function openUnitModal() {
 
 .modal-overlay {
   position: fixed;
-  z-index: 100;
+  z-index: 150;
   top: 0;
   left: 0;
   width: 100vw;

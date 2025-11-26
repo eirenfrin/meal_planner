@@ -3,13 +3,15 @@
     <form class="modal">
     <header>
       <h1>New recipe</h1>
-      <div class="three-button-group modal-buttons">
-        <button class="btn-1">
+      <div class="three-button-group">
+        <button class="btn-icon" @click.prevent="openPreview">
           <span class="star-icon material-symbols-outlined">star</span>Preview
           recipe
         </button>
-        <button class="btn-2">save</button>
-        <button class="btn-3" @click.prevent="close">delete</button>
+        <div class="two-button-group">
+          <button class="btn-1">Save</button>
+          <button class="btn-2" @click.prevent="close">Cancel</button>
+        </div>
       </div>
     </header>
     <div class="input-button-group">
@@ -123,6 +125,10 @@ function closeUnitAmountModal() {
 function close() {
   appStore.toggleChooseAddEditRecipeModal();
 }
+
+function openPreview() {
+  appStore.toggleChooseRecipePreviewModal();
+}
 </script>
 
 <style scoped>
@@ -152,15 +158,23 @@ header {
   font-size: x-large;
 }
 
-.btn-1 {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .star-icon {
   margin-right: 5px;
+}
+
+.three-button-group {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 5px;
+}
+
+.three-button-group .btn-icon {
+  border: 5px solid white;
+}
+
+.three-button-group .btn-1, .three-button-group .btn-2 {
+  border-color: white;
 }
 
 .all-ingredients-list {
@@ -169,6 +183,7 @@ header {
   width: 100%;
   justify-content: space-between;
 }
+
 .item {
   display: flex;
   flex-direction: column;

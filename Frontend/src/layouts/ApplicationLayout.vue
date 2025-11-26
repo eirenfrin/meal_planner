@@ -12,18 +12,24 @@
     ></AddEditIngredientModal>
   </teleport>
   <teleport to="#modal-container">
-    <AddEditRecipeForm
+    <AddEditRecipeModal
       v-show="appStore.chooseAddEditRecipeModal"
-    ></AddEditRecipeForm>
+    ></AddEditRecipeModal>
+  </teleport>
+  <teleport to="#modal-container">
+    <RecipePreviewModal
+      v-show="appStore.chooseRecipePreviewModal"
+    ></RecipePreviewModal>
   </teleport>
 </template>
 
 <script setup lang="ts">
 import AddEditIngredientModal from "../modals/AddEditIngredientModal.vue";
-import AddEditRecipeForm from "../modals/AddEditRecipeModal.vue";
+import AddEditRecipeModal from "../modals/AddEditRecipeModal.vue";
 import AddEditUnitModal from "../modals/AddEditUnitModal.vue";
 import LowNavBar from "../components/generic/LowNavBar.vue";
 import useAppStore from "../stores/applicationStore";
+import RecipePreviewModal from "../modals/RecipePreviewModal.vue";
 
 const appStore = useAppStore();
 </script>

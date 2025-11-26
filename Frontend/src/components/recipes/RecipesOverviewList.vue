@@ -8,7 +8,12 @@
   >
     <template #content>
       <ul class="list">
-        <li class="list-entry" v-for="recipe in recipes" :key="recipe.id">
+        <li
+          class="list-entry"
+          v-for="recipe in recipes"
+          :key="recipe.id"
+          @click.prevent="openPreview"
+        >
           <RecipeOverviewListEntry
             :editing-mode="editingMode"
             :recipe="recipe"
@@ -70,13 +75,20 @@ async function deleteCallback(): Promise<void> {
 async function addCallback(): Promise<void> {
   appStore.toggleChooseAddEditRecipeModal();
 }
+
+function openPreview() {
+  appStore.toggleChooseRecipePreviewModal();
+}
 </script>
 
 <style scoped>
 .list-entry {
-  list-style: none;
   margin: 20px 0px;
   text-align: center;
+}
+
+.list-entry:hover {
+  cursor: pointer;
 }
 
 .list {
