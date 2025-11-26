@@ -25,6 +25,9 @@ import { ref } from "vue";
 import type { GetUnitDto } from "../../domain/models/getUnitDto";
 import UnitOverviewListEntry from "./UnitOverviewListEntry.vue";
 import OverviewList from "../generic/OverviewList.vue";
+import useAppStore from "../../stores/applicationStore";
+
+const appStore = useAppStore();
 
 let editingMode = ref(false);
 let listOfIdsToDelete = ref<Array<string>>([]);
@@ -60,7 +63,7 @@ async function deleteCallback(): Promise<void> {
 }
 
 async function addCallback(): Promise<void> {
-  console.log("add");
+  appStore.toggleChooseAddEditUnitModal();
 }
 </script>
 

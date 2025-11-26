@@ -7,7 +7,7 @@
                 <slot name="text-amount-for"></slot>
             </div>
             <div class="two-button-group">
-                <button class="btn-1">New unit</button>
+                <button class="btn-1" @click="openUnitModal">New unit</button>
                 <button class="btn-2" @click="close">Cancel</button>
             </div>
         </header>
@@ -25,7 +25,7 @@
                         v-if="currentlyProcessedUnit?.id == unit.id"
                         class="input-button-group"
                     >
-                        <input type="text" class="input" placeholder="Enter amount"></input>
+                        <input type="number" class="input" placeholder="Enter amount"></input>
                         <button class="btn">Add amount</button>
                     </div>
                 </li>
@@ -37,9 +37,12 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import type { GetUnitDto } from "../../domain/models/getUnitDto";
+import type { GetUnitDto } from "../domain/models/getUnitDto";
+import useAppStore from "../stores/applicationStore";
 
 const emits = defineEmits(["close"]);
+
+const appStore = useAppStore();
 
 function close() {
     emits("close");
@@ -62,6 +65,10 @@ const currentlyProcessedUnit = ref<GetUnitDto>();
 
 function selectUnit(unit: GetUnitDto) {
   currentlyProcessedUnit.value = unit;
+}
+
+function openUnitModal() {
+    appStore.toggleChooseAddEditUnitModal();
 }
 </script>
 

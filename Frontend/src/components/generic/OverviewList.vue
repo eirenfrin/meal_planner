@@ -3,24 +3,12 @@
     <header>
       <h1>{{ headerTitle }}</h1>
       <div v-if="!editingMode" class="two-button-group">
-        <button class="btn-1">
-          Add new
-          <!-- <span @click="addCallback" class="material-symbols-outlined">add_box</span> -->
-        </button>
-        <button @click="onChangeMode" class="btn-2">
-          Edit
-          <!-- <span class="material-symbols-outlined"> edit_square </span> -->
-        </button>
+        <button @click="addCallback" class="btn-1">Add new</button>
+        <button @click="onChangeMode" class="btn-2">Edit</button>
       </div>
       <div v-else class="two-button-group">
-        <button @click="onChangeMode" class="btn-1">
-          Undo
-          <!-- <span class="material-symbols-outlined"> undo </span> -->
-        </button>
-        <button @click="deleteCallback" class="btn-2">
-          Delete selected
-          <!-- <span class="material-symbols-outlined"> delete </span> -->
-        </button>
+        <button @click="onChangeMode" class="btn-1">Undo</button>
+        <button @click="deleteCallback" class="btn-2">Delete selected</button>
       </div>
     </header>
     <slot name="content"></slot>

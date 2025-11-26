@@ -25,6 +25,9 @@ import { ref } from "vue";
 import type { GetRecipeBasicInfoDto } from "../../domain/models/getRecipeBasicInfoDto";
 import RecipeOverviewListEntry from "./RecipeOverviewListEntry.vue";
 import OverviewList from "../generic/OverviewList.vue";
+import useAppStore from "../../stores/applicationStore";
+
+const appStore = useAppStore();
 
 let editingMode = ref(false);
 let listOfIdsToDelete = ref<Array<string>>([]);
@@ -65,7 +68,7 @@ async function deleteCallback(): Promise<void> {
 }
 
 async function addCallback(): Promise<void> {
-  console.log("add");
+  appStore.toggleChooseAddEditRecipeModal();
 }
 </script>
 

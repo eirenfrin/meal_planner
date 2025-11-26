@@ -8,11 +8,21 @@ const useAppStore = defineStore("applicationStore", () => {
   const state: AppStoreState = reactive({
     currentPage: CurrentPage.BASICS,
     currentSubpage: CurrentSubPage.RECIPES,
-    chooseUnitAmountModalVisibility: false,
+    chooseAddEditUnitModalVisibility: false,
+    chooseAddEditIngredientModalVisibility: false,
+    chooseAddEditRecipeModalVisibility: false,
   });
 
-  const chooseUnitAmountModal = computed(
-    () => state.chooseUnitAmountModalVisibility
+  const chooseAddEditUnitModal = computed(
+    () => state.chooseAddEditUnitModalVisibility
+  );
+
+  const chooseAddEditIngredientModal = computed(
+    () => state.chooseAddEditIngredientModalVisibility
+  );
+
+  const chooseAddEditRecipeModal = computed(
+    () => state.chooseAddEditRecipeModalVisibility
   );
 
   function changePages(page: CurrentPage, subpage?: CurrentSubPage): void {
@@ -20,16 +30,31 @@ const useAppStore = defineStore("applicationStore", () => {
     state.currentSubpage = subpage;
   }
 
-  function toggleChooseUnitAmountModal(): void {
-    state.chooseUnitAmountModalVisibility =
-      !state.chooseUnitAmountModalVisibility;
+  function toggleChooseAddEditUnitModal(): void {
+    state.chooseAddEditUnitModalVisibility =
+      !state.chooseAddEditUnitModalVisibility;
+  }
+
+  function toggleChooseAddEditIngredientModal(): void {
+    state.chooseAddEditIngredientModalVisibility =
+      !state.chooseAddEditIngredientModalVisibility;
+  }
+
+  function toggleChooseAddEditRecipeModal(): void {
+    console.log(`${state.chooseAddEditRecipeModalVisibility}`);
+    state.chooseAddEditRecipeModalVisibility =
+      !state.chooseAddEditRecipeModalVisibility;
   }
 
   return {
     state,
-    chooseUnitAmountModal,
+    chooseAddEditUnitModal,
+    chooseAddEditIngredientModal,
+    chooseAddEditRecipeModal,
     changePages,
-    toggleChooseUnitAmountModal,
+    toggleChooseAddEditUnitModal,
+    toggleChooseAddEditIngredientModal,
+    toggleChooseAddEditRecipeModal,
   };
 });
 
