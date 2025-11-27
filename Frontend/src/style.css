@@ -37,7 +37,13 @@ body {
 }
 
 h1 {
-  font-size: 3rem;
+  font-size: 2rem;
+  padding: 0px;
+  margin: 0px;
+}
+
+h2 {
+  font-size: 1.5rem;
   padding: 0px;
   margin: 0px;
 }
@@ -188,6 +194,18 @@ button:focus-visible {
   width: 60%;
   background-color: white;
   padding: 2rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.modal-big {
+  height: 50vh;
+}
+
+.modal-small {
+  height: 15vh;
 }
 
 .modal-overlay {
@@ -238,6 +256,21 @@ button:focus-visible {
   background-color: rgb(241, 241, 241);
   border-radius: 8px;
   margin: 1rem 0.5rem 1rem 0;
+}
+
+.item {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.scroll-list-container {
+  min-height: 0;
+}
+
+.scroll-list {
+  min-height: 0;
+  flex: 1;
+  overflow-y: auto;
 }
 
 @media (prefers-color-scheme: light) {

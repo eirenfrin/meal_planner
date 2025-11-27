@@ -1,6 +1,6 @@
 <template>
     <div class="modal-overlay">
-    <form class="modal">
+    <form class="modal modal-small">
       <header>
         <div class="modal-info">
           <h1>Add ingredient</h1>

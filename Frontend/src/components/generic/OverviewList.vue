@@ -1,5 +1,5 @@
 <template>
-  <section class="overview-list-container">
+  <section class="overview-list-container scroll-list-container">
     <header>
       <h1>{{ headerTitle }}</h1>
       <div v-if="!editingMode" class="two-button-group">
@@ -39,6 +39,7 @@ function onChangeMode(): void {
   justify-content: center;
   padding: 1rem 2rem;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+  height: 70vh;
 }
 
 header {
@@ -57,13 +58,5 @@ header {
 
 h1 {
   margin: 0;
-}
-
-.material-symbols-outlined {
-  font-size: xx-large;
-}
-
-.material-symbols-outlined:hover {
-  color: blueviolet;
 }
 </style>

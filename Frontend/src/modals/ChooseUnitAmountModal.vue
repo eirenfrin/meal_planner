@@ -1,6 +1,6 @@
 <template>
 <div class="modal-overlay">
-    <div class="modal">
+    <div class="modal modal-big">
         <header>
             <div class="modal-info">
                 <h2>Choose a unit and amount for:</h2>
@@ -11,8 +11,8 @@
                 <button class="btn-2" @click="close">Cancel</button>
             </div>
         </header>
-        <div class="all-units-list">
-            <ul>
+        <div class="all-units-list scroll-list-container">
+            <ul class="scroll-list">
                 <li
                 v-for="unit in units"
                 :key="unit.id"
@@ -57,6 +57,36 @@ let units: Array<GetUnitDto> = [
   {
     id: "45",
     title: "glass",
+    creatorId: "11",
+  },
+  {
+    id: "47",
+    title: "bowl",
+    creatorId: "11",
+  },
+  {
+    id: "48",
+    title: "tea spoon",
+    creatorId: "11",
+  },
+  {
+    id: "49",
+    title: "table spoon",
+    creatorId: "11",
+  },
+  {
+    id: "50",
+    title: "pinch",
+    creatorId: "11",
+  },
+  {
+    id: "51",
+    title: "tray",
+    creatorId: "11",
+  },
+  {
+    id: "52",
+    title: "gram",
     creatorId: "11",
   },
 ];

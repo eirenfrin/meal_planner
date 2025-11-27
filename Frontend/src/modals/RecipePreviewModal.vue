@@ -1,30 +1,31 @@
 <template>
   <div class="modal-overlay">
-    <div class="modal">
-      <article>
-        <header>
-          <h1>{{ recipe.title }}</h1>
-          <button @click.prevent="close">Close preview</button>
-        </header>
-        <div>
-          <ul v-if="recipe.recipeAmount.length != 0" class="units-recipe-list">
-            <li v-for="amount in recipe.recipeAmount" class="units-recipe-item">
-              {{ amount.recipeAmount + " " + amount.unitRecipeTitle }}
-            </li>
-          </ul>
-        </div>
-        <section>
-          <ul class="ingredients-list">
-            <li
-              v-for="ingredient in recipe.ingredients"
-              class="ingredient-item"
-            >
-              <h2>{{ ingredient.ingredientTitle }}</h2>
-              <div>{{ ingredient.amount + " " + ingredient.unitTitle }}</div>
-            </li>
-          </ul>
-        </section>
-      </article>
+    <div class="modal modal-big">
+      <header>
+        <h1>{{ recipe.title }}</h1>
+        <button @click.prevent="close">Close preview</button>
+      </header>
+      <div>
+        <ul v-if="recipe.recipeAmount.length != 0" class="units-recipe-list">
+          <li
+            v-for="amount in recipe.recipeAmount"
+            :key="amount.unitRecipeTitle"
+            class="units-recipe-item"
+          >
+            {{ amount.recipeAmount + " " + amount.unitRecipeTitle }}
+          </li>
+        </ul>
+      </div>
+      <ul class="scroll-list ingredients-list">
+        <li
+          v-for="ingredient in recipe.ingredients"
+          :key="ingredient.ingredientTitle"
+          class="ingredient-item item"
+        >
+          <h2>{{ ingredient.ingredientTitle }}</h2>
+          <div>{{ ingredient.amount + " " + ingredient.unitTitle }}</div>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -60,6 +61,16 @@ let ingredients: Array<GetRecipeIngredientDto> = [
   },
   {
     ingredientTitle: "Kopor",
+    amount: 1,
+    unitTitle: "zvazok",
+  },
+  {
+    ingredientTitle: "Sol",
+    amount: 1,
+    unitTitle: "zvazok",
+  },
+  {
+    ingredientTitle: "Cierne korenie",
     amount: 1,
     unitTitle: "zvazok",
   },

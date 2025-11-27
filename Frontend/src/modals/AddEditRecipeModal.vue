@@ -1,6 +1,6 @@
 <template>
   <div class="modal-overlay">
-    <form class="modal">
+    <form class="modal modal-big">
     <header>
       <h1>New recipe</h1>
       <div class="three-button-group">
@@ -27,19 +27,21 @@
           Add yield
         </button>
     </div>
-    <div class="all-ingredients-list">
+    <div class="all-ingredients-list scroll-list-container">
       <h2>Choose an ingredient</h2>
-      <ul>
+      <ul class="scroll-list">
         <li
           v-for="ingredient in availableIngredients"
           :key="ingredient.id"
           class="item"
           :class="{
             selected: currentlyProcessedIngredient?.id == ingredient.id,
+            added: addedIngredients?.find(i => i.id == ingredient.id)
           }"
           @click="selectIngredient(ingredient)"
         >
           {{ ingredient.title }}
+          <div class="ingredient-amount" v-show="addedIngredients?.find(i => i.id == ingredient.id)">{{ '1 pack' }}</div>
           <div
             v-if="currentlyProcessedIngredient?.id == ingredient.id"
             class="two-button-group"
@@ -50,7 +52,8 @@
             >
               Choose a unit
             </button>
-            <button class="btn-2">Add without amount</button>
+            <button class="btn-2" v-show="!addedIngredients?.find(i => i.id == ingredient.id)" @click.prevent="addIngredient(ingredient)">Add without amount</button>
+            <button class="btn-2" v-show="addedIngredients?.find(i => i.id == ingredient.id)" @click.prevent>Remove ingredient</button>
           </div>
         </li>
       </ul>
@@ -91,7 +94,44 @@ let ingredients: Array<GetIngredientDto> = [
     unitId: "kg",
     creatorId: "1111",
   },
+  {
+    id: "12",
+    title: "Cukor",
+    soldPackageSize: 1,
+    unitId: "kg",
+    creatorId: "1111",
+  },
+  {
+    id: "13",
+    title: "Por",
+    soldPackageSize: 1,
+    unitId: "ks",
+    creatorId: "1111",
+  },
+  {
+    id: "14",
+    title: "Muka",
+    soldPackageSize: 1,
+    unitId: "kg",
+    creatorId: "1111",
+  },
+  {
+    id: "19",
+    title: "Caj",
+    soldPackageSize: 1,
+    unitId: "kg",
+    creatorId: "1111",
+  },
+  {
+    id: "18",
+    title: "kava",
+    soldPackageSize: 1,
+    unitId: "kg",
+    creatorId: "1111",
+  },
 ];
+
+const addedIngredients = ref<GetIngredientDto[]>([]);
 
 const appStore = useAppStore();
 const currentlyProcessedIngredient = ref<GetIngredientDto>();
@@ -129,6 +169,10 @@ function close() {
 function openPreview() {
   appStore.toggleChooseRecipePreviewModal();
 }
+
+function addIngredient(ingredient: GetIngredientDto) {
+  addedIngredients.value?.push(ingredient);
+}
 </script>
 
 <style scoped>
@@ -154,8 +198,12 @@ header {
   margin-bottom: 1rem;
 }
 
+.input-button-group {
+  margin-bottom: 2rem;
+}
+
 .input {
-  font-size: x-large;
+  font-size: large;
 }
 
 .star-icon {
@@ -184,6 +232,10 @@ header {
   justify-content: space-between;
 }
 
+.all-ingredients-list h2 {
+  padding-bottom: 1rem;
+}
+
 .item {
   display: flex;
   flex-direction: column;
@@ -203,5 +255,9 @@ header {
 }
 .selected:hover {
   background-color: blanchedalmond;
+}
+
+.added {
+  /* background-color: rgb(241, 241, 241); */
 }
 </style>

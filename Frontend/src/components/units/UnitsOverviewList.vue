@@ -7,7 +7,7 @@
     @change-edit-mode="editModeCallback"
   >
     <template #content>
-      <ul class="list">
+      <ul class="list scroll-list">
         <li class="list-entry" v-for="unit in units" :key="unit.id">
           <UnitOverviewListEntry
             :editing-mode="editingMode"

@@ -7,7 +7,7 @@
     @change-edit-mode="editModeCallback"
   >
     <template #content>
-      <ul class="list">
+      <ul class="list scroll-list">
         <li
           class="list-entry"
           v-for="ingredient in ingredients"
@@ -46,6 +46,41 @@ let ingredients: Array<GetIngredientDto> = [
   {
     id: "123455",
     title: "Bravcove pliecko",
+    soldPackageSize: 1,
+    unitId: "kg",
+    creatorId: "1111",
+  },
+  {
+    id: "123457",
+    title: "Por",
+    soldPackageSize: 1,
+    unitId: "kg",
+    creatorId: "1111",
+  },
+  {
+    id: "123458",
+    title: "Cibula cervena",
+    soldPackageSize: 1,
+    unitId: "kg",
+    creatorId: "1111",
+  },
+  {
+    id: "123459",
+    title: "Cibula biela",
+    soldPackageSize: 1,
+    unitId: "kg",
+    creatorId: "1111",
+  },
+  {
+    id: "123460",
+    title: "Cibula bezna",
+    soldPackageSize: 1,
+    unitId: "kg",
+    creatorId: "1111",
+  },
+  {
+    id: "123461",
+    title: "Jarna cibulka",
     soldPackageSize: 1,
     unitId: "kg",
     creatorId: "1111",
