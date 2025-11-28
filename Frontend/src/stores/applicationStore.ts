@@ -12,6 +12,8 @@ const useAppStore = defineStore("applicationStore", () => {
     chooseAddEditIngredientModalVisibility: false,
     chooseAddEditRecipeModalVisibility: false,
     chooseRecipePreviewModalVisibility: false,
+    chooseShoppingListPreviewModalVisibility: false,
+    chooseAddEditShoppingListModalVisibility: false,
   });
 
   const chooseAddEditUnitModal = computed(
@@ -28,6 +30,14 @@ const useAppStore = defineStore("applicationStore", () => {
 
   const chooseRecipePreviewModal = computed(
     () => state.chooseRecipePreviewModalVisibility
+  );
+
+  const chooseShoppingListPreviewModal = computed(
+    () => state.chooseShoppingListPreviewModalVisibility
+  );
+
+  const chooseAddEditShoppingListModalModal = computed(
+    () => state.chooseAddEditShoppingListModalVisibility
   );
 
   function changePages(page: CurrentPage, subpage?: CurrentSubPage): void {
@@ -55,17 +65,30 @@ const useAppStore = defineStore("applicationStore", () => {
       !state.chooseRecipePreviewModalVisibility;
   }
 
+  function toggleChooseShoppingListPreviewModal(): void {
+    state.chooseShoppingListPreviewModalVisibility =
+      !state.chooseShoppingListPreviewModalVisibility;
+  }
+
+  function toggleChooseAddEditShoppingListModal(): void {
+    state.chooseAddEditShoppingListModalVisibility =
+      !state.chooseAddEditShoppingListModalVisibility;
+  }
   return {
     state,
     chooseAddEditUnitModal,
     chooseAddEditIngredientModal,
     chooseAddEditRecipeModal,
     chooseRecipePreviewModal,
+    chooseShoppingListPreviewModal,
+    chooseAddEditShoppingListModalModal,
     changePages,
     toggleChooseAddEditUnitModal,
     toggleChooseAddEditIngredientModal,
     toggleChooseAddEditRecipeModal,
     toggleChooseRecipePreviewModal,
+    toggleChooseShoppingListPreviewModal,
+    toggleChooseAddEditShoppingListModal,
   };
 });
 

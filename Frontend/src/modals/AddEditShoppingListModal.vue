@@ -2,11 +2,11 @@
   <div class="modal-overlay">
     <form class="modal modal-big">
     <header>
-      <h1>New recipe</h1>
+      <h1>New shopping list</h1>
       <div class="three-button-group">
         <button class="btn-icon" @click.prevent="openPreview">
           <span class="star-icon material-symbols-outlined">star</span>Preview
-          recipe
+          list
         </button>
         <div class="two-button-group">
           <button class="btn-1">Save</button>
@@ -18,13 +18,13 @@
         <input class="input" 
         type="text"
         id="username"
-        placeholder="Enter Recipe Title">
+        placeholder="Enter List Title">
         </input>
         <button
           class="btn"
-          @click.prevent="openUnitAmountModal('Recipe yield')"
+          @click.prevent="openUnitAmountModal('Shopping date')"
         >
-          Add yield
+          Choose shopping date
         </button>
     </div>
     <div class="all-ingredients-list scroll-list-container">
@@ -59,24 +59,12 @@
       </ul>
     </div>
   </form>
-  <teleport to="#modal-container">
-    <ChooseUnitAmountModal
-      class="modal"
-      v-show="modalUnitAmountOpen"
-      @close="closeUnitAmountModal"
-    >
-      <template #text-amount-for>
-        <h3 class="modal-title">{{ modalTitle }}</h3>
-      </template>
-    </ChooseUnitAmountModal>
-  </teleport>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import type { GetIngredientDto } from "../domain/models/getIngredientDto";
-import ChooseUnitAmountModal from "./ChooseUnitAmountModal.vue";
 import useAppStore from "../stores/applicationStore";
 
 let ingredients: Array<GetIngredientDto> = [
@@ -154,8 +142,8 @@ function selectIngredient(ingredient: GetIngredientDto) {
 }
 
 function openUnitAmountModal(title: string) {
-  setModalTitle(title);
-  modalUnitAmountOpen.value = true;
+//   setModalTitle(title);
+//   modalUnitAmountOpen.value = true;
 }
 
 function setModalTitle(title: string) {
@@ -167,11 +155,11 @@ function closeUnitAmountModal() {
 }
 
 function close() {
-  appStore.toggleChooseAddEditRecipeModal();
+  appStore.toggleChooseAddEditShoppingListModal();
 }
 
 function openPreview() {
-  appStore.toggleChooseRecipePreviewModal();
+  appStore.toggleChooseShoppingListPreviewModal();
 }
 
 function removeIngredient(ingredient: GetIngredientDto) {

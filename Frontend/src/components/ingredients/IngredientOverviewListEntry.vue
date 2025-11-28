@@ -14,9 +14,9 @@
         >
       </h1>
     </div>
-    <p class="list-entry-creator">
+    <div class="list-entry-creator">
       {{ generateIngredientCreator(ingredient.creatorId) }}
-    </p>
+    </div>
   </article>
 </template>
 

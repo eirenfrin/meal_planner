@@ -9,7 +9,9 @@
       />
       <h1 class="fancy-list-entry-title">{{ unit.title }}</h1>
     </div>
-    <p class="list-entry-creator">{{ generateUnitCreator(unit.creatorId) }}</p>
+    <div class="list-entry-creator">
+      {{ generateUnitCreator(unit.creatorId) }}
+    </div>
   </article>
 </template>
 

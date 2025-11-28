@@ -21,6 +21,16 @@
       v-show="appStore.chooseRecipePreviewModal"
     ></RecipePreviewModal>
   </teleport>
+  <teleport to="#modal-container">
+    <ShoppingListPreviewModal
+      v-show="appStore.chooseShoppingListPreviewModal"
+    ></ShoppingListPreviewModal>
+  </teleport>
+  <teleport to="#modal-container">
+    <AddEditShoppingListModal
+      v-show="appStore.chooseAddEditShoppingListModalModal"
+    ></AddEditShoppingListModal>
+  </teleport>
 </template>
 
 <script setup lang="ts">
@@ -30,6 +40,8 @@ import AddEditUnitModal from "../modals/AddEditUnitModal.vue";
 import LowNavBar from "../components/generic/LowNavBar.vue";
 import useAppStore from "../stores/applicationStore";
 import RecipePreviewModal from "../modals/RecipePreviewModal.vue";
+import ShoppingListPreviewModal from "../modals/ShoppingListPreviewModal.vue";
+import AddEditShoppingListModal from "../modals/AddEditShoppingListModal.vue";
 
 const appStore = useAppStore();
 </script>

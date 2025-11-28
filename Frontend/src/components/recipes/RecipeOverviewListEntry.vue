@@ -9,7 +9,7 @@
       />
       <h1 class="fancy-list-entry-title">{{ recipe.title }}</h1>
     </div>
-    <p class="list-entry-date">{{ recipe.lastCooked }}</p>
+    <div class="list-entry-date">{{ recipe.lastCooked }}</div>
   </article>
 </template>
 
