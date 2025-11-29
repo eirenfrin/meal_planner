@@ -2,34 +2,39 @@
   <RouterView />
   <LowNavBar />
   <teleport to="#modal-container"
-    ><AddEditUnitModal
-      v-show="appStore.chooseAddEditUnitModal"
-    ></AddEditUnitModal
+    ><AddEditUnitModal v-if="appStore.chooseAddEditUnitModal"></AddEditUnitModal
   ></teleport>
   <teleport to="#modal-container">
     <AddEditIngredientModal
-      v-show="appStore.chooseAddEditIngredientModal"
+      v-if="appStore.chooseAddEditIngredientModal"
     ></AddEditIngredientModal>
   </teleport>
   <teleport to="#modal-container">
     <AddEditRecipeModal
-      v-show="appStore.chooseAddEditRecipeModal"
+      v-if="appStore.chooseAddEditRecipeModal"
     ></AddEditRecipeModal>
   </teleport>
   <teleport to="#modal-container">
     <RecipePreviewModal
-      v-show="appStore.chooseRecipePreviewModal"
+      v-if="appStore.chooseRecipePreviewModal"
     ></RecipePreviewModal>
   </teleport>
   <teleport to="#modal-container">
     <ShoppingListPreviewModal
-      v-show="appStore.chooseShoppingListPreviewModal"
+      v-if="appStore.chooseShoppingListPreviewModal"
     ></ShoppingListPreviewModal>
   </teleport>
   <teleport to="#modal-container">
     <AddEditShoppingListModal
-      v-show="appStore.chooseAddEditShoppingListModalModal"
+      v-if="appStore.chooseAddEditShoppingListModalModal"
     ></AddEditShoppingListModal>
+  </teleport>
+  <teleport to="#modal-container">
+    <ChooseDateModal v-if="appStore.chooseDateModal"
+      ><template #text-date-for>
+        <h3>Shopping</h3>
+      </template></ChooseDateModal
+    >
   </teleport>
 </template>
 
@@ -42,6 +47,7 @@ import useAppStore from "../stores/applicationStore";
 import RecipePreviewModal from "../modals/RecipePreviewModal.vue";
 import ShoppingListPreviewModal from "../modals/ShoppingListPreviewModal.vue";
 import AddEditShoppingListModal from "../modals/AddEditShoppingListModal.vue";
+import ChooseDateModal from "../modals/ChooseDateModal.vue";
 
 const appStore = useAppStore();
 </script>

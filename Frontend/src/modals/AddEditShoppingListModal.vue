@@ -22,7 +22,7 @@
         </input>
         <button
           class="btn"
-          @click.prevent="openUnitAmountModal('Shopping date')"
+          @click.prevent="openDateModal()"
         >
           Choose shopping date
         </button>
@@ -142,16 +142,16 @@ function selectIngredient(ingredient: GetIngredientDto) {
 }
 
 function openUnitAmountModal(title: string) {
-//   setModalTitle(title);
-//   modalUnitAmountOpen.value = true;
+  setModalTitle(title);
+  modalUnitAmountOpen.value = true;
 }
 
 function setModalTitle(title: string) {
   modalTitle.value = title;
 }
 
-function closeUnitAmountModal() {
-  modalUnitAmountOpen.value = false;
+function openDateModal() {
+    appStore.toggleChooseDateModal();
 }
 
 function close() {

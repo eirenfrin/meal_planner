@@ -14,6 +14,7 @@ const useAppStore = defineStore("applicationStore", () => {
     chooseRecipePreviewModalVisibility: false,
     chooseShoppingListPreviewModalVisibility: false,
     chooseAddEditShoppingListModalVisibility: false,
+    chooseDateModalVisibility: false,
   });
 
   const chooseAddEditUnitModal = computed(
@@ -39,6 +40,8 @@ const useAppStore = defineStore("applicationStore", () => {
   const chooseAddEditShoppingListModalModal = computed(
     () => state.chooseAddEditShoppingListModalVisibility
   );
+
+  const chooseDateModal = computed(() => state.chooseDateModalVisibility);
 
   function changePages(page: CurrentPage, subpage?: CurrentSubPage): void {
     state.currentPage = page;
@@ -74,6 +77,10 @@ const useAppStore = defineStore("applicationStore", () => {
     state.chooseAddEditShoppingListModalVisibility =
       !state.chooseAddEditShoppingListModalVisibility;
   }
+
+  function toggleChooseDateModal(): void {
+    state.chooseDateModalVisibility = !state.chooseDateModalVisibility;
+  }
   return {
     state,
     chooseAddEditUnitModal,
@@ -82,6 +89,7 @@ const useAppStore = defineStore("applicationStore", () => {
     chooseRecipePreviewModal,
     chooseShoppingListPreviewModal,
     chooseAddEditShoppingListModalModal,
+    chooseDateModal,
     changePages,
     toggleChooseAddEditUnitModal,
     toggleChooseAddEditIngredientModal,
@@ -89,6 +97,7 @@ const useAppStore = defineStore("applicationStore", () => {
     toggleChooseRecipePreviewModal,
     toggleChooseShoppingListPreviewModal,
     toggleChooseAddEditShoppingListModal,
+    toggleChooseDateModal,
   };
 });
 

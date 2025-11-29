@@ -10,4 +10,5 @@ export interface AppStoreState {
   chooseRecipePreviewModalVisibility: boolean;
   chooseShoppingListPreviewModalVisibility: boolean;
   chooseAddEditShoppingListModalVisibility: boolean;
+  chooseDateModalVisibility: boolean;
 }

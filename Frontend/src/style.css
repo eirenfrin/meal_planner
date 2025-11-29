@@ -183,6 +183,17 @@ button:focus-visible {
   align-items: center;
 }
 
+.two-buttons-middle-text {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.two-buttons-middle-text .text {
+  padding: 0 2rem;
+}
+
 /* Modals */
 
 .modal-title {
