@@ -10,11 +10,15 @@
           <button class="btn-2" @click.prevent="close">Cancel</button>
         </div>
       </header>
+      <div class="preview-section">
+        <p>{{ ingredientTitleInput }}</p>
+      </div>
       <div class="input-button-group">
         <input class="input" 
         type="text"
         id="ingredient-title"
-        placeholder="Enter ingredient title">
+        placeholder="Enter ingredient title"
+        v-model="ingredientTitleInput">
         </input>
         <button
           class="btn"
@@ -49,6 +53,7 @@ const appStore = useAppStore();
 
 const modalUnitAmountOpen = ref<boolean>(false);
 const modalTitle = ref<string>();
+const ingredientTitleInput = ref<string>("");
 
 function close(): void {
     appStore.toggleChooseAddEditIngredientModal();
@@ -77,6 +82,6 @@ header {
 }
 
 h1 {
-  margin-bottom: 1rem;
+  margin-bottom: 0;
 }
 </style>

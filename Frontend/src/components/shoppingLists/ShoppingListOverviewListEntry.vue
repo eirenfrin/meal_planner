@@ -3,9 +3,10 @@
     <div class="fancy-list-entry-checkbox-title">
       <input
         class="checkbox-restyle"
-        v-show="editingMode"
+        v-if="editingMode"
         type="checkbox"
         @change="onToggle"
+        @click.stop
       />
       <h1 class="fancy-list-entry-title">{{ shoppingList.title }}</h1>
     </div>

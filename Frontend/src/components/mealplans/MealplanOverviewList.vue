@@ -3,24 +3,24 @@
     :editing-mode="listFunctions.editingMode"
     :add-callback="addCallback"
     :delete-callback="deleteCallback"
-    header-title="My cookbook"
+    header-title="My mealplans"
     @change-edit-mode="listFunctions.editModeCallback"
   >
     <template #content>
       <ul class="list scroll-list">
         <li
           class="list-entry"
-          v-for="recipe in recipes"
-          :key="recipe.id"
+          v-for="mealplan in mealplans"
+          :key="mealplan.id"
           @click.prevent="
             !listFunctions.editingMode &&
-              appStore.toggleChooseRecipePreviewModal()
+              appStore.toggleChooseShoppingListPreviewModal()
           "
         >
-          <RecipeOverviewListEntry
+          <MealplanOverviewListEntry
             :editing-mode="listFunctions.editingMode"
-            :recipe="recipe"
-            @toggle-recipe="listFunctions.toggleCallback"
+            :mealplan="mealplan"
+            @toggle-entry="listFunctions.toggleCallback"
           />
         </li>
       </ul>
@@ -30,31 +30,30 @@
 
 <script setup lang="ts">
 import { reactive } from "vue";
-import type { GetRecipeBasicInfoDto } from "../../domain/models/getRecipeBasicInfoDto";
-import RecipeOverviewListEntry from "./RecipeOverviewListEntry.vue";
-import OverviewList from "../generic/OverviewList.vue";
 import useAppStore from "../../stores/applicationStore";
+import OverviewList from "../generic/OverviewList.vue";
+import MealplanOverviewListEntry from "./MealplanOverviewListEntry.vue";
+import type { MealplanDto } from "../../domain/models/testModels/MealplanDto";
 import { useListFunctionalities } from "../../domain/composables/listFunctionalities";
 
 const appStore = useAppStore();
-
 let listFunctions = reactive(useListFunctionalities());
 
-let recipes: Array<GetRecipeBasicInfoDto> = [
+let mealplans: Array<MealplanDto> = [
   {
     id: "123456",
-    title: "Cokinkovy kolacik",
-    lastCooked: new Date(),
+    title: "Sobota varenie",
+    plannedStartDate: new Date(),
   },
   {
     id: "123455",
-    title: "Rybacia polievocka",
-    lastCooked: new Date(),
+    title: "Navsteva cez tyzden",
+    plannedStartDate: new Date(),
   },
   {
     id: "123454",
-    title: "Buterbrodik",
-    lastCooked: new Date(),
+    title: "Vikendove varenie",
+    plannedStartDate: new Date(new Date().setDate(1)),
   },
 ];
 
@@ -63,7 +62,7 @@ async function deleteCallback(): Promise<void> {
 }
 
 async function addCallback(): Promise<void> {
-  appStore.toggleChooseAddEditRecipeModal();
+  appStore.toggleChooseAddEditShoppingListModal();
 }
 </script>
 

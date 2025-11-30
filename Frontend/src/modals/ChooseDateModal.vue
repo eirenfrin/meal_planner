@@ -18,14 +18,14 @@
             placeholder="Enter Date">
             </input>
             <button
-            v-if="!shoppingDuringWeek"
+            v-if="!shoppingDuringInterval"
             class="btn"
             @click.prevent="toggleShoppingInterval"
             >
-            Shop during a week
+            Shop during an interval
             </button>
             <button
-            v-if="shoppingDuringWeek"
+            v-if="shoppingDuringInterval"
             class="btn"
             @click.prevent="toggleShoppingInterval"
             >
@@ -43,11 +43,11 @@ import { ref } from 'vue';
 import useAppStore from '../stores/applicationStore';
 import Calendar from '../components/generic/Calendar.vue';
 
-const shoppingDuringWeek = ref<boolean>(true);
+const shoppingDuringInterval = ref<boolean>(true);
 const appStore = useAppStore();
 
 function toggleShoppingInterval() {
-    shoppingDuringWeek.value = !shoppingDuringWeek.value;
+    shoppingDuringInterval.value = !shoppingDuringInterval.value;
 }
 
 

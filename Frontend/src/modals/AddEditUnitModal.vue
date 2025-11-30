@@ -10,20 +10,26 @@
           <button class="btn-2" @click.prevent="close">Cancel</button>
         </div>
       </header>
+      <div class="preview-section">
+        <p>{{ unitTitleInput }}</p>
+      </div>
       <article>
-        <input type="text" placeholder="Enter unit title"></input>
+        <input type="text" placeholder="Enter unit title" v-model="unitTitleInput"></input>
       </article>
     </form>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import useAppStore from '../stores/applicationStore';
 
 // const props = defineProps<{
 //   actionMessage: string
 // }>()
 // const emits = defineEmits(["close"]);
+
+const unitTitleInput = ref<string>();
 const appStore = useAppStore();
 
 function close() {
@@ -45,7 +51,7 @@ header {
 }
 
 h1 {
-  margin-bottom: 1rem;
+  margin-bottom: 0;
 }
 .modal-overlay{
   z-index: 200;

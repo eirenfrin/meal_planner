@@ -1,10 +1,10 @@
 <template>
   <OverviewList
-    :editing-mode="editingMode"
+    :editing-mode="listFunctions.editingMode"
     :add-callback="addCallback"
     :delete-callback="deleteCallback"
     header-title="My shopping lists"
-    @change-edit-mode="editModeCallback"
+    @change-edit-mode="listFunctions.editModeCallback"
   >
     <template #content>
       <ul class="list scroll-list">
@@ -12,12 +12,15 @@
           class="list-entry"
           v-for="shoppingList in shoppingLists"
           :key="shoppingList.id"
-          @click.prevent="openPreview"
+          @click.prevent="
+            !listFunctions.editingMode &&
+              appStore.toggleChooseShoppingListPreviewModal()
+          "
         >
           <ShoppingListOverviewListEntry
-            :editing-mode="editingMode"
+            :editing-mode="listFunctions.editingMode"
             :shoppingList="shoppingList"
-            @toggle-entry="toggleCallback"
+            @toggle-entry="listFunctions.toggleCallback"
           />
         </li>
       </ul>
@@ -26,15 +29,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
 import useAppStore from "../../stores/applicationStore";
 import OverviewList from "../generic/OverviewList.vue";
 import ShoppingListOverviewListEntry from "./ShoppingListOverviewListEntry.vue";
 import type { ShoppingListDto } from "../../domain/models/testModels/ShoppingListDto";
+import { useListFunctionalities } from "../../domain/composables/listFunctionalities";
+import { reactive } from "vue";
 
 const appStore = useAppStore();
-let editingMode = ref(false);
-let listOfIdsToDelete = ref<Array<string>>([]);
+let listFunctions = reactive(useListFunctionalities());
 
 let shoppingLists: Array<ShoppingListDto> = [
   {
@@ -63,30 +66,12 @@ let shoppingLists: Array<ShoppingListDto> = [
   },
 ];
 
-function toggleCallback(id: string): void {
-  if (listOfIdsToDelete.value.includes(id)) {
-    listOfIdsToDelete.value.splice(listOfIdsToDelete.value.indexOf(id), 1);
-  } else {
-    listOfIdsToDelete.value.push(id);
-  }
-
-  console.log(JSON.stringify(listOfIdsToDelete.value));
-}
-
-function editModeCallback(mode: boolean): void {
-  editingMode.value = mode;
-}
-
 async function deleteCallback(): Promise<void> {
   console.log("delete");
 }
 
 async function addCallback(): Promise<void> {
   appStore.toggleChooseAddEditShoppingListModal();
-}
-
-function openPreview() {
-  appStore.toggleChooseShoppingListPreviewModal();
 }
 </script>
 

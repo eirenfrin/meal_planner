@@ -3,12 +3,14 @@
     <header>
       <h1>{{ headerTitle }}</h1>
       <div v-if="!editingMode" class="two-button-group">
-        <button @click="addCallback" class="btn-1">Add new</button>
-        <button @click="onChangeMode" class="btn-2">Edit list</button>
+        <button @click.prevent="addCallback" class="btn-1">Add new</button>
+        <button @click.prevent="onChangeMode" class="btn-2">Edit list</button>
       </div>
       <div v-else class="two-button-group">
-        <button @click="onChangeMode" class="btn-1">Undo</button>
-        <button @click="deleteCallback" class="btn-2">Delete selected</button>
+        <button @click.prevent="onChangeMode" class="btn-1">Undo</button>
+        <button @click.prevent="deleteCallback" class="btn-2">
+          Delete selected
+        </button>
       </div>
     </header>
     <slot name="content"></slot>

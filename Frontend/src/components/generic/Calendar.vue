@@ -70,7 +70,6 @@ const weeksToDisplay = computed(() => {
   );
 });
 
-// TODO simplify this
 function computeAllSelectedDates(startDay: number) {
   allSelectedDates.value = [];
 
@@ -80,16 +79,14 @@ function computeAllSelectedDates(startDay: number) {
   let interval: number = 40;
 
   let startDate: Date = new Date(startYear, startMonth, startDay);
-  let finalDate: Date = new Date(startDate);
-  finalDate.setDate(startDate.getDate() + interval);
-  console.log(finalDate);
 
   let currentDate: Date = startDate;
-  while (currentDate < finalDate) {
+  for (let nextDay = 1; nextDay <= interval; nextDay++) {
     allSelectedDates.value.push(new Date(currentDate));
     currentDate.setDate(currentDate.getDate() + 1);
   }
-  console.log(allSelectedDates.value);
+
+  return allSelectedDates;
 }
 
 const allDaysOfMonth = computed(() => {
