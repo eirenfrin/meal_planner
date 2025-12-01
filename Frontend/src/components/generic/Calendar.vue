@@ -150,25 +150,30 @@ function chooseDate(dayInMonth: number | null) {
   align-items: center;
   justify-content: center;
 }
+
 .calendar-days-grid {
   width: 60%;
   table-layout: fixed;
 }
+
 th,
 td {
   text-align: center;
   height: 1.2rem;
 }
+
 td:hover {
   cursor: pointer;
   background-color: beige;
   border-radius: 4px;
 }
+
 .weekdays-header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
+
 .selected {
   background-color: blanchedalmond;
   border-radius: 4px;

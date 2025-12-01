@@ -10,9 +10,6 @@
           <button class="btn-2" @click.prevent="close">Cancel</button>
         </div>
       </header>
-      <div class="preview-section">
-        <p>{{ ingredientTitleInput }}</p>
-      </div>
       <div class="input-button-group">
         <input class="input" 
         type="text"
@@ -27,6 +24,16 @@
           Add package size
         </button>
     </div>
+    <ul v-show="unitsAmountSold.length != 0" class="units-amount-list">
+        <li
+          v-for="amount in unitsAmountSold"
+          :key="amount"
+          class="units-amount-item"
+        >
+          {{ amount }}
+          <span class="material-symbols-outlined unit-amount-delete-btn">cancel</span>
+        </li>
+    </ul>
     </form>
     <teleport to="#modal-container">
     <ChooseUnitAmountModal
@@ -54,6 +61,7 @@ const appStore = useAppStore();
 const modalUnitAmountOpen = ref<boolean>(false);
 const modalTitle = ref<string>();
 const ingredientTitleInput = ref<string>("");
+const unitsAmountSold = ref<Array<string>>(['1 pack'])
 
 function close(): void {
     appStore.toggleChooseAddEditIngredientModal();
@@ -70,12 +78,6 @@ function closeUnitAmountModal() {
 </script>
 
 <style scoped>
-header {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: space-between;
-}
 
 .btn-1, .btn-2 {
   border-color: white;

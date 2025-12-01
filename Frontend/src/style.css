@@ -1,14 +1,31 @@
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #ffffff;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+#app {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 /* General elements reset */
@@ -24,16 +41,9 @@ a {
   color: #646cff;
   text-decoration: inherit;
 }
+
 a:hover {
   color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
 }
 
 h1 {
@@ -48,14 +58,22 @@ h2 {
   margin: 0px;
 }
 
-input[type="text"] {
+h3 {
+  font-size: 1rem;
+  padding: 0px;
+  margin: 0px;
+}
+
+input[type="text"],
+input[type="password"] {
   font-size: large;
   background-color: #ffffff;
   padding: 0.5rem;
   border: 3px solid aquamarine;
 }
 
-input[type="text"]:focus {
+input[type="text"]:focus,
+input[type="password"]:focus {
   outline: none;
   border-color: rgb(73, 190, 151);
 }
@@ -81,23 +99,6 @@ button:hover {
 button:focus,
 button:focus-visible {
   background-color: rgb(73, 190, 151);
-}
-
-.card {
-  padding: 2em;
-}
-
-#app {
-  width: 100%;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
 .checkbox-restyle {
@@ -129,6 +130,55 @@ button:focus-visible {
   border: solid black;
   border-width: 0 3px 3px 0;
   transform: rotate(45deg);
+}
+
+/* Navigation */
+nav {
+  width: 100%;
+  background-color: #fdf6e3;
+  position: fixed;
+  padding: 20px 0px;
+  display: flex;
+  align-items: center;
+}
+
+nav ul {
+  width: 60%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  margin: 0 auto;
+  padding: 0;
+}
+
+nav ul li {
+  list-style: none;
+  text-align: center;
+  font-size: large;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.inactive {
+  transition: transform 0.2s ease;
+}
+
+.inactive:hover {
+  transform: scale(1.5);
+}
+
+.active a {
+  font-weight: 900;
+}
+
+.nav-link {
+  color: black;
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  color: black;
 }
 
 /* Buttons and inputs */
@@ -194,6 +244,21 @@ button:focus-visible {
   padding: 0 2rem;
 }
 
+.three-button-group {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 5px;
+}
+
+.unit-amount-delete-btn {
+  color: rgb(183, 183, 183);
+}
+
+.unit-amount-delete-btn:hover {
+  cursor: pointer;
+}
+
 /* Modals */
 
 .modal-title {
@@ -204,11 +269,12 @@ button:focus-visible {
   position: absolute;
   width: 60%;
   background-color: white;
-  padding: 2rem;
+  padding: 2rem 5rem;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   min-height: 0;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
 }
 
 .modal-big {
@@ -230,6 +296,14 @@ button:focus-visible {
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal > header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
 }
 
 /* Sections */
@@ -270,17 +344,27 @@ button:focus-visible {
   gap: 1rem;
 }
 
-.units-recipe-item {
+.units-amount-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.units-amount-list .units-amount-item:first-child {
+  margin-left: 0;
+}
+
+.units-amount-item {
   font-size: small;
   padding: 0.5rem 1rem;
   background-color: rgb(241, 241, 241);
   border-radius: 8px;
-  margin: 1rem 0.5rem 1rem 0;
-}
-
-.item {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  margin: 0.2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 }
 
 .scroll-list-container {
@@ -307,12 +391,98 @@ button:focus-visible {
   border-radius: 4px;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
+.list-entry {
+  margin: 20px 0px;
+  text-align: center;
+}
+
+.list-entry:hover {
+  cursor: pointer;
+}
+
+.list {
+  width: 100%;
+  padding: 0px;
+}
+
+.list-of-choices {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.list-of-choices .list-item-title-two-buttons {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: auto auto;
+  padding: 0.5rem 2rem;
+  font-size: large;
+}
+
+.list-of-choices .list-item-title-two-buttons:hover {
+  background-color: beige;
+  cursor: pointer;
+}
+
+.list-of-choices .list-item-title-two-buttons .title {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.list-of-choices .list-item-title-two-buttons .two-button-group {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.list-of-choices .list-item-title-two-buttons .info {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+}
+
+.list-of-choices .selected {
+  background-color: blanchedalmond !important;
+}
+
+.list-of-choices .selected:hover {
+  background-color: blanchedalmond;
+}
+
+.list-of-choices .added {
+  background-color: rgb(241, 241, 241);
+}
+
+.list-of-choices .list-title {
+  padding-bottom: 1rem;
+}
+
+.list-of-choices .list-item-input-button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0.5rem 2rem;
+  font-size: large;
+}
+
+.list-of-choices .list-item-input-button:hover {
+  background-color: beige;
+  cursor: pointer;
+}
+
+.preview-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.preview-list-item {
+  padding-left: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  align-items: center;
+  padding: 0.5rem 1rem;
+}
+
+.preview-list-item:hover {
+  background-color: rgb(241, 241, 241);
 }

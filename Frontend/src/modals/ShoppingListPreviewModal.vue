@@ -5,11 +5,11 @@
         <h1>{{ shoppingList.title }}</h1>
         <button @click.prevent="close">Close preview</button>
       </header>
-      <ul class="scroll-list ingredients-list">
+      <ul class="scroll-list preview-list">
         <li
           v-for="ingredient in shoppingList.ingredients"
           :key="ingredient.ingredientTitle"
-          class="ingredient-item item"
+          class="preview-list-item"
         >
           <h2>{{ ingredient.ingredientTitle }}</h2>
           <div>{{ ingredient.amount + " " + ingredient.unitTitle }}</div>
@@ -80,25 +80,5 @@ function close(): void {
 <style scoped>
 .modal-overlay {
   z-index: 150;
-}
-header {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-}
-.ingredients-list {
-  display: flex;
-  flex-direction: column;
-}
-.ingredient-item {
-  padding-left: 1rem;
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  align-items: center;
-}
-.ingredient-item:hover {
-  background-color: rgb(241, 241, 241);
 }
 </style>

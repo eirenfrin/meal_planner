@@ -6,7 +6,7 @@
     <template #redirect-login-register>
       <p>
         Already have an account? Log in
-        <RouterLink class="nav-link" :to="{ name: 'Login' }">here</RouterLink>!
+        <RouterLink :to="{ name: 'Login' }">here</RouterLink>!
       </p>
     </template>
   </AccountForm>

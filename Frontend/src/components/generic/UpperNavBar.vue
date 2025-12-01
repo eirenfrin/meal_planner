@@ -12,15 +12,10 @@
 
 <style scoped>
 nav {
-  width: 100%;
-  background-color: #fdf6e3;
-  position: fixed;
   top: 0;
-  padding: 20px 0px;
-  display: flex;
-  align-items: center;
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.1);
 }
+
 .settings {
   display: inline-flex;
   position: absolute;
@@ -31,6 +26,7 @@ nav {
   cursor: pointer;
   transition: all 0.3s ease;
 }
+
 .settings .material-icons {
   background: white;
   padding: 0.5rem;

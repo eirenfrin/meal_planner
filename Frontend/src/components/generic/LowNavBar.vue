@@ -1,13 +1,17 @@
 <template>
   <nav>
     <ul>
-      <li v-for="page in pageValues" :key="page.label">
-        <RouterLink
-          class="nav-link"
-          :to="`/app/${page.path}`"
-          :class="{ active: page.label == appStore.state.currentPage.label }"
-          >{{ page.label }}</RouterLink
-        >
+      <li
+        v-for="page in pageValues"
+        :key="page.label"
+        :class="{
+          active: page.label == appStore.state.currentPage.label,
+          inactive: page.label != appStore.state.currentPage.label,
+        }"
+      >
+        <RouterLink class="nav-link" :to="`/app/${page.path}`">{{
+          page.label
+        }}</RouterLink>
       </li>
     </ul>
   </nav>
@@ -22,41 +26,10 @@ const appStore = useAppStore();
 
 <style scoped>
 nav {
-  width: 100%;
-  background-color: #fdf6e3;
-  position: fixed;
   bottom: 0;
-  padding: 20px;
 }
-ul {
-  width: 60%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-  margin: 0 auto;
-  padding: 0;
-}
-li {
-  list-style: none;
-  text-align: center;
-  font-size: large;
-  transition: transform 0.2s ease;
-  font-weight: 500;
-  cursor: pointer;
-}
-li:hover {
-  transform: scale(1.5);
-}
-.active {
-  font-weight: 900;
+
+.active a {
   font-size: xx-large;
-}
-.nav-link {
-  color: black;
-  text-decoration: none;
-}
-.nav-link:hover {
-  color: black;
 }
 </style>

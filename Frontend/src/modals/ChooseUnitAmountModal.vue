@@ -11,12 +11,12 @@
                 <button class="btn-2" @click="close">Cancel</button>
             </div>
         </header>
-        <div class="all-units-list scroll-list-container">
+        <div class="list-of-choices scroll-list-container">
             <ul class="scroll-list">
                 <li
                 v-for="unit in units"
                 :key="unit.id"
-                class="item"
+                class="list-item-input-button"
                 :class="{ selected: currentlyProcessedUnit?.id == unit.id }"
                 @click="selectUnit(unit)"
                 >
@@ -103,63 +103,6 @@ function openUnitModal() {
 </script>
 
 <style scoped>
-.modal {
-    width: 60%;
-    background-color: white;
-    padding: 2rem;
-}
-
-.modal-overlay {
-  position: fixed;
-  z-index: 150;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-}
-
-h2 {
-    margin: 0;
-}
-
-.all-units-list {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.item {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 0.5rem 2rem;
-  font-size: large;
-}
-
-.item:hover {
-  background-color: beige;
-  cursor: pointer;
-}
-
-.selected {
-  background-color: blanchedalmond;
-}
-
-.selected:hover {
-  background-color: blanchedalmond;
-}
-
 .btn-1, .btn-2 {
     border-color: white;
 }

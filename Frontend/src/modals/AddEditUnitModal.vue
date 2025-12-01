@@ -10,9 +10,6 @@
           <button class="btn-2" @click.prevent="close">Cancel</button>
         </div>
       </header>
-      <div class="preview-section">
-        <p>{{ unitTitleInput }}</p>
-      </div>
       <article>
         <input type="text" placeholder="Enter unit title" v-model="unitTitleInput"></input>
       </article>
@@ -39,13 +36,6 @@ function close() {
 </script>
 
 <style scoped>
-header {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: space-between;
-}
-
 .btn-1, .btn-2 {
   border-color: white;
 }
@@ -53,6 +43,7 @@ header {
 h1 {
   margin-bottom: 0;
 }
+
 .modal-overlay{
   z-index: 200;
 }

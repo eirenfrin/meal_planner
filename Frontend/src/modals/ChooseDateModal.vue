@@ -57,13 +57,6 @@ function close() {
 </script>
 
 <style scoped>
-header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-}
-
 .two-button-group .btn-1, .two-button-group .btn-2 {
     border-color: white;
 }

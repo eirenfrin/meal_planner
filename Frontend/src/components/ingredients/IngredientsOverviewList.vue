@@ -110,15 +110,4 @@ async function addCallback(): Promise<void> {
 }
 </script>
 
-<style scoped>
-.list-entry {
-  list-style: none;
-  margin: 20px 0px;
-  text-align: center;
-}
-
-.list {
-  width: 100%;
-  padding: 0px;
-}
-</style>
+<style scoped></style>

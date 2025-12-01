@@ -67,18 +67,4 @@ async function addCallback(): Promise<void> {
 }
 </script>
 
-<style scoped>
-.list-entry {
-  margin: 20px 0px;
-  text-align: center;
-}
-
-.list-entry:hover {
-  cursor: pointer;
-}
-
-.list {
-  width: 100%;
-  padding: 0px;
-}
-</style>
+<style scoped></style>

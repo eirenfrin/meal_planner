@@ -27,20 +27,30 @@
           Add yield
         </button>
     </div>
-    <div class="all-ingredients-list scroll-list-container">
-      <h2>Choose an ingredient</h2>
+    <ul v-show="recipeAmount.length != 0" class="units-amount-list">
+        <li
+          v-for="amount in recipeAmount"
+          :key="amount.unitRecipeTitle"
+          class="units-amount-item"
+        >
+          {{ amount.recipeAmount + " " + amount.unitRecipeTitle }}
+          <span class="material-symbols-outlined unit-amount-delete-btn">cancel</span>
+        </li>
+    </ul>
+    <div class="list-of-choices scroll-list-container">
+      <h2 class="list-title">Choose an ingredient</h2>
       <ul class="scroll-list">
         <li
           v-for="ingredient in availableIngredients"
           :key="ingredient.id"
-          class="item"
+          class="list-item-title-two-buttons"
           :class="{
             selected: currentlyProcessedIngredient?.id == ingredient.id,
             added: addedIngredients?.find(i => i.id == ingredient.id)
           }"
           @click="selectIngredient(ingredient)"
         >
-          <div class="ingredient-title">{{ ingredient.title }}</div>
+          <div class="title">{{ ingredient.title }}</div>
           <div
             v-if="currentlyProcessedIngredient?.id == ingredient.id"
             class="two-button-group"
@@ -54,14 +64,13 @@
             <button class="btn-2" v-show="!addedIngredients?.find(i => i.id == ingredient.id)" @click.prevent="addIngredient(ingredient)">Add without amount</button>
             <button class="btn-2" v-show="addedIngredients?.find(i => i.id == ingredient.id)" @click.prevent="removeIngredient(ingredient)">Remove ingredient</button>
           </div>
-          <div class="ingredient-amount" v-show="addedIngredients?.find(i => i.id == ingredient.id)">{{ '1 pack' }}</div>
+          <div class="info" v-show="addedIngredients?.find(i => i.id == ingredient.id)">{{ '1 pack' }}</div>
         </li>
       </ul>
     </div>
   </form>
   <teleport to="#modal-container">
     <ChooseUnitAmountModal
-      class="modal"
       v-show="modalUnitAmountOpen"
       @close="closeUnitAmountModal"
     >
@@ -78,6 +87,7 @@ import { computed, ref } from "vue";
 import type { GetIngredientDto } from "../domain/models/getIngredientDto";
 import ChooseUnitAmountModal from "./ChooseUnitAmountModal.vue";
 import useAppStore from "../stores/applicationStore";
+import type { GetUnitsRecipeDto } from "../domain/models/getUnitsRecipeDto";
 
 let ingredients: Array<GetIngredientDto> = [
   {
@@ -135,6 +145,10 @@ const addedIngredients = ref<GetIngredientDto[]>([]);
 
 const appStore = useAppStore();
 const currentlyProcessedIngredient = ref<GetIngredientDto>();
+const recipeAmount = ref<Array<GetUnitsRecipeDto>>([
+  {unitRecipeTitle: "Kg", recipeAmount: 1}, 
+  {unitRecipeTitle: "Tray", recipeAmount: 1}
+]);
 
 const modalUnitAmountOpen = ref<boolean>(false);
 const modalTitle = ref<string>();
@@ -186,30 +200,9 @@ function addIngredient(ingredient: GetIngredientDto) {
 </script>
 
 <style scoped>
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-li {
-  padding: 0.2rem;
-}
-form {
-  width: 80%;
-  background-color: white;
-  padding: 2rem 5rem;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
-}
-header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1rem;
-}
 
-.input-button-group {
-  margin-bottom: 2rem;
+.modal {
+  width: 80%;
 }
 
 .input {
@@ -220,13 +213,6 @@ header {
   margin-right: 5px;
 }
 
-.three-button-group {
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  gap: 5px;
-}
-
 .three-button-group .btn-icon {
   border: 5px solid white;
 }
@@ -235,54 +221,4 @@ header {
   border-color: white;
 }
 
-.all-ingredients-list {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  justify-content: space-between;
-}
-
-.all-ingredients-list h2 {
-  padding-bottom: 1rem;
-}
-
-.item {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  grid-template-rows: auto auto;
-  padding: 0.5rem 2rem;
-  font-size: large;
-}
-.item:hover {
-  background-color: beige;
-  cursor: pointer;
-}
-.ingredient-title {
-  grid-column: 1;
-  grid-row: 1;
-}
-
-.two-button-group {
-  grid-column: 1;
-  grid-row: 2;
-}
-
-.ingredient-amount {
-  grid-column: 2;
-  grid-row: 1 / span 2;
-}
-
-.radio-restyle input[type="radio"] {
-  display: none;
-}
-.selected {
-  background-color: blanchedalmond !important;
-}
-.selected:hover {
-  background-color: blanchedalmond;
-}
-
-.added {
-  background-color: rgb(241, 241, 241);
-}
 </style>

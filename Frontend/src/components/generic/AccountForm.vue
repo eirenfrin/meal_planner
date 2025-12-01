@@ -1,29 +1,27 @@
 <template>
-  <section class="form-container">
+  <form>
     <slot name="login-register-h1"></slot>
-    <form>
-      <label for="username">Username</label>
-      <input
-        type="text"
-        id="username"
-        placeholder="your account name"
-        v-model="authRequest.username"
-        required
-      />
-      <label class="password-label" for="password">Password</label>
-      <input
-        type="password"
-        id="password"
-        placeholder="your password"
-        v-model="authRequest.password"
-        required
-      />
-    </form>
+    <label for="username">Username</label>
+    <input
+      type="text"
+      id="username"
+      placeholder="your account name"
+      v-model="authRequest.username"
+      required
+    />
+    <label for="password">Password</label>
+    <input
+      type="password"
+      id="password"
+      placeholder="your password"
+      v-model="authRequest.password"
+      required
+    />
     <slot name="redirect-login-register"></slot>
     <button @click.prevent="handleAuth" :disabled="authStore.isAuthPending">
       Proceed
     </button>
-  </section>
+  </form>
 </template>
 
 <script setup lang="ts">
@@ -60,8 +58,9 @@ onUnmounted(() => resetAuthRequest());
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: #fdf6e3;
-  padding: 1rem 5rem;
+  background-color: beige;
+  width: 50vw;
+  padding: 5rem;
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.1);
 }
 
@@ -69,24 +68,15 @@ form {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-top: 3rem;
+  width: 40vw;
+  padding: 3rem;
+  background-color: beige;
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.1);
 }
+
 label {
-  padding-bottom: 0.5rem;
+  padding: 1rem 0 0.5rem;
   font-size: large;
   font-weight: bold;
-}
-.password-label {
-  padding-top: 1rem;
-}
-input {
-  border: 2px solid blueviolet;
-  height: 2rem;
-  padding: 5px;
-  font-size: large;
-}
-input:focus {
-  border: 2px solid blueviolet;
-  border-radius: 0%;
 }
 </style>
