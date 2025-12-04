@@ -94,4 +94,23 @@ public class UnitService(IUnitRepository unitRepository) : IUnitService
 
         await _unitRepository.DeleteUnit(unit);
     }
+
+    public async Task BatchDeleteUnits(BatchDeleteDto idsToDelete)
+    {
+        var unitsToDelete = await _unitRepository.GetMultipleUnits(idsToDelete.Ids);
+
+        var missingIds = idsToDelete.Ids.Except(unitsToDelete.Select(unit => unit.Id));
+
+        if (missingIds.Any())
+        {
+            throw new KeyNotFoundException($"Units with ids {missingIds} do not exist.");
+        }
+
+        if (unitsToDelete.Any(unit => unit.CreatorId == null))
+        {
+            throw new ConstraintException("Cannot delete pre-defined units.");
+        }
+
+        await _unitRepository.DeleteBatchUnits(unitsToDelete);
+    }
 }

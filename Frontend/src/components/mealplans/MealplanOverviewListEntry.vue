@@ -6,7 +6,6 @@
         v-if="editingMode"
         type="checkbox"
         @change="onToggle"
-        @click.stop
       />
       <h1 class="fancy-list-entry-title">{{ mealplan.title }}</h1>
     </div>

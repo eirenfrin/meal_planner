@@ -8,7 +8,7 @@
       </div>
       <div v-else class="two-button-group">
         <button @click.prevent="onChangeMode" class="btn-1">Undo</button>
-        <button @click.prevent="deleteCallback" class="btn-2">
+        <button @click.prevent="batchDelete" class="btn-2">
           Delete selected
         </button>
       </div>
@@ -26,6 +26,11 @@ const props = defineProps<{
 }>();
 
 let emit = defineEmits(["changeEditMode"]);
+
+async function batchDelete(): Promise<void> {
+  await props.deleteCallback();
+  onChangeMode();
+}
 
 function onChangeMode(): void {
   emit("changeEditMode", !props.editingMode);

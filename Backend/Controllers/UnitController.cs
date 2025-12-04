@@ -60,4 +60,13 @@ public class UnitController : ControllerBase
         return Ok();
     }
 
+    [Authorize]
+    [HttpPost("delete-multiple")]
+    public async Task<ActionResult> DeleteBatchUnits([FromBody] BatchDeleteDto idsToDelete)
+    {
+        // modifies Unit
+        await _service.BatchDeleteUnits(idsToDelete);
+        return Ok();
+    }
+
 }

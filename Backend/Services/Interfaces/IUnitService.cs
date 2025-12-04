@@ -12,4 +12,6 @@ public interface IUnitService
     public Task<GetUnitDto> AddNewUnit(Guid creatorId, NewEditUnitDto unitNew);
 
     public Task DeleteUserDefinedUnit(Guid unitId);
+
+    public Task BatchDeleteUnits(BatchDeleteDto idsToDelete);
 }

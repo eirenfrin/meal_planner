@@ -2,7 +2,10 @@
   <RouterView />
   <LowNavBar />
   <teleport to="#modal-container"
-    ><AddEditUnitModal v-if="appStore.chooseAddEditUnitModal"></AddEditUnitModal
+    ><AddUnitModal v-if="appStore.chooseAddUnitModal"></AddUnitModal
+  ></teleport>
+  <teleport to="#modal-container"
+    ><EditUnitModal v-if="appStore.chooseEditUnitModal"></EditUnitModal
   ></teleport>
   <teleport to="#modal-container">
     <AddEditIngredientModal
@@ -41,7 +44,8 @@
 <script setup lang="ts">
 import AddEditIngredientModal from "../modals/AddEditIngredientModal.vue";
 import AddEditRecipeModal from "../modals/AddEditRecipeModal.vue";
-import AddEditUnitModal from "../modals/AddEditUnitModal.vue";
+import AddUnitModal from "../modals/AddUnitModal.vue";
+import EditUnitModal from "../modals/EditUnitModal.vue";
 import LowNavBar from "../components/generic/LowNavBar.vue";
 import useAppStore from "../stores/applicationStore";
 import RecipePreviewModal from "../modals/RecipePreviewModal.vue";

@@ -12,7 +12,7 @@
           class="list-entry"
           v-for="shoppingList in shoppingLists"
           :key="shoppingList.id"
-          @click.prevent="
+          @click="
             !listFunctions.editingMode &&
               appStore.toggleChooseShoppingListPreviewModal()
           "

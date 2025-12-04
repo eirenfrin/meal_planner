@@ -37,16 +37,16 @@ router.afterEach((to) => {
   appStore.changePages(page, subPage);
 });
 
-// router.beforeEach((to, _, next) => {
-//   const authStore = useAuthStore(pinia);
+router.beforeEach((to, _, next) => {
+  const authStore = useAuthStore(pinia);
 
-//   if (to.meta.requiresAuth && !authStore.isAuthSuccess) {
-//     next({ name: "Login" });
-//   } else if (to.meta.guestOnly && authStore.isAuthSuccess) {
-//     next({ name: "Recipes" });
-//   } else {
-//     next();
-//   }
-// });
+  if (to.meta.requiresAuth && !authStore.isAuthSuccess) {
+    next({ name: "Login" });
+  } else if (to.meta.guestOnly && authStore.isAuthSuccess) {
+    next({ name: "Recipes" });
+  } else {
+    next();
+  }
+});
 
 app.mount("#app");

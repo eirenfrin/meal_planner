@@ -4,6 +4,14 @@ export function useListFunctionalities() {
   const editingMode = ref(false);
   let listOfIdsToDelete = ref<Array<string>>([]);
 
+  function takeIdsToDelete(): Array<string> {
+    const ids = listOfIdsToDelete.value;
+
+    listOfIdsToDelete.value = [];
+
+    return ids;
+  }
+
   function editModeCallback(mode: boolean): void {
     if (mode) {
       listOfIdsToDelete.value = [];
@@ -20,5 +28,5 @@ export function useListFunctionalities() {
     }
   }
 
-  return { editingMode, listOfIdsToDelete, editModeCallback, toggleCallback };
+  return { editingMode, takeIdsToDelete, editModeCallback, toggleCallback };
 }

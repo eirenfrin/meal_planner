@@ -12,7 +12,7 @@
           class="list-entry"
           v-for="recipe in recipes"
           :key="recipe.id"
-          @click.prevent="
+          @click="
             !listFunctions.editingMode &&
               appStore.toggleChooseRecipePreviewModal()
           "

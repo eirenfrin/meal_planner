@@ -14,7 +14,7 @@
         <div class="list-of-choices scroll-list-container">
             <ul class="scroll-list">
                 <li
-                v-for="unit in units"
+                v-for="unit in unitStore.allUnits"
                 :key="unit.id"
                 class="list-item-input-button"
                 :class="{ selected: currentlyProcessedUnit?.id == unit.id }"
@@ -39,57 +39,16 @@
 import { ref } from "vue";
 import type { GetUnitDto } from "../domain/models/getUnitDto";
 import useAppStore from "../stores/applicationStore";
+import useUnitStore from "../stores/unitStore";
 
 const emits = defineEmits(["close"]);
 
 const appStore = useAppStore();
+const unitStore = useUnitStore();
 
 function close() {
     emits("close");
 }
-
-let units: Array<GetUnitDto> = [
-  {
-    id: "44",
-    title: "kg",
-    creatorId: "11",
-  },
-  {
-    id: "45",
-    title: "glass",
-    creatorId: "11",
-  },
-  {
-    id: "47",
-    title: "bowl",
-    creatorId: "11",
-  },
-  {
-    id: "48",
-    title: "tea spoon",
-    creatorId: "11",
-  },
-  {
-    id: "49",
-    title: "table spoon",
-    creatorId: "11",
-  },
-  {
-    id: "50",
-    title: "pinch",
-    creatorId: "11",
-  },
-  {
-    id: "51",
-    title: "tray",
-    creatorId: "11",
-  },
-  {
-    id: "52",
-    title: "gram",
-    creatorId: "11",
-  },
-];
 
 const currentlyProcessedUnit = ref<GetUnitDto>();
 
@@ -98,7 +57,7 @@ function selectUnit(unit: GetUnitDto) {
 }
 
 function openUnitModal() {
-    appStore.toggleChooseAddEditUnitModal();
+    appStore.toggleChooseAddUnitModal();
 }
 </script>
 

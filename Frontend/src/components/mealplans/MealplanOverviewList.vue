@@ -12,7 +12,7 @@
           class="list-entry"
           v-for="mealplan in mealplans"
           :key="mealplan.id"
-          @click.prevent="
+          @click="
             !listFunctions.editingMode &&
               appStore.toggleChooseShoppingListPreviewModal()
           "

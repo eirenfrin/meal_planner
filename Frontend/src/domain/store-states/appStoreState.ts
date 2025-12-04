@@ -4,7 +4,8 @@ import type { CurrentSubPage } from "../enums/currentSubPage";
 export interface AppStoreState {
   currentPage: CurrentPage;
   currentSubpage?: CurrentSubPage;
-  chooseAddEditUnitModalVisibility: boolean;
+  chooseAddUnitModalVisibility: boolean;
+  chooseEditUnitModalVisibility: boolean;
   chooseAddEditIngredientModalVisibility: boolean;
   chooseAddEditRecipeModalVisibility: boolean;
   chooseRecipePreviewModalVisibility: boolean;

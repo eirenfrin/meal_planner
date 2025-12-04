@@ -3,7 +3,7 @@
     <div class="fancy-list-entry-checkbox-title">
       <input
         class="checkbox-restyle"
-        v-show="editingMode"
+        v-if="editingMode"
         type="checkbox"
         @change="onToggle"
       />

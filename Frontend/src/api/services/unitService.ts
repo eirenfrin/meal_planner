@@ -1,3 +1,4 @@
+import type { BatchDeleteDto } from "../../domain/models/batchDeleteDto";
 import type { GetUnitDto } from "../../domain/models/getUnitDto";
 import type { NewEditUnitDto } from "../../domain/models/newEditUnitDto";
 import BaseService from "./baseService";
@@ -28,6 +29,10 @@ class UnitService extends BaseService {
 
   public async deleteUnit(unitId: string): Promise<void> {
     await this.delete<void>(`${unitId}`);
+  }
+
+  public async deleteBatchUnits(unitsToDelete: BatchDeleteDto): Promise<void> {
+    await this.post<BatchDeleteDto, void>("delete-multiple", unitsToDelete);
   }
 }
 

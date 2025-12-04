@@ -26,6 +26,12 @@ public class UnitRepository(AppDbContext context) : IUnitRepository
         await _context.SaveChangesAsync();
     }
 
+    public async Task DeleteBatchUnits(IEnumerable<Unit> unitsToDelete)
+    {
+        _context.Units.RemoveRange(unitsToDelete);
+        await _context.SaveChangesAsync();
+    }
+
     public async Task AddNewUnit(Unit newUnit)
     {
         _context.Units.Add(newUnit);
@@ -43,6 +49,14 @@ public class UnitRepository(AppDbContext context) : IUnitRepository
         var unit = await _context.Units.FindAsync(unitId);
 
         return unit;
+    }
+
+    public async Task<IEnumerable<Unit>> GetMultipleUnits(IEnumerable<Guid> ids)
+    {
+        var allUnitsByIds = await _context.Units
+        .Where(unit => ids.Contains(unit.Id)).ToListAsync();
+
+        return allUnitsByIds;
     }
 
     public async Task<bool> CheckUnitExistsByName(Guid? creatorId, string unitTitle, Guid? unitId = null)

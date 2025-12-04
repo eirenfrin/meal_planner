@@ -8,7 +8,8 @@ const useAppStore = defineStore("applicationStore", () => {
   const state: AppStoreState = reactive({
     currentPage: CurrentPage.BASICS,
     currentSubpage: CurrentSubPage.RECIPES,
-    chooseAddEditUnitModalVisibility: false,
+    chooseAddUnitModalVisibility: false,
+    chooseEditUnitModalVisibility: false,
     chooseAddEditIngredientModalVisibility: false,
     chooseAddEditRecipeModalVisibility: false,
     chooseRecipePreviewModalVisibility: false,
@@ -17,8 +18,10 @@ const useAppStore = defineStore("applicationStore", () => {
     chooseDateModalVisibility: false,
   });
 
-  const chooseAddEditUnitModal = computed(
-    () => state.chooseAddEditUnitModalVisibility
+  const chooseAddUnitModal = computed(() => state.chooseAddUnitModalVisibility);
+
+  const chooseEditUnitModal = computed(
+    () => state.chooseEditUnitModalVisibility
   );
 
   const chooseAddEditIngredientModal = computed(
@@ -48,9 +51,12 @@ const useAppStore = defineStore("applicationStore", () => {
     state.currentSubpage = subpage;
   }
 
-  function toggleChooseAddEditUnitModal(): void {
-    state.chooseAddEditUnitModalVisibility =
-      !state.chooseAddEditUnitModalVisibility;
+  function toggleChooseAddUnitModal(): void {
+    state.chooseAddUnitModalVisibility = !state.chooseAddUnitModalVisibility;
+  }
+
+  function toggleChooseEditUnitModal(): void {
+    state.chooseEditUnitModalVisibility = !state.chooseEditUnitModalVisibility;
   }
 
   function toggleChooseAddEditIngredientModal(): void {
@@ -83,7 +89,8 @@ const useAppStore = defineStore("applicationStore", () => {
   }
   return {
     state,
-    chooseAddEditUnitModal,
+    chooseAddUnitModal,
+    chooseEditUnitModal,
     chooseAddEditIngredientModal,
     chooseAddEditRecipeModal,
     chooseRecipePreviewModal,
@@ -91,7 +98,8 @@ const useAppStore = defineStore("applicationStore", () => {
     chooseAddEditShoppingListModalModal,
     chooseDateModal,
     changePages,
-    toggleChooseAddEditUnitModal,
+    toggleChooseAddUnitModal,
+    toggleChooseEditUnitModal,
     toggleChooseAddEditIngredientModal,
     toggleChooseAddEditRecipeModal,
     toggleChooseRecipePreviewModal,

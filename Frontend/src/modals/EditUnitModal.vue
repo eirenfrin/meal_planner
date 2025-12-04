@@ -3,15 +3,15 @@
     <form class="modal modal-small">
       <header>
         <div class="modal-info">
-          <h1>Add unit</h1>
+          <h1>Edit unit</h1>
         </div>
         <div class="two-button-group">
-          <button class="btn-1" @click.prevent>Save</button>
+          <button class="btn-1" @click.prevent="saveEdit">Save</button>
           <button class="btn-2" @click.prevent="close">Cancel</button>
         </div>
       </header>
       <article>
-        <input type="text" placeholder="Enter unit title" v-model="unitTitleInput"></input>
+        <input type="text" v-model="editedTitle"></input>
       </article>
     </form>
   </div>
@@ -20,17 +20,20 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import useAppStore from '../stores/applicationStore';
+import useUnitStore from '../stores/unitStore';
 
-// const props = defineProps<{
-//   actionMessage: string
-// }>()
-// const emits = defineEmits(["close"]);
-
-const unitTitleInput = ref<string>();
 const appStore = useAppStore();
+const unitStore = useUnitStore();
+
+const editedTitle = ref<string>(unitStore.editUnitInfo!.title);
+
+async function saveEdit(): Promise<void> {
+  await unitStore.editUnit(editedTitle.value);
+  appStore.toggleChooseEditUnitModal();
+}
 
 function close() {
-  appStore.toggleChooseAddEditUnitModal();
+  appStore.toggleChooseEditUnitModal();
 }
 
 </script>
