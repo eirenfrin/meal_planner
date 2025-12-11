@@ -33,13 +33,33 @@ public class IngredientRepository(AppDbContext context) : IIngredientRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<Ingredient> DeleteIngredient(Guid ingredientId)
+    public async Task<Ingredient> DeleteIngredient(Ingredient ingredient)
     {
-        var ingredient = await _context.Ingredients.FirstAsync(i => i.Id == ingredientId);
         _context.Ingredients.Remove(ingredient);
-        await _context.SaveChangesAsync();
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException)
+        {
+            throw new InvalidOperationException("Ingredient is referenced elsewhere.");
+        }
 
         return ingredient;
+    }
+
+    public async Task DeleteBatchIngredients(IEnumerable<Ingredient> ingredientsToDelete)
+    {
+        _context.Ingredients.RemoveRange(ingredientsToDelete);
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException)
+        {
+            throw new InvalidOperationException("Some ingredients are referenced elsewhere.");
+
+        }
     }
 
     public async Task<Ingredient?> GetSingleIngredient(Guid ingredientId)
@@ -47,6 +67,14 @@ public class IngredientRepository(AppDbContext context) : IIngredientRepository
         var ingredient = await _context.Ingredients.FindAsync(ingredientId);
 
         return ingredient;
+    }
+
+    public async Task<IEnumerable<Ingredient>> GetMultipleIngredients(IEnumerable<Guid> ids)
+    {
+        var allIngredientsByIds = await _context.Ingredients
+        .Where(ing => ids.Contains(ing.Id)).ToListAsync();
+
+        return allIngredientsByIds;
     }
 
     public async Task<bool> CheckIngredientExistsByName(Guid? creatorId, string ingredientTitle, Guid? ingredientId = null)

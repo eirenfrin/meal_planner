@@ -11,9 +11,13 @@ public interface IIngredientRepository
 
     public Task EditIngredient(Ingredient ingredientExisting, NewEditIngredientDto ingredientUpdated);
 
-    public Task<Ingredient> DeleteIngredient(Guid ingredientId);
+    public Task<Ingredient> DeleteIngredient(Ingredient ingredient);
+
+    public Task DeleteBatchIngredients(IEnumerable<Ingredient> ingredientsToDelete);
 
     public Task<Ingredient?> GetSingleIngredient(Guid ingredientId);
+
+    public Task<IEnumerable<Ingredient>> GetMultipleIngredients(IEnumerable<Guid> ids);
 
     public Task<bool> CheckIngredientExistsByName(Guid? creatorId, string ingredientTitle, Guid? ingredientId = null);
 }

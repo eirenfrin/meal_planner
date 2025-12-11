@@ -62,4 +62,13 @@ public class IngredientController : ControllerBase
         await _service.DeleteIngredient(id);
         return Ok();
     }
+
+    [Authorize]
+    [HttpPost("delete-multiple")]
+    public async Task<ActionResult> DeleteBatchIngredients([FromBody] BatchDeleteDto idsToDelete)
+    {
+        // modifies Unit
+        await _service.BatchDeleteIngredients(idsToDelete);
+        return Ok();
+    }
 }

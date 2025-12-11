@@ -91,6 +91,25 @@ public class IngredientService(IIngredientRepository ingredientRepository) : IIn
             throw new ConstraintException("Cannot delete pre-defined ingredients.");
         }
 
-        await _ingredientRepository.DeleteIngredient(ingredientId);
+        await _ingredientRepository.DeleteIngredient(ingredient);
+    }
+
+    public async Task BatchDeleteIngredients(BatchDeleteDto idsToDelete)
+    {
+        var ingredientsToDelete = await _ingredientRepository.GetMultipleIngredients(idsToDelete.Ids);
+
+        var missingIds = idsToDelete.Ids.Except(ingredientsToDelete.Select(ing => ing.Id));
+
+        if (missingIds.Any())
+        {
+            throw new KeyNotFoundException($"Ingredients with ids {missingIds} do not exist.");
+        }
+
+        if (ingredientsToDelete.Any(unit => unit.CreatorId == null))
+        {
+            throw new ConstraintException("Cannot delete pre-defined ingredients.");
+        }
+
+        await _ingredientRepository.DeleteBatchIngredients(ingredientsToDelete);
     }
 }

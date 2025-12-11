@@ -24,7 +24,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<UserCookedRecipe> UserCookedRecipes { get; set; }
 
     public DbSet<RefreshToken> RefreshTokens { get; set; }
-    
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -42,6 +42,44 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .WithMany(r => r.UnitsRecipes)
             .HasForeignKey(ur => ur.RecipeId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        // Unit delete - refuse if unit referenced elsewhere
+        modelBuilder.Entity<UnitsRecipe>()
+            .HasOne(ur => ur.Unit)
+            .WithMany(u => u.UnitsRecipes)
+            .HasForeignKey(ur => ur.UnitId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<RecipeIngredient>()
+            .HasOne(ri => ri.Unit)
+            .WithMany(u => u.RecipeIngredients)
+            .HasForeignKey(ri => ri.UnitId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Ingredient>()
+            .HasOne(i => i.Unit)
+            .WithMany(u => u.Ingredients)
+            .HasForeignKey(i => i.UnitId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<ShoppingListIngredient>()
+            .HasOne(sli => sli.Unit)
+            .WithMany(u => u.ShoppingListIngredients)
+            .HasForeignKey(sli => sli.UnitId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Ingredient delete - refuse if ingredient referenced elsewhere
+        modelBuilder.Entity<RecipeIngredient>()
+            .HasOne(ri => ri.Ingredient)
+            .WithMany(i => i.RecipeIngredients)
+            .HasForeignKey(ri => ri.IngredientId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<ShoppingListIngredient>()
+            .HasOne(sli => sli.Ingredient)
+            .WithMany(i => i.ShoppingListIngredients)
+            .HasForeignKey(sli => sli.IngredientId)
+            .OnDelete(DeleteBehavior.Restrict);
 
     }
 }

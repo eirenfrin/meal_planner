@@ -12,4 +12,6 @@ public interface IIngredientService
     public Task EditIngredient(Guid ingredientId, NewEditIngredientDto ingredientUpdated);
 
     public Task DeleteIngredient(Guid ingredientId);
+
+    public Task BatchDeleteIngredients(BatchDeleteDto idsToDelete);
 }

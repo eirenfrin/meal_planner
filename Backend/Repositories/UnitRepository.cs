@@ -23,13 +23,28 @@ public class UnitRepository(AppDbContext context) : IUnitRepository
     public async Task DeleteUnit(Unit unit)
     {
         _context.Units.Remove(unit);
-        await _context.SaveChangesAsync();
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException)
+        {
+            throw new InvalidOperationException("Unit is referenced elsewhere.");
+        }
     }
 
     public async Task DeleteBatchUnits(IEnumerable<Unit> unitsToDelete)
     {
         _context.Units.RemoveRange(unitsToDelete);
-        await _context.SaveChangesAsync();
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException)
+        {
+            throw new InvalidOperationException("Some units are referenced elsewhere.");
+
+        }
     }
 
     public async Task AddNewUnit(Unit newUnit)
