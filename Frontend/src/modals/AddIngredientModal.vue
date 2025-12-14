@@ -24,7 +24,7 @@
           Add package size
         </button>
     </div>
-    <ul v-show="unitsAmountSold.length != 0" class="units-amount-list">
+    <ul v-show="unitsAmountSold" class="units-amount-list">
         <li
           v-for="amount in unitsAmountSold"
           :key="amount"
@@ -52,16 +52,36 @@
 
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, inject, provide, reactive, ref } from 'vue';
 import useAppStore from '../stores/applicationStore';
 import ChooseUnitAmountModal from "./ChooseUnitAmountModal.vue";
+import type { GetUnitDto } from '../domain/models/getUnitDto';
+import type { UnitAmount } from '../domain/models/unitAmount';
 
 const appStore = useAppStore();
+
+// const context = reactive({
+//   unit: null as GetUnitDto | null,
+//   amount: null as number | null,
+// });
 
 const modalUnitAmountOpen = ref<boolean>(false);
 const modalTitle = ref<string>();
 const ingredientTitleInput = ref<string>("");
-const unitsAmountSold = ref<Array<string>>(['1 pack'])
+let unitsAmountSold = ref<Array<string>>([]);
+// const unitsAmountSold = computed(() => {
+//   if(context.unit && context.amount) {
+//     return [`${context.amount?.toString() + ' ' + context.unit?.title}`];
+//   }
+// });
+function addUnitAmount(unitAmount : UnitAmount) {
+  console.log('called addunitamount from addingredientmodal');
+  unitsAmountSold.value.pop();
+  let newAmount: string = `${unitAmount.amount + ' ' + unitAmount.unit.title}`
+  unitsAmountSold.value.push(newAmount)
+}
+
+provide('addUnitAmount', addUnitAmount);
 
 function close(): void {
     appStore.toggleChooseAddEditIngredientModal();

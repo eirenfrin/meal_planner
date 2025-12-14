@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import AddEditIngredientModal from "../modals/AddEditIngredientModal.vue";
+import AddEditIngredientModal from "../modals/AddIngredientModal.vue";
 import AddEditRecipeModal from "../modals/AddEditRecipeModal.vue";
 import AddUnitModal from "../modals/AddUnitModal.vue";
 import EditUnitModal from "../modals/EditUnitModal.vue";

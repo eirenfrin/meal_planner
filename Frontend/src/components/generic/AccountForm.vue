@@ -54,21 +54,11 @@ onUnmounted(() => resetAuthRequest());
 </script>
 
 <style scoped>
-.form-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background-color: beige;
-  width: 50vw;
-  padding: 5rem;
-  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.1);
-}
-
 form {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 40vw;
+  width: 30vw;
   padding: 3rem;
   background-color: beige;
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.1);

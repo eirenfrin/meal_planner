@@ -83,11 +83,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, provide, reactive, ref } from "vue";
 import type { GetIngredientDto } from "../domain/models/getIngredientDto";
 import ChooseUnitAmountModal from "./ChooseUnitAmountModal.vue";
 import useAppStore from "../stores/applicationStore";
 import type { GetUnitsRecipeDto } from "../domain/models/getUnitsRecipeDto";
+import type { GetUnitDto } from "../domain/models/getUnitDto";
+import type { UnitAmount } from "../domain/models/unitAmount";
 
 let ingredients: Array<GetIngredientDto> = [
   {
@@ -141,14 +143,14 @@ let ingredients: Array<GetIngredientDto> = [
   },
 ];
 
+
+provide('addUnitAmount', addUnitAmount);
+
 const addedIngredients = ref<GetIngredientDto[]>([]);
 
 const appStore = useAppStore();
 const currentlyProcessedIngredient = ref<GetIngredientDto>();
-const recipeAmount = ref<Array<GetUnitsRecipeDto>>([
-  {unitRecipeTitle: "Kg", recipeAmount: 1}, 
-  {unitRecipeTitle: "Tray", recipeAmount: 1}
-]);
+let recipeAmount = ref<Array<GetUnitsRecipeDto>>([]);
 
 const modalUnitAmountOpen = ref<boolean>(false);
 const modalTitle = ref<string>();
@@ -158,6 +160,17 @@ const availableIngredients = computed<GetIngredientDto[]>(
     // ingredients.filter(ingredient => !selectedIngredients.value.includes(ingredient))
     ingredients
 );
+
+function addUnitAmount(unitAmount: UnitAmount) {
+  console.log('called addUnitAmount from addeditrecipeModal');
+  console.log(recipeAmount.value);
+  recipeAmount.value = recipeAmount.value.filter(ra => ra.unitRecipeTitle != unitAmount.unit.title);
+  const newUnitRecipe: GetUnitsRecipeDto = {
+    unitRecipeTitle: unitAmount.unit.title,
+    recipeAmount: unitAmount.amount,
+  }
+  recipeAmount.value.push(newUnitRecipe);
+}
 
 function selectIngredient(ingredient: GetIngredientDto) {
   if(currentlyProcessedIngredient.value?.id == ingredient.id) {
