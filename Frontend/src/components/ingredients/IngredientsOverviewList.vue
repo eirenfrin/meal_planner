@@ -10,7 +10,7 @@
       <ul class="list scroll-list">
         <li
           class="list-entry"
-          v-for="ingredient in ingredients"
+          v-for="ingredient in ingredientStore.allIngredients"
           :key="ingredient.id"
         >
           <IngredientOverviewListEntry
@@ -30,62 +30,13 @@ import type { GetIngredientDto } from "../../domain/models/getIngredientDto";
 import IngredientOverviewListEntry from "./IngredientOverviewListEntry.vue";
 import OverviewList from "../generic/OverviewList.vue";
 import useAppStore from "../../stores/applicationStore";
+import useIngredientStore from "../../stores/ingredientStore";
 
 const appStore = useAppStore();
+const ingredientStore = useIngredientStore();
 
 let editingMode = ref(false);
 let listOfIdsToDelete = ref<Array<string>>([]);
-let ingredients: Array<GetIngredientDto> = [
-  {
-    id: "123456",
-    title: "Vanilka",
-    soldPackageSize: 3,
-    unitId: "pack",
-    creatorId: "null",
-  },
-  {
-    id: "123455",
-    title: "Bravcove pliecko",
-    soldPackageSize: 1,
-    unitId: "kg",
-    creatorId: "1111",
-  },
-  {
-    id: "123457",
-    title: "Por",
-    soldPackageSize: 1,
-    unitId: "kg",
-    creatorId: "1111",
-  },
-  {
-    id: "123458",
-    title: "Cibula cervena",
-    soldPackageSize: 1,
-    unitId: "kg",
-    creatorId: "1111",
-  },
-  {
-    id: "123459",
-    title: "Cibula biela",
-    soldPackageSize: 1,
-    unitId: "kg",
-    creatorId: "1111",
-  },
-  {
-    id: "123460",
-    title: "Cibula bezna",
-    soldPackageSize: 1,
-    unitId: "kg",
-    creatorId: "1111",
-  },
-  {
-    id: "123461",
-    title: "Jarna cibulka",
-    soldPackageSize: 1,
-    unitId: "kg",
-    creatorId: "1111",
-  },
-];
 
 function toggleCallback(id: string): void {
   if (listOfIdsToDelete.value.includes(id)) {
@@ -106,7 +57,7 @@ async function deleteCallback(): Promise<void> {
 }
 
 async function addCallback(): Promise<void> {
-  appStore.toggleChooseAddEditIngredientModal();
+  appStore.toggleChooseAddIngredientModal();
 }
 </script>
 

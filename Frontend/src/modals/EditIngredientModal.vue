@@ -35,7 +35,7 @@
         </li>
     </ul>
     </form>
-    <teleport to="#modal-container">
+    <!-- <teleport to="#modal-container">
     <ChooseUnitAmountModal
       class="modal"
       v-show="modalUnitAmountOpen"
@@ -45,7 +45,7 @@
         <h3 class="modal-title">{{ modalTitle }}</h3>
       </template>
     </ChooseUnitAmountModal>
-  </teleport>
+  </teleport> -->
   </div>
 </template>
 
@@ -64,7 +64,7 @@ const ingredientTitleInput = ref<string>("");
 const unitsAmountSold = ref<Array<string>>(['1 pack'])
 
 function close(): void {
-    appStore.toggleChooseAddEditIngredientModal();
+    appStore.toggleChooseEditIngredientModal();
 }
 
 function openUnitAmountModal(title: string) {

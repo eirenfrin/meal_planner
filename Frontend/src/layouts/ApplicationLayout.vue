@@ -8,9 +8,9 @@
     ><EditUnitModal v-if="appStore.chooseEditUnitModal"></EditUnitModal
   ></teleport>
   <teleport to="#modal-container">
-    <AddEditIngredientModal
-      v-if="appStore.chooseAddEditIngredientModal"
-    ></AddEditIngredientModal>
+    <AddIngredientModal
+      v-if="appStore.chooseAddIngredientModal"
+    ></AddIngredientModal>
   </teleport>
   <teleport to="#modal-container">
     <AddEditRecipeModal
@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import AddEditIngredientModal from "../modals/AddIngredientModal.vue";
+import AddIngredientModal from "../modals/AddIngredientModal.vue";
 import AddEditRecipeModal from "../modals/AddEditRecipeModal.vue";
 import AddUnitModal from "../modals/AddUnitModal.vue";
 import EditUnitModal from "../modals/EditUnitModal.vue";

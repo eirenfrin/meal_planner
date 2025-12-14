@@ -22,7 +22,7 @@
         </input>
         <button
           class="btn"
-          @click.prevent="openUnitAmountModal('Recipe yield')"
+          @click.prevent="openUnitAmountModal('Recipe yield', 'recipe')"
         >
           Add yield
         </button>
@@ -57,7 +57,7 @@
           >
             <button
               class="btn-1"
-              @click.prevent="openUnitAmountModal(ingredient.title)"
+              @click.prevent="openUnitAmountModal(ingredient.title, 'ingredient')"
             >
               Choose a unit
             </button>
@@ -71,6 +71,7 @@
   </form>
   <teleport to="#modal-container">
     <ChooseUnitAmountModal
+      :add-unit-amount="addUnitAmount"
       v-show="modalUnitAmountOpen"
       @close="closeUnitAmountModal"
     >
@@ -143,9 +144,6 @@ let ingredients: Array<GetIngredientDto> = [
   },
 ];
 
-
-provide('addUnitAmount', addUnitAmount);
-
 const addedIngredients = ref<GetIngredientDto[]>([]);
 
 const appStore = useAppStore();
@@ -154,6 +152,7 @@ let recipeAmount = ref<Array<GetUnitsRecipeDto>>([]);
 
 const modalUnitAmountOpen = ref<boolean>(false);
 const modalTitle = ref<string>();
+let unitAmountModalContext: string = '';
 
 const availableIngredients = computed<GetIngredientDto[]>(
   () =>
@@ -162,14 +161,17 @@ const availableIngredients = computed<GetIngredientDto[]>(
 );
 
 function addUnitAmount(unitAmount: UnitAmount) {
-  console.log('called addUnitAmount from addeditrecipeModal');
-  console.log(recipeAmount.value);
-  recipeAmount.value = recipeAmount.value.filter(ra => ra.unitRecipeTitle != unitAmount.unit.title);
-  const newUnitRecipe: GetUnitsRecipeDto = {
-    unitRecipeTitle: unitAmount.unit.title,
-    recipeAmount: unitAmount.amount,
+  if (unitAmountModalContext == 'recipe') {
+    recipeAmount.value = recipeAmount.value.filter(ra => ra.unitRecipeTitle != unitAmount.unit.title);
+    const newUnitRecipe: GetUnitsRecipeDto = {
+      unitRecipeTitle: unitAmount.unit.title,
+      recipeAmount: unitAmount.amount,
+    }
+    recipeAmount.value.push(newUnitRecipe);
+  } 
+  else if (unitAmountModalContext == 'ingredient') {
+
   }
-  recipeAmount.value.push(newUnitRecipe);
 }
 
 function selectIngredient(ingredient: GetIngredientDto) {
@@ -180,8 +182,9 @@ function selectIngredient(ingredient: GetIngredientDto) {
   }
 }
 
-function openUnitAmountModal(title: string) {
+function openUnitAmountModal(title: string, context: string) {
   setModalTitle(title);
+  unitAmountModalContext = context;
   modalUnitAmountOpen.value = true;
 }
 

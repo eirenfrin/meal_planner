@@ -6,7 +6,7 @@
           <h1>Add ingredient</h1>
         </div>
         <div class="two-button-group">
-          <button class="btn-1" @click.prevent>Save</button>
+          <button class="btn-1" @click.prevent="saveIngredient">Save</button>
           <button class="btn-2" @click.prevent="close">Cancel</button>
         </div>
       </header>
@@ -27,16 +27,17 @@
     <ul v-show="unitsAmountSold" class="units-amount-list">
         <li
           v-for="amount in unitsAmountSold"
-          :key="amount"
+          :key="amount.unit.id"
           class="units-amount-item"
         >
-          {{ amount }}
+          {{`${amount.amount + ' ' + amount.unit.title}` }}
           <span class="material-symbols-outlined unit-amount-delete-btn">cancel</span>
         </li>
     </ul>
     </form>
     <teleport to="#modal-container">
     <ChooseUnitAmountModal
+      :add-unit-amount="addUnitAmount"
       class="modal"
       v-show="modalUnitAmountOpen"
       @close="closeUnitAmountModal"
@@ -52,39 +53,27 @@
 
 
 <script setup lang="ts">
-import { computed, inject, provide, reactive, ref } from 'vue';
+import { ref } from 'vue';
 import useAppStore from '../stores/applicationStore';
 import ChooseUnitAmountModal from "./ChooseUnitAmountModal.vue";
-import type { GetUnitDto } from '../domain/models/getUnitDto';
 import type { UnitAmount } from '../domain/models/unitAmount';
+import useIngredientStore from '../stores/ingredientStore';
 
 const appStore = useAppStore();
-
-// const context = reactive({
-//   unit: null as GetUnitDto | null,
-//   amount: null as number | null,
-// });
+const ingredientStore = useIngredientStore();
 
 const modalUnitAmountOpen = ref<boolean>(false);
 const modalTitle = ref<string>();
 const ingredientTitleInput = ref<string>("");
-let unitsAmountSold = ref<Array<string>>([]);
-// const unitsAmountSold = computed(() => {
-//   if(context.unit && context.amount) {
-//     return [`${context.amount?.toString() + ' ' + context.unit?.title}`];
-//   }
-// });
+let unitsAmountSold = ref<Array<UnitAmount>>([]);
+
 function addUnitAmount(unitAmount : UnitAmount) {
-  console.log('called addunitamount from addingredientmodal');
   unitsAmountSold.value.pop();
-  let newAmount: string = `${unitAmount.amount + ' ' + unitAmount.unit.title}`
-  unitsAmountSold.value.push(newAmount)
+  unitsAmountSold.value.push(unitAmount)
 }
 
-provide('addUnitAmount', addUnitAmount);
-
 function close(): void {
-    appStore.toggleChooseAddEditIngredientModal();
+    appStore.toggleChooseAddIngredientModal();
 }
 
 function openUnitAmountModal(title: string) {
@@ -94,6 +83,11 @@ function openUnitAmountModal(title: string) {
 
 function closeUnitAmountModal() {
   modalUnitAmountOpen.value = false;
+}
+
+async function saveIngredient(): Promise<void> {
+  await ingredientStore.addIngredient(ingredientTitleInput.value, unitsAmountSold.value[0]!);
+  close();
 }
 </script>
 

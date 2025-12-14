@@ -36,18 +36,20 @@
 </template>
 
 <script setup lang="ts">
-import { inject, ref } from "vue";
+import { ref } from "vue";
 import type { GetUnitDto } from "../domain/models/getUnitDto";
 import useAppStore from "../stores/applicationStore";
 import useUnitStore from "../stores/unitStore";
 import type { UnitAmount } from "../domain/models/unitAmount";
 
+const props = defineProps<{
+    addUnitAmount: (unitAmount: UnitAmount) => void;
+}>();
+
 const emits = defineEmits(["close"]);
 
 const appStore = useAppStore();
 const unitStore = useUnitStore();
-
-const injectUnitAmount = inject<(unitAmount: UnitAmount) => void>('addUnitAmount')!
 
 function close() {
     currentlyProcessedUnit.value = null;
@@ -72,7 +74,7 @@ function addUnitAmount() {
             unit: currentlyProcessedUnit.value,
             amount: enteredAmount.value,
         }
-        injectUnitAmount(newUnitAmount);
+        props.addUnitAmount(newUnitAmount);
 
         close();
     }

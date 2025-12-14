@@ -6,7 +6,9 @@ export interface AppStoreState {
   currentSubpage?: CurrentSubPage;
   chooseAddUnitModalVisibility: boolean;
   chooseEditUnitModalVisibility: boolean;
-  chooseAddEditIngredientModalVisibility: boolean;
+  chooseAddIngredientModalVisibility: boolean;
+  chooseEditIngredientModalVisibility: boolean;
+
   chooseAddEditRecipeModalVisibility: boolean;
   chooseRecipePreviewModalVisibility: boolean;
   chooseShoppingListPreviewModalVisibility: boolean;

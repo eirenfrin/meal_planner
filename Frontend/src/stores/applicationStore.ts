@@ -10,7 +10,9 @@ const useAppStore = defineStore("applicationStore", () => {
     currentSubpage: CurrentSubPage.RECIPES,
     chooseAddUnitModalVisibility: false,
     chooseEditUnitModalVisibility: false,
-    chooseAddEditIngredientModalVisibility: false,
+    chooseAddIngredientModalVisibility: false,
+    chooseEditIngredientModalVisibility: false,
+
     chooseAddEditRecipeModalVisibility: false,
     chooseRecipePreviewModalVisibility: false,
     chooseShoppingListPreviewModalVisibility: false,
@@ -24,8 +26,12 @@ const useAppStore = defineStore("applicationStore", () => {
     () => state.chooseEditUnitModalVisibility
   );
 
-  const chooseAddEditIngredientModal = computed(
-    () => state.chooseAddEditIngredientModalVisibility
+  const chooseAddIngredientModal = computed(
+    () => state.chooseAddIngredientModalVisibility
+  );
+
+  const chooseEditIngredientModal = computed(
+    () => state.chooseEditIngredientModalVisibility
   );
 
   const chooseAddEditRecipeModal = computed(
@@ -59,9 +65,15 @@ const useAppStore = defineStore("applicationStore", () => {
     state.chooseEditUnitModalVisibility = !state.chooseEditUnitModalVisibility;
   }
 
-  function toggleChooseAddEditIngredientModal(): void {
-    state.chooseAddEditIngredientModalVisibility =
-      !state.chooseAddEditIngredientModalVisibility;
+  function toggleChooseAddIngredientModal(): void {
+    console.log("toogle");
+    state.chooseAddIngredientModalVisibility =
+      !state.chooseAddIngredientModalVisibility;
+  }
+
+  function toggleChooseEditIngredientModal(): void {
+    state.chooseEditIngredientModalVisibility =
+      !state.chooseEditIngredientModalVisibility;
   }
 
   function toggleChooseAddEditRecipeModal(): void {
@@ -91,7 +103,9 @@ const useAppStore = defineStore("applicationStore", () => {
     state,
     chooseAddUnitModal,
     chooseEditUnitModal,
-    chooseAddEditIngredientModal,
+    chooseAddIngredientModal,
+    chooseEditIngredientModal,
+
     chooseAddEditRecipeModal,
     chooseRecipePreviewModal,
     chooseShoppingListPreviewModal,
@@ -100,7 +114,9 @@ const useAppStore = defineStore("applicationStore", () => {
     changePages,
     toggleChooseAddUnitModal,
     toggleChooseEditUnitModal,
-    toggleChooseAddEditIngredientModal,
+    toggleChooseAddIngredientModal,
+    toggleChooseEditIngredientModal,
+
     toggleChooseAddEditRecipeModal,
     toggleChooseRecipePreviewModal,
     toggleChooseShoppingListPreviewModal,
