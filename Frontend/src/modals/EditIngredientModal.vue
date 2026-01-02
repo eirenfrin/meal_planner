@@ -14,8 +14,7 @@
         <input class="input" 
         type="text"
         id="ingredient-title"
-        placeholder="Enter ingredient title"
-        v-model="ingredientTitleInput">
+        v-model="editedTitle">
         </input>
         <button
           class="btn"
@@ -27,16 +26,17 @@
     <ul v-show="unitsAmountSold.length != 0" class="units-amount-list">
         <li
           v-for="amount in unitsAmountSold"
-          :key="amount"
+          :key="amount.unitId"
           class="units-amount-item"
         >
-          {{ amount }}
+          {{ amount.amount + ' ' + amount.unitTitle }}
           <span class="material-symbols-outlined unit-amount-delete-btn">cancel</span>
         </li>
     </ul>
     </form>
-    <!-- <teleport to="#modal-container">
+    <teleport to="#modal-container">
     <ChooseUnitAmountModal
+      :add-unit-amount="addUnitAmount"
       class="modal"
       v-show="modalUnitAmountOpen"
       @close="closeUnitAmountModal"
@@ -45,23 +45,50 @@
         <h3 class="modal-title">{{ modalTitle }}</h3>
       </template>
     </ChooseUnitAmountModal>
-  </teleport> -->
+  </teleport>
   </div>
 </template>
 
-
-
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import useAppStore from '../stores/applicationStore';
 import ChooseUnitAmountModal from "./ChooseUnitAmountModal.vue";
+import useIngredientStore from '../stores/ingredientStore';
+import type { UnitAmount } from '../domain/models/unitAmount';
+
 
 const appStore = useAppStore();
+const ingredientStore = useIngredientStore();
+
+const editedTitle = ref<string>(ingredientStore.editIngredientInfo!.title);
 
 const modalUnitAmountOpen = ref<boolean>(false);
 const modalTitle = ref<string>();
-const ingredientTitleInput = ref<string>("");
-const unitsAmountSold = ref<Array<string>>(['1 pack'])
+const unitsAmountSold = ref<Array<UnitAmount>>([])
+
+watch(() => appStore.chooseEditIngredientModal, (isOpened: boolean) => {
+  if (
+    isOpened 
+    && ingredientStore.editIngredientInfo!.unitId != null 
+    && ingredientStore.editIngredientInfo!.unitTitle != null
+    && ingredientStore.editIngredientInfo!.soldPackageSize != null
+  ) {
+    var unitAmount: UnitAmount = {
+      unitId: ingredientStore.editIngredientInfo!.unitId,
+      unitTitle: ingredientStore.editIngredientInfo!.unitTitle,
+      amount: ingredientStore.editIngredientInfo!.soldPackageSize,
+    }
+    unitsAmountSold.value.push(unitAmount);
+    console.log(unitsAmountSold.value[0]);
+  }
+},
+{ immediate: true }
+)
+
+function addUnitAmount(unitAmount : UnitAmount) {
+  unitsAmountSold.value.pop();
+  unitsAmountSold.value.push(unitAmount)
+}
 
 function close(): void {
     appStore.toggleChooseEditIngredientModal();

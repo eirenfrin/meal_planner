@@ -27,11 +27,11 @@
     <ul v-show="unitsAmountSold" class="units-amount-list">
         <li
           v-for="amount in unitsAmountSold"
-          :key="amount.unit.id"
+          :key="amount.unitId"
           class="units-amount-item"
         >
-          {{`${amount.amount + ' ' + amount.unit.title}` }}
-          <span class="material-symbols-outlined unit-amount-delete-btn">cancel</span>
+          {{`${amount.amount + ' ' + amount.unitTitle}` }}
+          <span class="material-symbols-outlined unit-amount-delete-btn" @click.prevent="removeUnitsAmountSold">cancel</span>
         </li>
     </ul>
     </form>
@@ -81,12 +81,16 @@ function openUnitAmountModal(title: string) {
   modalUnitAmountOpen.value = true;
 }
 
+function removeUnitsAmountSold() {
+  unitsAmountSold.value.pop();
+}
+
 function closeUnitAmountModal() {
   modalUnitAmountOpen.value = false;
 }
 
 async function saveIngredient(): Promise<void> {
-  await ingredientStore.addIngredient(ingredientTitleInput.value, unitsAmountSold.value[0]!);
+  await ingredientStore.addIngredient(ingredientTitleInput.value, unitsAmountSold.value);
   close();
 }
 </script>

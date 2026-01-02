@@ -1,14 +1,17 @@
 using System.Data;
 using Backend.Dtos;
 using Backend.Models;
+using Backend.Repositories;
 using Backend.Repositories.Interfaces;
 using Backend.Services.Interfaces;
 
 namespace Backend.Services;
 
-public class IngredientService(IIngredientRepository ingredientRepository) : IIngredientService
+public class IngredientService(IIngredientRepository ingredientRepository, IUnitRepository unitRepository) : IIngredientService
 {
     private readonly IIngredientRepository _ingredientRepository = ingredientRepository;
+
+    private readonly IUnitRepository _unitRepository = unitRepository;
 
     public async Task<IEnumerable<GetIngredientDto>> GetAllIngredients(Guid userId)
     {
@@ -19,6 +22,7 @@ public class IngredientService(IIngredientRepository ingredientRepository) : IIn
             Id = i.Id,
             Title = i.Title,
             UnitId = i.UnitId,
+            UnitTitle = i.Unit?.Title,
             SoldPackageSize = i.SoldPackageSize,
             CreatorId = i.CreatorId
         });
@@ -45,6 +49,12 @@ public class IngredientService(IIngredientRepository ingredientRepository) : IIn
         };
 
         await _ingredientRepository.AddNewIngredient(ingredient);
+        var unit = (Unit?)null;
+        if (ingredientNew.UnitId.HasValue)
+        {
+            unit = await _unitRepository.GetSingleUnit(ingredientNew.UnitId.Value);
+        }
+
 
         var ingredientDto = new GetIngredientDto
         {
@@ -52,6 +62,7 @@ public class IngredientService(IIngredientRepository ingredientRepository) : IIn
             Title = ingredient.Title,
             SoldPackageSize = ingredient.SoldPackageSize,
             UnitId = ingredient.UnitId,
+            UnitTitle = unit.Title,
             CreatorId = ingredient.CreatorId
         };
 

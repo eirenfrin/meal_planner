@@ -99,6 +99,7 @@ let ingredients: Array<GetIngredientDto> = [
     soldPackageSize: 3,
     unitId: "pack",
     creatorId: "null",
+    unitTitle: "sacok"
   },
   {
     id: "123455",
@@ -106,6 +107,7 @@ let ingredients: Array<GetIngredientDto> = [
     soldPackageSize: 1,
     unitId: "kg",
     creatorId: "1111",
+    unitTitle: "sacok"
   },
   {
     id: "12",
@@ -113,6 +115,7 @@ let ingredients: Array<GetIngredientDto> = [
     soldPackageSize: 1,
     unitId: "kg",
     creatorId: "1111",
+    unitTitle: "sacok",
   },
   {
     id: "13",
@@ -120,6 +123,7 @@ let ingredients: Array<GetIngredientDto> = [
     soldPackageSize: 1,
     unitId: "ks",
     creatorId: "1111",
+    unitTitle: "sacok",
   },
   {
     id: "14",
@@ -127,6 +131,7 @@ let ingredients: Array<GetIngredientDto> = [
     soldPackageSize: 1,
     unitId: "kg",
     creatorId: "1111",
+    unitTitle: "sacok",
   },
   {
     id: "19",
@@ -134,6 +139,7 @@ let ingredients: Array<GetIngredientDto> = [
     soldPackageSize: 1,
     unitId: "kg",
     creatorId: "1111",
+    unitTitle: "sacok",
   },
   {
     id: "18",
@@ -141,6 +147,7 @@ let ingredients: Array<GetIngredientDto> = [
     soldPackageSize: 1,
     unitId: "kg",
     creatorId: "1111",
+    unitTitle: "sacok",
   },
 ];
 
@@ -162,9 +169,9 @@ const availableIngredients = computed<GetIngredientDto[]>(
 
 function addUnitAmount(unitAmount: UnitAmount) {
   if (unitAmountModalContext == 'recipe') {
-    recipeAmount.value = recipeAmount.value.filter(ra => ra.unitRecipeTitle != unitAmount.unit.title);
+    recipeAmount.value = recipeAmount.value.filter(ra => ra.unitRecipeTitle != unitAmount.unitTitle);
     const newUnitRecipe: GetUnitsRecipeDto = {
-      unitRecipeTitle: unitAmount.unit.title,
+      unitRecipeTitle: unitAmount.unitTitle,
       recipeAmount: unitAmount.amount,
     }
     recipeAmount.value.push(newUnitRecipe);

@@ -20,6 +20,10 @@ const useUnitStore = defineStore("unitStore", () => {
     state.editUnitInfo = unit;
   }
 
+  function getUnitById(id: string): GetUnitDto | null {
+    return state.units.find((u) => u.id == id) ?? null;
+  }
+
   async function getAllUnits(): Promise<void> {
     try {
       let units = await unitService.getAllUnits();
@@ -73,6 +77,7 @@ const useUnitStore = defineStore("unitStore", () => {
   return {
     allUnits,
     editUnitInfo,
+    getUnitById,
     setEditUnitInfo,
     getAllUnits,
     addUnit,

@@ -13,6 +13,11 @@
     ></AddIngredientModal>
   </teleport>
   <teleport to="#modal-container">
+    <EditIngredientModal
+      v-if="appStore.chooseEditIngredientModal"
+    ></EditIngredientModal>
+  </teleport>
+  <teleport to="#modal-container">
     <AddEditRecipeModal
       v-if="appStore.chooseAddEditRecipeModal"
     ></AddEditRecipeModal>
@@ -43,6 +48,7 @@
 
 <script setup lang="ts">
 import AddIngredientModal from "../modals/AddIngredientModal.vue";
+import EditIngredientModal from "../modals/EditIngredientModal.vue";
 import AddEditRecipeModal from "../modals/AddEditRecipeModal.vue";
 import AddUnitModal from "../modals/AddUnitModal.vue";
 import EditUnitModal from "../modals/EditUnitModal.vue";

@@ -10,7 +10,7 @@
       <h1 class="fancy-list-entry-title">
         {{ ingredient.title }}
         <span class="amount-info"
-          >{{ ingredient.soldPackageSize }} {{ ingredient.unitId }}</span
+          >{{ ingredient.soldPackageSize }} {{ ingredient.unitTitle }}</span
         >
       </h1>
     </div>

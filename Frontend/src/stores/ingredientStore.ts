@@ -5,6 +5,7 @@ import { computed, reactive } from "vue";
 import ingredientService from "../api/services/ingredientService";
 import type { NewEditIngredientDto } from "../domain/models/newEditIngredientDto";
 import type { UnitAmount } from "../domain/models/unitAmount";
+import type { BatchDeleteDto } from "../domain/models/batchDeleteDto";
 
 const useIngredientStore = defineStore("ingredientStore", () => {
   const state: IngredientStoreState = reactive({
@@ -16,23 +17,26 @@ const useIngredientStore = defineStore("ingredientStore", () => {
 
   const editIngredientInfo = computed(() => state.editIngredientInfo);
 
+  function setEditIngredientInfo(ingredient: GetIngredientDto) {
+    state.editIngredientInfo = ingredient;
+  }
+
   async function getAllIngredients(): Promise<void> {
     try {
       let ingredients = await ingredientService.getAllIngredients();
-
       state.ingredients = ingredients;
     } catch (e) {}
   }
 
   async function addIngredient(
     title: string,
-    unitAmount: UnitAmount
+    unitAmount: Array<UnitAmount>
   ): Promise<void> {
     try {
       let newIngredient: NewEditIngredientDto = {
         title: title,
-        unitId: unitAmount.unit.id,
-        soldPackageSize: unitAmount.amount,
+        unitId: unitAmount[0]?.unitId ?? null,
+        soldPackageSize: unitAmount[0]?.amount ?? null,
       };
 
       let ingredient = await ingredientService.addNewIngredient(newIngredient);
@@ -41,11 +45,29 @@ const useIngredientStore = defineStore("ingredientStore", () => {
     } catch (e: any) {}
   }
 
+  async function deleteIngredients(
+    ingredientIds: Array<string>
+  ): Promise<void> {
+    try {
+      let idsDto: BatchDeleteDto = {
+        ids: ingredientIds,
+      };
+
+      await ingredientService.deleteBatchIngredients(idsDto);
+
+      state.ingredients = state.ingredients.filter(
+        (ing) => !ingredientIds.includes(ing.id)
+      );
+    } catch (e: any) {}
+  }
+
   return {
     allIngredients,
     editIngredientInfo,
+    setEditIngredientInfo,
     getAllIngredients,
     addIngredient,
+    deleteIngredients,
   };
 });
 

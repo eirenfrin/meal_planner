@@ -1,3 +1,4 @@
+import type { BatchDeleteDto } from "../../domain/models/batchDeleteDto";
 import type { GetIngredientDto } from "../../domain/models/getIngredientDto";
 import type { NewEditIngredientDto } from "../../domain/models/newEditIngredientDto";
 import BaseService from "./baseService";
@@ -36,6 +37,15 @@ class IngredientService extends BaseService {
 
   public async deleteIngredient(ingredientId: string): Promise<void> {
     await this.delete<void>(`${ingredientId}`);
+  }
+
+  public async deleteBatchIngredients(
+    ingredientsToDelete: BatchDeleteDto
+  ): Promise<void> {
+    await this.post<BatchDeleteDto, void>(
+      "delete-multiple",
+      ingredientsToDelete
+    );
   }
 }
 

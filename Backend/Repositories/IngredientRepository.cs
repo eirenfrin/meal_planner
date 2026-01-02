@@ -16,6 +16,7 @@ public class IngredientRepository(AppDbContext context) : IIngredientRepository
     {
         var ingredients = await _context.Ingredients.
         Where(i => i.CreatorId == userId || i.CreatorId == null)
+        .Include(i => i.Unit)
         .ToListAsync();
 
         return ingredients;

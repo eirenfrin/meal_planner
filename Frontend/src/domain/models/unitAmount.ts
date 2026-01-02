@@ -1,6 +1,7 @@
 import type { GetUnitDto } from "./getUnitDto";
 
 export interface UnitAmount {
-  unit: GetUnitDto;
+  unitId: string;
+  unitTitle: string;
   amount: number;
 }

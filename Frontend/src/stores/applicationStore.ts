@@ -66,7 +66,6 @@ const useAppStore = defineStore("applicationStore", () => {
   }
 
   function toggleChooseAddIngredientModal(): void {
-    console.log("toogle");
     state.chooseAddIngredientModalVisibility =
       !state.chooseAddIngredientModalVisibility;
   }
@@ -105,7 +104,6 @@ const useAppStore = defineStore("applicationStore", () => {
     chooseEditUnitModal,
     chooseAddIngredientModal,
     chooseEditIngredientModal,
-
     chooseAddEditRecipeModal,
     chooseRecipePreviewModal,
     chooseShoppingListPreviewModal,
@@ -116,7 +114,6 @@ const useAppStore = defineStore("applicationStore", () => {
     toggleChooseEditUnitModal,
     toggleChooseAddIngredientModal,
     toggleChooseEditIngredientModal,
-
     toggleChooseAddEditRecipeModal,
     toggleChooseRecipePreviewModal,
     toggleChooseShoppingListPreviewModal,

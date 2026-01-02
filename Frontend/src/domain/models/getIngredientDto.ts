@@ -3,5 +3,6 @@ export interface GetIngredientDto {
   title: string;
   soldPackageSize: number | null;
   unitId: string | null;
+  unitTitle: string | null;
   creatorId: string | null;
 }

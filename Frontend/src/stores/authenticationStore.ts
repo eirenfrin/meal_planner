@@ -8,6 +8,7 @@ import userService from "../api/services/userService";
 import type { AuthRequest } from "../domain/models/authRequest";
 import { useRouter } from "vue-router";
 import useUnitStore from "./unitStore";
+import useIngredientStore from "./ingredientStore";
 
 const useAuthStore = defineStore("authenticationStore", () => {
   const state: AuthStoreState = reactive({
@@ -20,6 +21,7 @@ const useAuthStore = defineStore("authenticationStore", () => {
   const router = useRouter();
 
   const unitStore = useUnitStore();
+  const ingredientStore = useIngredientStore();
 
   const isAuthPending = computed(() => state.status == AuthStatus.PENDING);
   const isAuthSuccess = computed(
@@ -78,6 +80,7 @@ const useAuthStore = defineStore("authenticationStore", () => {
       authSuccess(accessToken.token, user);
 
       await unitStore.getAllUnits();
+      await ingredientStore.getAllIngredients();
       router.push({ name: "Recipes" });
     } catch (e: any) {
       authFailure(e as AppError[]);

@@ -10,5 +10,7 @@ public class GetIngredientDto
 
     public required Guid? UnitId { get; set; }
 
+    public required string? UnitTitle { get; set; }
+
     public required Guid? CreatorId { get; set; }
 }

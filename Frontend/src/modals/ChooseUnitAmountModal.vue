@@ -71,7 +71,8 @@ function openUnitModal() {
 function addUnitAmount() {
     if(currentlyProcessedUnit.value && enteredAmount.value) {
         const newUnitAmount: UnitAmount = {
-            unit: currentlyProcessedUnit.value,
+            unitId: currentlyProcessedUnit.value.id,
+            unitTitle: currentlyProcessedUnit.value.title,
             amount: enteredAmount.value,
         }
         props.addUnitAmount(newUnitAmount);
