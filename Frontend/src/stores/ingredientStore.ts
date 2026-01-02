@@ -61,6 +61,25 @@ const useIngredientStore = defineStore("ingredientStore", () => {
     } catch (e: any) {}
   }
 
+  async function editIngredient(
+    ingredientTitle: string,
+    unitId?: string,
+    soldAmount?: number
+  ): Promise<void> {
+    try {
+      let editedIngredient: NewEditIngredientDto = {
+        title: ingredientTitle,
+        unitId: unitId ?? null,
+        soldPackageSize: soldAmount ?? null,
+      };
+
+      await ingredientService.editIngredient(
+        state.editIngredientInfo!.id,
+        editedIngredient
+      );
+    } catch (e: any) {}
+  }
+
   return {
     allIngredients,
     editIngredientInfo,
@@ -68,6 +87,7 @@ const useIngredientStore = defineStore("ingredientStore", () => {
     getAllIngredients,
     addIngredient,
     deleteIngredients,
+    editIngredient,
   };
 });
 

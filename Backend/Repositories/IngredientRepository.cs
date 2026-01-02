@@ -82,7 +82,7 @@ public class IngredientRepository(AppDbContext context) : IIngredientRepository
     {
         // var exists = await _context.Ingredients
         // .AnyAsync(i => i.Title == ingredientTitle && (i.CreatorId == creatorId || i.CreatorId == null));
-        var query = _context.Units.AsQueryable();
+        var query = _context.Ingredients.AsQueryable();
 
         query = query.Where(i => i.Title == ingredientTitle && (i.CreatorId == creatorId || i.CreatorId == null));
 

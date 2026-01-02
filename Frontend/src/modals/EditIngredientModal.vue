@@ -6,7 +6,7 @@
           <h1>Edit ingredient</h1>
         </div>
         <div class="two-button-group">
-          <button class="btn-1" @click.prevent>Save</button>
+          <button class="btn-1" @click.prevent="editIngredient">Save</button>
           <button class="btn-2" @click.prevent="close">Cancel</button>
         </div>
       </header>
@@ -30,7 +30,7 @@
           class="units-amount-item"
         >
           {{ amount.amount + ' ' + amount.unitTitle }}
-          <span class="material-symbols-outlined unit-amount-delete-btn">cancel</span>
+          <span class="material-symbols-outlined unit-amount-delete-btn" @click="deleteUnitAmount">cancel</span>
         </li>
     </ul>
     </form>
@@ -79,7 +79,6 @@ watch(() => appStore.chooseEditIngredientModal, (isOpened: boolean) => {
       amount: ingredientStore.editIngredientInfo!.soldPackageSize,
     }
     unitsAmountSold.value.push(unitAmount);
-    console.log(unitsAmountSold.value[0]);
   }
 },
 { immediate: true }
@@ -88,6 +87,10 @@ watch(() => appStore.chooseEditIngredientModal, (isOpened: boolean) => {
 function addUnitAmount(unitAmount : UnitAmount) {
   unitsAmountSold.value.pop();
   unitsAmountSold.value.push(unitAmount)
+}
+
+function deleteUnitAmount() {
+  unitsAmountSold.value.pop();
 }
 
 function close(): void {
@@ -101,6 +104,11 @@ function openUnitAmountModal(title: string) {
 
 function closeUnitAmountModal() {
   modalUnitAmountOpen.value = false;
+}
+
+async function editIngredient(): Promise<void> {
+  await ingredientStore.editIngredient(editedTitle.value, unitsAmountSold.value[0]?.unitId, unitsAmountSold.value[0]?.amount);
+  close();
 }
 </script>
 
